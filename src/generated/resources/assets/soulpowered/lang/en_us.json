@@ -1,0 +1,5 @@
+{
+  "commands.souls.get": "%1$s has %2$s soul(s)",
+  "commands.souls.set": "%1$s now has %2$s soul(s)",
+  "itemGroup.soulpowered": "Soul Powered"
+}

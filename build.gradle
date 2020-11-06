@@ -1,0 +1,167 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = "${project.version}-${project.mcVersion}"
+group = project.group + '.' + project.modId
+archivesBaseName = project.modId
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+    mappings channel: 'snapshot', version: project.mcpMappings.toString()
+    
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                soulpowered {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                soulpowered {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', '' + project.modId, '--all', '--output', '"' + rootProject.file('src/generated/resources/') + '"', '--existing', '"' + rootProject.file('src/main/resources') + '"'
+
+            mods {
+                soulpowered {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+    exclude "**/*.ase"
+}
+
+configurations {
+    shade
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+
+    maven { // Curios
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven { // JustEnoughItems
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven { // Registrate
+        name 'tterrag maven'
+        url "https://maven.tterrag.com/"
+    }
+    maven { // Sonar
+        name = "Jitpack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${project.mcVersion}-${project.forgeVersion}"
+
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curiosVersion}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curiosVersion}:api")
+
+//    runtimeOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}")
+//    compileOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}:api")
+
+    def registrate = "com.tterrag.registrate:Registrate:MC${project.registrateVersion}"
+    implementation fg.deobf(registrate)
+    shade registrate
+
+    runtimeOnly fg.deobf("com.github.Ocelot5836:Sonar:${project.sonar}")
+    compileOnly "com.github.Ocelot5836:Sonar:${project.sonar}:api"
+    shade "com.github.Ocelot5836:Sonar:${project.sonar}"
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    relocate 'com.tterrag.registrate', 'coffeecatrailway.repack.registrate'
+    relocate 'io.github.ocelot', 'io.github.ocelot.lib'
+}
+
+processResources {
+    inputs.property("modId", project.modId)
+    inputs.property("version", project.version)
+    inputs.property("name", project.name)
+    inputs.property("author", project.author)
+    from(sourceSets.main.resources.srcDirs) {
+        include 'META-INF/mods.toml'
+        expand 'modId': project.modId, 'version': project.version, 'name': project.name, 'author': project.author
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'META-INF/mods.toml'
+    }
+
+    // Minify json resources
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "${archivesBaseName}",
+                "Specification-Vendor"    : "${project.author}",
+                "Specification-Version"   : "${project.version}",
+                "Implementation-Title"    : "${project.name}",
+                "Implementation-Version"  : "${project.version}",
+                "Implementation-Vendor"   : "${project.author}",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+    enabled = false
+    dependsOn(shadowJar { classifier = null })
+}
+
+jar.finalizedBy('reobfJar')
