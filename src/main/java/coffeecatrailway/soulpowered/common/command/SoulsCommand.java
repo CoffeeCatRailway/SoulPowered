@@ -3,7 +3,6 @@ package coffeecatrailway.soulpowered.common.command;
 import coffeecatrailway.soulpowered.common.capability.ISoulsHandler;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -28,13 +27,14 @@ public class SoulsCommand
     {
         LiteralArgumentBuilder<CommandSource> builder = Commands.literal("souls").requires(source -> source.hasPermissionLevel(4));
 
-        builder.then(Commands.literal("set").then(Commands.argument("souls", IntegerArgumentType.integer(0))
+        builder.then(Commands.literal("modify").then(Commands.literal("set").then(Commands.argument("souls", IntegerArgumentType.integer(0))
                 .executes(source -> setValue(source, Collections.singleton(source.getSource().getEntity()), IntegerArgumentType.getInteger(source, "souls")))
                 .then(Commands.argument("target", EntityArgument.entities())
                         .executes((source) -> setValue(source, EntityArgument.getEntities(source, "target"), IntegerArgumentType.getInteger(source, "souls"))))
-        )).then(Commands.literal("get").executes(source -> getValue(source, source.getSource().getEntity()))
-                .then(Commands.argument("target", EntityArgument.entity())
-                        .executes((source) -> getValue(source, EntityArgument.getEntity(source, "target")))));
+        ))
+        ).then(Commands.literal("get").executes(source -> getValue(source, source.getSource().getEntity()))
+                        .then(Commands.argument("target", EntityArgument.entity())
+                                .executes((source) -> getValue(source, EntityArgument.getEntity(source, "target")))));
 
         dispatcher.register(builder);
     }
@@ -63,7 +63,7 @@ public class SoulsCommand
                 if (cap.isPresent())
                 {
                     cap.orElseThrow(NullPointerException::new).setSouls(souls);
-                    source.getSource().sendFeedback(new TranslationTextComponent("commands.souls.set", entity.getDisplayName(), souls), true);
+                    source.getSource().sendFeedback(new TranslationTextComponent("commands.souls.modify.set", entity.getDisplayName(), souls), true);
                     i++;
                 }
             }

@@ -15,7 +15,7 @@ public class SoulData
         public void accept(RegistrateLangProvider provider)
         {
             provider.add("commands.souls.get", "%1$s has %2$s soul(s)");
-            provider.add("commands.souls.set", "%1$s now has %2$s soul(s)");
+            provider.add("commands.souls.modify.set", "%1$s now has %2$s soul(s)");
         }
     }
 }

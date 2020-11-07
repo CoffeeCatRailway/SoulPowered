@@ -1,5 +1,5 @@
 {
   "commands.souls.get": ")s(\u05DFnos %2$s s\u0250\u0265 %1$s",
-  "commands.souls.set": ")s(\u05DFnos %2$s s\u0250\u0265 \u028Dou %1$s",
+  "commands.souls.modify.set": ")s(\u05DFnos %2$s s\u0250\u0265 \u028Dou %1$s",
   "itemGroup.soulpowered": "p\u01DD\u0279\u01DD\u028Do\u0500 \u05DFnoS"
 }
