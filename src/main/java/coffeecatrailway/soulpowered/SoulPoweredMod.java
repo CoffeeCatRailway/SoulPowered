@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -52,8 +53,9 @@ public class SoulPoweredMod
     public SoulPoweredMod()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::setupClient);
-        modEventBus.addListener(this::setupCommon);
+        modEventBus.addListener(this::onClientSetup);
+        modEventBus.addListener(this::onParticleFactoryRegister);
+        modEventBus.addListener(this::onCommonSetup);
 
 //        final Pair<SoulPoweredConfig.Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Client::new);
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, client.getRight());
@@ -75,14 +77,17 @@ public class SoulPoweredMod
         OtherRegistries.load(modEventBus);
     }
 
-    private void setupClient(FMLClientSetupEvent event)
+    private void onClientSetup(FMLClientSetupEvent event)
     {
         SoulHUDOverlayHandler.init();
+    }
 
+    private void onParticleFactoryRegister(ParticleFactoryRegisterEvent event)
+    {
         Minecraft.getInstance().particles.registerFactory(OtherRegistries.SOUL_PARTICLE.get(), SoulParticle.Factory::new);
     }
 
-    private void setupCommon(FMLCommonSetupEvent event)
+    private void onCommonSetup(FMLCommonSetupEvent event)
     {
         SoulsCapability.register();
         SoulMessageHandler.init();
