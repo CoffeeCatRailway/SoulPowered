@@ -33,7 +33,7 @@ public class SoulParticle extends SimpleAnimatedParticle
         this.motionY = 0d;
         this.motionZ = 0d;
         this.particleScale *= .75f;
-        this.maxAge = 60 + this.rand.nextInt(12);
+        this.maxAge = 30 + this.rand.nextInt(12);
         this.setColorFade(0xf2dec9);
         this.selectSpriteWithAge(sprite);
         this.player = player;
