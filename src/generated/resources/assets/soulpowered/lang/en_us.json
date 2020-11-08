@@ -1,5 +1,7 @@
 {
   "commands.souls.get": "%1$s has %2$s soul(s)",
+  "commands.souls.modify.add": "Gave %2$s soul(s) to %1$s",
+  "commands.souls.modify.remove": "Removed %2$s soul(s) to %1$s",
   "commands.souls.modify.set": "%1$s now has %2$s soul(s)",
   "itemGroup.soulpowered": "Soul Powered"
 }

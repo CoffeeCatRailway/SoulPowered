@@ -31,10 +31,17 @@ public class SoulsCommand
                 .executes(source -> setValue(source, Collections.singleton(source.getSource().getEntity()), IntegerArgumentType.getInteger(source, "souls")))
                 .then(Commands.argument("target", EntityArgument.entities())
                         .executes((source) -> setValue(source, EntityArgument.getEntities(source, "target"), IntegerArgumentType.getInteger(source, "souls"))))
-        ))
-        ).then(Commands.literal("get").executes(source -> getValue(source, source.getSource().getEntity()))
-                        .then(Commands.argument("target", EntityArgument.entity())
-                                .executes((source) -> getValue(source, EntityArgument.getEntity(source, "target")))));
+        )).then(Commands.literal("add").then(Commands.argument("souls", IntegerArgumentType.integer(0))
+                .executes(source -> changeValue(source, Collections.singleton(source.getSource().getEntity()), IntegerArgumentType.getInteger(source, "souls"), false))
+                .then(Commands.argument("target", EntityArgument.entities())
+                        .executes((source) -> changeValue(source, EntityArgument.getEntities(source, "target"), IntegerArgumentType.getInteger(source, "souls"), false)))
+        )).then(Commands.literal("remove").then(Commands.argument("souls", IntegerArgumentType.integer(0))
+                .executes(source -> changeValue(source, Collections.singleton(source.getSource().getEntity()), IntegerArgumentType.getInteger(source, "souls"), true))
+                .then(Commands.argument("target", EntityArgument.entities())
+                        .executes((source) -> changeValue(source, EntityArgument.getEntities(source, "target"), IntegerArgumentType.getInteger(source, "souls"), true)))
+        ))).then(Commands.literal("get").executes(source -> getValue(source, source.getSource().getEntity()))
+                .then(Commands.argument("target", EntityArgument.entity())
+                        .executes((source) -> getValue(source, EntityArgument.getEntity(source, "target")))));
 
         dispatcher.register(builder);
     }
@@ -56,7 +63,6 @@ public class SoulsCommand
         if (canContinue)
         {
             int i = 0;
-
             for (Entity entity : entities)
             {
                 LazyOptional<ISoulsHandler> cap = entity.getCapability(SoulsCapability.SOULS_CAP);
@@ -67,7 +73,34 @@ public class SoulsCommand
                     i++;
                 }
             }
+            return i;
+        }
+        return 0;
+    }
 
+    private static int changeValue(CommandContext<CommandSource> source, Collection<? extends Entity> entities, int souls, boolean remove)
+    {
+        boolean canContinue = entities.stream().anyMatch(entity -> entity instanceof LivingEntity);
+        if (canContinue)
+        {
+            int i = 0;
+            for (Entity entity : entities)
+            {
+                LazyOptional<ISoulsHandler> cap = entity.getCapability(SoulsCapability.SOULS_CAP);
+                if (cap.isPresent())
+                {
+                    if (remove)
+                    {
+                        cap.orElseThrow(NullPointerException::new).removeSouls(souls);
+                        source.getSource().sendFeedback(new TranslationTextComponent("commands.souls.modify.remove", entity.getDisplayName(), souls), true);
+                    } else
+                    {
+                        cap.orElseThrow(NullPointerException::new).addSouls(souls);
+                        source.getSource().sendFeedback(new TranslationTextComponent("commands.souls.modify.add", entity.getDisplayName(), souls), true);
+                    }
+                    i++;
+                }
+            }
             return i;
         }
         return 0;

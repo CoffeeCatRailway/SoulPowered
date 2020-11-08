@@ -84,11 +84,11 @@ public class SoulsCapability
         @Override
         public void addSouls(int amount)
         {
-            if (amount > 0)
+            if (amount >= 0)
             {
                 this.souls += amount;
                 if (!this.owner.world.isRemote())
-                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), souls, false));
+                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), amount, false));
             } else
                 this.removeSouls(amount);
         }
@@ -96,12 +96,12 @@ public class SoulsCapability
         @Override
         public void removeSouls(int amount)
         {
-            if (amount < 0)
+            if (amount <= 0)
             {
                 amount = Math.min(this.getSouls(), amount);
-                if (!this.owner.world.isRemote())
-                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), souls, true));
                 this.souls -= amount;
+                if (!this.owner.world.isRemote())
+                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), amount, true));
             } else
                 this.addSouls(amount);
         }
