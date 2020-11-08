@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:soul_amulet"
+    ]
+  },
+  "criteria": {
+    "has_soul_sand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "soulpowered:soul_items"
+          }
+        ]
+      }
+    },
+    "has_soul_bottle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:stick"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:soul_amulet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_soul_sand",
+      "has_soul_bottle",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " b ",
+    "b b",
+    " s "
+  ],
+  "key": {
+    "b": {
+      "tag": "soulpowered:soul_items"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "soulpowered:soul_amulet"
+  }
+}

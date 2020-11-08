@@ -4,14 +4,15 @@ import coffeecatrailway.soulpowered.client.gui.SoulHUDOverlayHandler;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.command.SoulsCommand;
+import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.registry.OtherRegistries;
+import coffeecatrailway.soulpowered.registry.SoulItems;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -46,7 +47,7 @@ public class SoulPoweredMod
         @Override
         public ItemStack createIcon()
         {
-            return new ItemStack(Items.CHAIN);
+            return new ItemStack(SoulItems.SOUL_AMULET.get());
         }
     };
 
@@ -75,6 +76,7 @@ public class SoulPoweredMod
                 .addDataGenerator(ProviderType.LANG, new SoulData.SoulLang());
 //                .addDataGenerator(ProviderType.BLOCKSTATE, new ExampleBlockstates());
 
+        SoulItems.load();
         OtherRegistries.load(modEventBus);
     }
 
