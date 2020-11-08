@@ -18,4 +18,15 @@ public class SoulData
             provider.add("commands.souls.modify.set", "%1$s now has %2$s soul(s)");
         }
     }
+
+    public static class TagItems implements NonNullConsumer<RegistrateTagsProvider<Item>>
+    {
+        public static final ITag.INamedTag<Item> CURIOS_NECKLACE = ItemTags.createOptional(new ResourceLocation("curios", "necklace"));
+
+        @Override
+        public void accept(RegistrateTagsProvider<Item> provider)
+        {
+            provider.getOrCreateBuilder(SOUL_ITEMS).add(Items.SOUL_SAND, Items.SOUL_SOIL);
+        }
+    }
 }

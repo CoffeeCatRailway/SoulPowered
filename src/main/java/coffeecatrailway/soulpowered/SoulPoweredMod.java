@@ -56,6 +56,7 @@ public class SoulPoweredMod
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::onParticleFactoryRegister);
         modEventBus.addListener(this::onCommonSetup);
+        modEventBus.addListener(CuriosIntegration::onInterModComms);
 
 //        final Pair<SoulPoweredConfig.Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Client::new);
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, client.getRight());
@@ -70,7 +71,7 @@ public class SoulPoweredMod
 
         REGISTRATE = Registrate.create(MOD_ID).itemGroup(() -> GROUP_ALL, "Soul Powered")
 //                .addDataGenerator(ProviderType.BLOCK_TAGS, new ExampleTags.Blocks())
-//                .addDataGenerator(ProviderType.ITEM_TAGS, new ExampleTags.Items())
+                .addDataGenerator(ProviderType.ITEM_TAGS, new SoulData.TagItems())
                 .addDataGenerator(ProviderType.LANG, new SoulData.SoulLang());
 //                .addDataGenerator(ProviderType.BLOCKSTATE, new ExampleBlockstates());
 

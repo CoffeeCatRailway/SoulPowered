@@ -3,5 +3,7 @@
   "commands.souls.modify.add": "Gave %2$s soul(s) to %1$s",
   "commands.souls.modify.remove": "Removed %2$s soul(s) to %1$s",
   "commands.souls.modify.set": "%1$s now has %2$s soul(s)",
+  "item.soul_curio.description.range": "\u00A76Range: \u00A7e%s Blocks",
+  "item.soul_curio.description.soul_gathering": "\u00A76Soul Gathering: \u00A7ex%s",
   "itemGroup.soulpowered": "Soul Powered"
 }
