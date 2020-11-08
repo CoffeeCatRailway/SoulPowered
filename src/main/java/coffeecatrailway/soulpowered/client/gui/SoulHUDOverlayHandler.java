@@ -2,6 +2,7 @@ package coffeecatrailway.soulpowered.client.gui;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
+import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -47,8 +48,8 @@ public class SoulHUDOverlayHandler
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
 
-//        if (CuriosIntegration.hasSoulArtifact(player).isEmpty())
-//            return;
+        if (CuriosIntegration.hasCurio(player, "necklace").isEmpty())
+            return;
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
             this.playerSouls = handler.getSouls();
