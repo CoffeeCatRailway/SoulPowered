@@ -28,7 +28,7 @@ public class SoulParticle extends SimpleAnimatedParticle
 
     public SoulParticle(ClientWorld world, double x, double y, double z, IAnimatedSprite sprite, PlayerEntity player, boolean avoid)
     {
-        super(world, x + offset(world), y + offset(world), z + offset(world), sprite, -5E-4F);
+        super(world, x + offset(world), y + offset(world), z + offset(world), sprite, -5e-4f);
         this.motionX = 0d;
         this.motionY = 0d;
         this.motionZ = 0d;

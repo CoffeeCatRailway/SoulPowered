@@ -93,7 +93,7 @@ public class CommonEvents
 
                 playerHandler.addSouls(soulCount.get());
                 if (!world.isRemote)
-                    SoulParticle.spawnParticles(world, player, entity.getPositionVec(), soulCount.get() + player.world.getRandom().nextInt(3) + 1, false);
+                    SoulParticle.spawnParticles(world, player, entity.getPositionVec().add(0d, 1d, 0d), soulCount.get() + player.world.getRandom().nextInt(3) + 1, false);
             });
         }
     }
