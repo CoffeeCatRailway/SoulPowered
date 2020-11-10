@@ -40,12 +40,12 @@ public class SoulParticle extends SimpleAnimatedParticle
         this.avoid = avoid;
     }
 
-    public static void spawnParticles(World world, PlayerEntity player, Vector3d pos, int count, boolean goAway) {
+    public static void spawnParticles(World world, PlayerEntity player, Vector3d pos, int count, boolean avoid) {
         if (world.isRemote()) {
             LOGGER.warn("World {} was not server side!", world);
             return;
         }
-        ((ServerWorld) world).spawnParticle(SoulParticleData.create(player, goAway), pos.x, pos.y, pos.z, count, 0d, 0d, 0d, 1f);
+        ((ServerWorld) world).spawnParticle(SoulParticleData.create(player, avoid), pos.x, pos.y, pos.z, count, 0d, 0d, 0d, 1f);
     }
 
     @Override
