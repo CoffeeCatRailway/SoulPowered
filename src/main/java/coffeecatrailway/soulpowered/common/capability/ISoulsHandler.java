@@ -10,7 +10,9 @@ public interface ISoulsHandler
 
     void setSouls(int souls);
 
-    void addSouls(int amount);
+    boolean addSouls(int amount, boolean force);
 
-    void removeSouls(int amount);
+    boolean removeSouls(int amount, boolean force);
+
+    void checkAmount(int souls);
 }

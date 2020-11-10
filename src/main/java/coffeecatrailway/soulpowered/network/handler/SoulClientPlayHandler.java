@@ -30,9 +30,9 @@ public class SoulClientPlayHandler implements ISoulClientPlayHandler
             Entity entity = Minecraft.getInstance().world.getEntityByID(message.getOwner());
             entity.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
                 if (message.isRemove())
-                    handler.removeSouls(message.getAmount());
+                    handler.removeSouls(message.getAmount(), false);
                 else
-                    handler.addSouls(message.getAmount());
+                    handler.addSouls(message.getAmount(), false);
             });
         });
         ctx.setPacketHandled(true);

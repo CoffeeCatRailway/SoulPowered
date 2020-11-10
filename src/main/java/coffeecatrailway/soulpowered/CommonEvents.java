@@ -6,15 +6,18 @@ import coffeecatrailway.soulpowered.common.item.SoulCurioItem;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
+import coffeecatrailway.soulpowered.registry.SoulItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.GlassBottleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -91,10 +94,30 @@ public class CommonEvents
                         soulCount.set(soulCount.get() * charm.getOrCreateTag().getInt("SoulGathering"));
                 }
 
-                playerHandler.addSouls(soulCount.get());
+                playerHandler.addSouls(soulCount.get(), false);
                 if (!world.isRemote)
                     SoulParticle.spawnParticles(world, player, entity.getPositionVec().add(0d, 1d, 0d), soulCount.get() + player.world.getRandom().nextInt(3) + 1, false);
             });
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
+    {
+        ItemStack stack = event.getItemStack();
+        PlayerEntity player = event.getPlayer();
+        boolean creativeFlag = !player.isCreative();
+
+        if (!(stack.getItem() instanceof GlassBottleItem) || (CuriosIntegration.hasCurio(player, "necklace").isEmpty() && creativeFlag))
+            return;
+
+        player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
+            if (handler.getSouls() > 1)
+            {
+                if (creativeFlag && handler.removeSouls(2, false))
+                    stack.shrink(1);
+                player.addItemStackToInventory(new ItemStack(SoulItems.SOUL_BOTTLE.get()));
+            }
+        });
     }
 }

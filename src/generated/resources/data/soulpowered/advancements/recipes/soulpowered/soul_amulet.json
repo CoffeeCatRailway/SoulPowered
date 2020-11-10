@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:stick"
+            "item": "soulpowered:soul_bottle"
           }
         ]
       }

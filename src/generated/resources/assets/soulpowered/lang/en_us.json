@@ -7,5 +7,6 @@
   "item.soul_curio.description.soul_gathering": "\u00A76Soul Gathering: \u00A7ex%s",
   "item.soulpowered.soul_amulet": "Soul Amulet",
   "item.soulpowered.soul_amulet.description": "Allows you to gather souls from your kills",
+  "item.soulpowered.soul_bottle": "Soul Bottle",
   "itemGroup.soulpowered": "Soul Powered"
 }

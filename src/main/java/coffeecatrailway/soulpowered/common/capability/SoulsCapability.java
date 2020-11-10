@@ -76,34 +76,44 @@ public class SoulsCapability
         @Override
         public void setSouls(int souls)
         {
-            this.souls = souls;
-            if (!this.owner.world.isRemote())
-                SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsTotalMessage(this.owner.getEntityId(), souls));
+            this.checkAmount(souls);
         }
 
         @Override
-        public void addSouls(int amount)
+        public boolean addSouls(int amount, boolean force)
         {
-            if (amount >= 0)
+            if (this.souls + amount <= 20 || force)
             {
                 this.souls += amount;
                 if (!this.owner.world.isRemote())
                     SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), amount, false));
-            } else
-                this.removeSouls(amount);
+                this.checkAmount(this.souls);
+                return true;
+            }
+            return false;
         }
 
         @Override
-        public void removeSouls(int amount)
+        public boolean removeSouls(int amount, boolean force)
         {
-            if (amount <= 0)
+            if (this.souls - amount >= 0 || force)
             {
                 amount = Math.min(this.getSouls(), amount);
                 this.souls -= amount;
                 if (!this.owner.world.isRemote())
                     SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), amount, true));
-            } else
-                this.addSouls(amount);
+                this.checkAmount(this.souls);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void checkAmount(int souls)
+        {
+            this.souls = Math.min(20, Math.max(0, souls));
+            if (!this.owner.world.isRemote())
+                SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsTotalMessage(this.owner.getEntityId(), souls));
         }
     }
 

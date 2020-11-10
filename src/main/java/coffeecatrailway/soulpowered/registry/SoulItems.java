@@ -3,6 +3,7 @@ package coffeecatrailway.soulpowered.registry;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
+import coffeecatrailway.soulpowered.common.item.SoulBottleItem;
 import coffeecatrailway.soulpowered.common.item.SoulCurioItem;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
@@ -11,7 +12,6 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import org.apache.logging.log4j.Logger;
 
 import static coffeecatrailway.soulpowered.SoulPoweredMod.REGISTRATE;
@@ -24,11 +24,13 @@ public class SoulItems
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Items");
 
+    public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel().register();
+
     public static final RegistryEntry<SoulAmuletItem> SOUL_AMULET = registerSoulCurioItem("soul_amulet", "Allows you to gather souls from your kills", SoulAmuletItem::new)
             .defaultLang().defaultModel().properties(prop -> prop.maxStackSize(1)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-                    .key('b', SoulData.TagItems.SOUL_ITEMS).key('s', Items.STICK)
+                    .key('b', SoulData.TagItems.SOUL_ITEMS).key('s', SOUL_BOTTLE.get())
                     .patternLine(" b ").patternLine("b b").patternLine(" s ").addCriterion("has_soul_sand", RegistrateRecipeProvider.hasItem(SoulData.TagItems.SOUL_ITEMS))
-                    .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(Items.STICK)).build(provider)).register();
+                    .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SOUL_BOTTLE.get())).build(provider)).register();
 
     private static <T extends SoulCurioItem> ItemBuilder<T, Registrate> registerSoulCurioItem(String id, String description, NonNullFunction<Item.Properties, T> factory)
     {

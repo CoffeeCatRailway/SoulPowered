@@ -91,11 +91,11 @@ public class SoulsCommand
                 {
                     if (remove)
                     {
-                        cap.orElseThrow(NullPointerException::new).removeSouls(souls);
+                        cap.orElseThrow(NullPointerException::new).removeSouls(souls, true);
                         source.getSource().sendFeedback(new TranslationTextComponent("commands.souls.modify.remove", entity.getDisplayName(), souls), true);
                     } else
                     {
-                        cap.orElseThrow(NullPointerException::new).addSouls(souls);
+                        cap.orElseThrow(NullPointerException::new).addSouls(souls, true);
                         source.getSource().sendFeedback(new TranslationTextComponent("commands.souls.modify.add", entity.getDisplayName(), souls), true);
                     }
                     i++;
