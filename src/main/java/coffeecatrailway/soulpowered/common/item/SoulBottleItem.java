@@ -2,9 +2,7 @@ package coffeecatrailway.soulpowered.common.item;
 
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
-import coffeecatrailway.soulpowered.registry.SoulItems;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.GlassBottleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -33,12 +31,9 @@ public class SoulBottleItem extends Item
             return ActionResult.resultFail(stack);
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
-            if (handler.getSouls() > 1)
-            {
-                if (creativeFlag && handler.addSouls(2, false))
-                    stack.shrink(1);
-                player.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
-            }
+            if (creativeFlag && handler.addSouls(2, false))
+                stack.shrink(1);
+            player.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
         });
         return ActionResult.resultConsume(stack);
     }
