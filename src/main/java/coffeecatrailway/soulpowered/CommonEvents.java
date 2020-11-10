@@ -15,6 +15,7 @@ import net.minecraft.item.GlassBottleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -66,6 +67,18 @@ public class CommonEvents
 
         if (player instanceof ServerPlayerEntity)
             target.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(target.getEntityId(), handler.getSouls())));
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        PlayerEntity player = event.player;
+        player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
+            if (handler.getSouls() != 20)
+                return;
+            if (!player.world.isRemote())
+                SoulParticle.spawnParticles(player.world, player, player.getPositionVec().add(0d, 1d, 0d), 1, true);
+        });
     }
 
     @SubscribeEvent
