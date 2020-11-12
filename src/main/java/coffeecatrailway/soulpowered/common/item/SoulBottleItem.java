@@ -31,9 +31,11 @@ public class SoulBottleItem extends Item
             return ActionResult.resultFail(stack);
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
-            if (creativeFlag && handler.addSouls(2, false))
+            if (handler.addSouls(2, false) && creativeFlag)
+            {
                 stack.shrink(1);
-            player.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
+                player.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
+            }
         });
         return ActionResult.resultConsume(stack);
     }

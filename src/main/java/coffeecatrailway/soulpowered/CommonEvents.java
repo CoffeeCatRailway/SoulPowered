@@ -75,7 +75,7 @@ public class CommonEvents
         PlayerEntity player = event.player;
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
             if (handler.getSouls() == 20 && !player.world.isRemote())
-                    SoulParticle.spawnParticles(player.world, player, player.getPositionVec().add(0d, 2d, 0d), 1, true);
+                SoulParticle.spawnParticles(player.world, player, player.getPositionVec().add(0d, 2d, 0d), 1, true);
         });
     }
 
@@ -125,9 +125,11 @@ public class CommonEvents
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
             if (handler.getSouls() > 1)
             {
-                if (creativeFlag && handler.removeSouls(2, false))
+                if (handler.removeSouls(2, false) && creativeFlag)
+                {
                     stack.shrink(1);
-                player.addItemStackToInventory(new ItemStack(SoulItems.SOUL_BOTTLE.get()));
+                    player.addItemStackToInventory(new ItemStack(SoulItems.SOUL_BOTTLE.get()));
+                }
             }
         });
     }
