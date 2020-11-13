@@ -23,5 +23,6 @@ public class SoulMessageHandler
     {
         PLAY_NETWORK_MANAGER.register(SyncSoulsTotalMessage.class, SyncSoulsTotalMessage::new, NetworkDirection.PLAY_TO_CLIENT);
         PLAY_NETWORK_MANAGER.register(SyncSoulsChangeMessage.class, SyncSoulsChangeMessage::new, NetworkDirection.PLAY_TO_CLIENT);
+        PLAY_NETWORK_MANAGER.register(SetRedstoneModeMessage.class, SetRedstoneModeMessage::new, NetworkDirection.PLAY_TO_SERVER);
     }
 }

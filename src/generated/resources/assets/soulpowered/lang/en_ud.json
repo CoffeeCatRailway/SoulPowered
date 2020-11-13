@@ -9,4 +9,9 @@
   "item.soulpowered.soul_amulet.description": "s\u05DF\u05DF\u0131\u029E \u0279no\u028E \u026Fo\u0279\u025F s\u05DFnos \u0279\u01DD\u0265\u0287\u0250b o\u0287 no\u028E s\u028Do\u05DF\u05DF\u2C6F",
   "item.soulpowered.soul_bottle": "\u01DD\u05DF\u0287\u0287o\u15FA \u05DFnoS",
   "itemGroup.soulpowered": "p\u01DD\u0279\u01DD\u028Do\u0500 \u05DFnoS"
+  "misc.soulpowered.energy": "\u018ES %s",
+  "misc.soulpowered.energy_per_tick": "\u0287/\u018ES %s",
+  "misc.soulpowered.energy_with_max": "\u018ES %s / %s",
+  "misc.soulpowered.fluid_with_max": "\u15FA\u026F %s / %s",
+  "misc.soulpowered.redstone_mode": "%s :\u01DDpoW \u01DDuo\u0287sp\u01DD\u1D1A"
 }

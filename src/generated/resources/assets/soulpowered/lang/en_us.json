@@ -9,4 +9,9 @@
   "item.soulpowered.soul_amulet.description": "Allows you to gather souls from your kills",
   "item.soulpowered.soul_bottle": "Soul Bottle",
   "itemGroup.soulpowered": "Soul Powered"
+  "misc.soulpowered.energy": "%s SE",
+  "misc.soulpowered.energy_per_tick": "%s SE/t",
+  "misc.soulpowered.energy_with_max": "%s / %s SE",
+  "misc.soulpowered.fluid_with_max": "%s / %s mB",
+  "misc.soulpowered.redstone_mode": "Redstone Mode: %s"
 }

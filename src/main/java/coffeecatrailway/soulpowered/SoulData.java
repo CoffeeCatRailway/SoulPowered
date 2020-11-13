@@ -35,6 +35,12 @@ public class SoulData
 
             provider.add("item.soul_curio.description.range", TextFormatting.GOLD + "Range: " + TextFormatting.YELLOW + "%s Blocks");
             provider.add("item.soul_curio.description.soul_gathering", TextFormatting.GOLD + "Soul Gathering: " + TextFormatting.YELLOW + "x%s");
+
+            provider.add("misc.soulpowered.energy", "%s SE");
+            provider.add("misc.soulpowered.energy_per_tick", "%s SE/t");
+            provider.add("misc.soulpowered.energy_with_max", "%s / %s SE");
+            provider.add("misc.soulpowered.fluid_with_max", "%s / %s mB");
+            provider.add("misc.soulpowered.redstone_mode", "Redstone Mode: %s");
         }
     }
 
