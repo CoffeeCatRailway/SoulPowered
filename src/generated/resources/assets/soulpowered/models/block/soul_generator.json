@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "soulpowered:block/soul_generator_side",
+    "up": "soulpowered:block/soul_generator_side",
+    "north": "soulpowered:block/soul_generator_front",
+    "south": "soulpowered:block/soul_generator_side",
+    "east": "soulpowered:block/soul_generator_side",
+    "west": "soulpowered:block/soul_generator_side",
+    "particle": "soulpowered:block/soul_generator_side"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "ibi",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "s": {
+      "tag": "soulpowered:soul_blocks"
+    },
+    "b": {
+      "item": "soulpowered:soul_bottle"
+    }
+  },
+  "result": {
+    "item": "soulpowered:soul_generator"
+  }
+}

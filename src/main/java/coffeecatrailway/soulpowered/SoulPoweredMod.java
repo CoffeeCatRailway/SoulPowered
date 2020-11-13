@@ -6,8 +6,7 @@ import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.command.SoulsCommand;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
-import coffeecatrailway.soulpowered.registry.OtherRegistries;
-import coffeecatrailway.soulpowered.registry.SoulItems;
+import coffeecatrailway.soulpowered.registry.*;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
@@ -76,7 +75,10 @@ public class SoulPoweredMod
                 .addDataGenerator(ProviderType.LANG, new SoulData.SoulLang());
 //                .addDataGenerator(ProviderType.BLOCKSTATE, new ExampleBlockstates());
 
+        SoulBlocks.load();
         SoulItems.load();
+        SoulTileEntities.load();
+        SoulContainers.load();
         OtherRegistries.load(modEventBus);
     }
 

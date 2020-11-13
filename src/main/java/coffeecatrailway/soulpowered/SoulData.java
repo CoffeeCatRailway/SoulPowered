@@ -41,18 +41,22 @@ public class SoulData
             provider.add("misc.soulpowered.energy_with_max", "%s / %s SE");
             provider.add("misc.soulpowered.fluid_with_max", "%s / %s mB");
             provider.add("misc.soulpowered.redstone_mode", "Redstone Mode: %s");
+
+            provider.add("container.soulpowered.soul_generator", "Soul Generator");
         }
     }
 
     public static class TagItems implements NonNullConsumer<RegistrateTagsProvider<Item>>
     {
-        public static final ITag.INamedTag<Item> SOUL_ITEMS = ItemTags.createOptional(SoulPoweredMod.getLocation("soul_items"));
+        public static final ITag.INamedTag<Item> SOUL_BLOCKS = ItemTags.createOptional(SoulPoweredMod.getLocation("soul_blocks"));
+        public static final ITag.INamedTag<Item> SOUL_GENERATOR_FUEL = ItemTags.createOptional(SoulPoweredMod.getLocation("soul_generator_fuel"));
+
         public static final ITag.INamedTag<Item> CURIOS_NECKLACE = ItemTags.createOptional(new ResourceLocation("curios", "necklace"));
 
         @Override
         public void accept(RegistrateTagsProvider<Item> provider)
         {
-            provider.getOrCreateBuilder(SOUL_ITEMS).add(Items.SOUL_SAND, Items.SOUL_SOIL);
+            provider.getOrCreateBuilder(SOUL_BLOCKS).add(Items.SOUL_SAND, Items.SOUL_SOIL);
         }
     }
 }
