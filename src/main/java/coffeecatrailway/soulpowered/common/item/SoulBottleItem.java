@@ -25,16 +25,14 @@ public class SoulBottleItem extends Item implements ISoulFuel
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        boolean creativeFlag = !player.isCreative();
-
-        if (CuriosIntegration.hasCurio(player, "necklace").isEmpty() && creativeFlag)
+        if (CuriosIntegration.hasCurio(player, "necklace").isEmpty())
             return ActionResult.resultFail(stack);
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
-            if (handler.addSouls(2, false) && creativeFlag)
+            if (handler.addSouls(2, false) && !player.isCreative())
             {
-                stack.shrink(1);
                 player.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
+                stack.shrink(1);
             }
         });
         return ActionResult.resultConsume(stack);

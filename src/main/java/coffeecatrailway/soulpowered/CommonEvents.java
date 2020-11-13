@@ -117,18 +117,20 @@ public class CommonEvents
     {
         ItemStack stack = event.getItemStack();
         PlayerEntity player = event.getPlayer();
-        boolean creativeFlag = !player.isCreative();
 
-        if (!(stack.getItem() instanceof GlassBottleItem) || (CuriosIntegration.hasCurio(player, "necklace").isEmpty() && creativeFlag))
+        if (!(stack.getItem() instanceof GlassBottleItem))
+            return;
+
+        if (CuriosIntegration.hasCurio(player, "necklace").isEmpty())
             return;
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
             if (handler.getSouls() > 1)
             {
-                if (handler.removeSouls(2, false) && creativeFlag)
+                if (handler.removeSouls(2, false) && !player.isCreative())
                 {
-                    stack.shrink(1);
                     player.addItemStackToInventory(new ItemStack(SoulItems.SOUL_BOTTLE.get()));
+                    stack.shrink(1);
                 }
             }
         });
