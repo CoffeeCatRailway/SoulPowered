@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "soulpowered:soul_items"
+            "tag": "soulpowered:soul_blocks"
           }
         ]
       }

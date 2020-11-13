@@ -14,11 +14,11 @@ import net.minecraft.world.World;
  * @author CoffeeCatRailway
  * Created: 10/11/2020
  */
-public class SoulBottleItem extends Item
+public class SoulBottleItem extends Item implements ISoulFuel
 {
     public SoulBottleItem(Properties properties)
     {
-        super(properties.maxStackSize(16));
+        super(properties.maxStackSize(1).containerItem(Items.GLASS_BOTTLE));
     }
 
     @Override
@@ -38,5 +38,11 @@ public class SoulBottleItem extends Item
             }
         });
         return ActionResult.resultConsume(stack);
+    }
+
+    @Override
+    public int getBurnTime()
+    {
+        return 1600;
     }
 }
