@@ -28,13 +28,13 @@ public class SoulData
         {
             EXTRA_LANGS.forEach(provider::add);
 
-            provider.add("commands.souls.get", "%1$s has %2$s soul(s)");
-            provider.add("commands.souls.modify.add", "Gave %2$s soul(s) to %1$s");
-            provider.add("commands.souls.modify.remove", "Removed %2$s soul(s) to %1$s");
-            provider.add("commands.souls.modify.set", "%1$s now has %2$s soul(s)");
+            provider.add("commands.soulpowered.souls.get", "%1$s has %2$s soul(s)");
+            provider.add("commands.soulpowered.souls.modify.add", "Gave %2$s soul(s) to %1$s");
+            provider.add("commands.soulpowered.souls.modify.remove", "Removed %2$s soul(s) to %1$s");
+            provider.add("commands.soulpowered.souls.modify.set", "%1$s now has %2$s soul(s)");
 
-            provider.add("item.soul_curio.description.range", TextFormatting.GOLD + "Range: " + TextFormatting.YELLOW + "%s Blocks");
-            provider.add("item.soul_curio.description.soul_gathering", TextFormatting.GOLD + "Soul Gathering: " + TextFormatting.YELLOW + "x%s");
+            provider.add("item.soulpowered.soul_curio.description.range", TextFormatting.GOLD + "Range: " + TextFormatting.YELLOW + "%s Blocks");
+            provider.add("item.soulpowered.soul_curio.description.soul_gathering", TextFormatting.GOLD + "Soul Gathering: " + TextFormatting.YELLOW + "x%s");
 
             provider.add("misc.soulpowered.energy", "%s SE");
             provider.add("misc.soulpowered.energy_per_tick", "%s SE/t");

@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
+import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -50,9 +51,9 @@ public abstract class SoulCurioItem extends Item implements ISoulCurios
         info.add(new TranslationTextComponent(this.getTranslationKey() + ".description"));
 
         if (this.showRange && this.hasRange())
-            info.add(new TranslationTextComponent("item.soul_curio.description.range", this.range));
+            info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_curio.description.range", this.range));
         if (this.showSoulGathering && this.hasSoulGathering())
-            info.add(new TranslationTextComponent("item.soul_curio.description.soul_gathering", this.soulGathering));
+            info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_curio.description.soul_gathering", this.soulGathering));
     }
 
     public boolean hasRange()
