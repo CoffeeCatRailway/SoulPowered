@@ -75,7 +75,7 @@ minecraft {
 
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
-    exclude "**/*.ase"
+    exclude "**/*.ase", "**/*.bbmodel"
 }
 
 configurations {
@@ -86,9 +86,6 @@ repositories {
     jcenter()
     mavenLocal()
 
-    maven { // Silent Lib
-        url = "https://dl.bintray.com/silentchaos512/silent-lib"
-    }
     maven { // Curios
         url = "https://maven.theillusivec4.top/"
     }
@@ -107,10 +104,6 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.mcVersion}-${project.forgeVersion}"
-
-    compile("net.silentchaos512:silent-lib-${project.silentLibVersion}") {
-        exclude module: "forge"
-    }
 
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curiosVersion}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curiosVersion}:api")

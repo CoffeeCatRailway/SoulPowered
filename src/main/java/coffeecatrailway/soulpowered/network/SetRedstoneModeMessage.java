@@ -5,7 +5,6 @@ import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import io.github.ocelot.sonar.common.network.message.SonarMessage;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
-import net.silentchaos512.utils.EnumUtils;
 
 /**
  * @author CoffeeCatRailway
@@ -27,7 +26,7 @@ public class SetRedstoneModeMessage implements SonarMessage<ISoulServerPlayHandl
     @Override
     public void readPacketData(PacketBuffer buf)
     {
-        this.mode = EnumUtils.byOrdinal(buf.readByte(), RedstoneMode.IGNORED);
+        this.mode = RedstoneMode.byOrdinal(buf.readByte(), RedstoneMode.IGNORED);
     }
 
     @Override

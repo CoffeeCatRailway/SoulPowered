@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
-import net.silentchaos512.mechanisms.util.TextUtil;
+import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 import javax.annotation.Nullable;
 

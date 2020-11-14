@@ -1,4 +1,4 @@
-package net.silentchaos512.mechanisms.util;
+package coffeecatrailway.soulpowered.utils.silentchaos512;
 
 import coffeecatrailway.soulpowered.common.tileentity.IEnergyHandler;
 import net.minecraft.tileentity.TileEntity;

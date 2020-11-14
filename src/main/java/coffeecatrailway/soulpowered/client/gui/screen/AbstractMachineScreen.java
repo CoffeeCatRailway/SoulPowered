@@ -13,7 +13,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.silentchaos512.mechanisms.util.TextUtil;
+import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 /**
  * @author CoffeeCatRailway

@@ -13,10 +13,7 @@ import net.minecraft.util.IIntArray;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.silentchaos512.lib.tile.LockableSidedInventoryTileEntity;
-import net.silentchaos512.lib.tile.SyncVariable;
-import net.silentchaos512.mechanisms.util.EnergyUtils;
-import net.silentchaos512.utils.EnumUtils;
+import coffeecatrailway.soulpowered.utils.silentchaos512.EnergyUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -64,7 +61,7 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
             switch (index)
             {
                 case 4:
-                    AbstractMachineTileEntity.this.redstoneMode = EnumUtils.byOrdinal(value, RedstoneMode.IGNORED);
+                    AbstractMachineTileEntity.this.redstoneMode = RedstoneMode.byOrdinal(value, RedstoneMode.IGNORED);
                 default:
                     AbstractMachineTileEntity.this.getEnergyImpl().setEnergyExact(value);
             }
@@ -119,7 +116,7 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
         super.read(state, nbt);
         SyncVariable.Helper.readSyncVars(this, nbt);
         this.readEnergy(nbt);
-        this.redstoneMode = EnumUtils.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED);
+        this.redstoneMode = RedstoneMode.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED);
     }
 
     @Override
@@ -139,7 +136,7 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
         CompoundNBT nbt = packet.getNbtCompound();
         SyncVariable.Helper.readSyncVars(this, nbt);
         this.readEnergy(nbt);
-        this.redstoneMode = EnumUtils.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED);
+        this.redstoneMode = RedstoneMode.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED);
     }
 
     @Override

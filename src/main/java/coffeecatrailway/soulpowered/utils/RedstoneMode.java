@@ -21,13 +21,12 @@ public enum RedstoneMode
         this.texture = texture;
     }
 
-    @Nullable
-    public static RedstoneMode byName(String name)
+    public static RedstoneMode byOrdinal(int ordinal, RedstoneMode other)
     {
         for (RedstoneMode mode : values())
-            if (mode.name().equalsIgnoreCase(name))
+            if (mode.ordinal() == ordinal)
                 return mode;
-        return null;
+        return other;
     }
 
     public boolean shouldRun(boolean isPowered)

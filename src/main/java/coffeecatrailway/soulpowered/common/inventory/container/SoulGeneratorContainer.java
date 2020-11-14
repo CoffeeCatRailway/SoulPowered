@@ -10,7 +10,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
-import net.silentchaos512.lib.util.InventoryUtils;
 
 /**
  * @author CoffeeCatRailway
@@ -32,7 +31,7 @@ public class SoulGeneratorContainer extends AbstractEnergyStorageContainer<SoulG
     {
         super(type, id, tileEntity, fields);
         this.addSlot(new Slot(this.tileEntity, 0, 80, 33));
-        InventoryUtils.createPlayerSlots(playerInventory, 8, 84).forEach(this::addSlot);
+        this.addPlayerSlots(playerInventory, 8, 84).forEach(this::addSlot);
     }
 
     public int getBurnTime()

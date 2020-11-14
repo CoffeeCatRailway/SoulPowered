@@ -9,7 +9,6 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 import net.minecraftforge.common.util.Constants;
-import net.silentchaos512.utils.EnumUtils;
 
 /**
  * @author CoffeeCatRailway
@@ -59,7 +58,7 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
             switch (index)
             {
                 case 4:
-                    AbstractGeneratorTileEntity.this.redstoneMode = EnumUtils.byOrdinal(value, RedstoneMode.IGNORED);
+                    AbstractGeneratorTileEntity.this.redstoneMode = RedstoneMode.byOrdinal(value, RedstoneMode.IGNORED);
                     break;
                 case 5:
                     AbstractGeneratorTileEntity.this.burnTime = value;

@@ -7,7 +7,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
-import net.silentchaos512.utils.EnumUtils;
 
 /**
  * @author CoffeeCatRailway
@@ -36,7 +35,7 @@ public class RedstoneModeButton extends Button
         int ordinal = this.container.getRedstoneMode().ordinal() + 1;
         if (ordinal >= RedstoneMode.values().length)
             ordinal = 0;
-        this.container.setRedstoneMode(EnumUtils.byOrdinal(ordinal, RedstoneMode.IGNORED));
+        this.container.setRedstoneMode(RedstoneMode.byOrdinal(ordinal, RedstoneMode.IGNORED));
     }
 
     @Override

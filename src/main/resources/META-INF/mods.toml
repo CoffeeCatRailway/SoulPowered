@@ -8,7 +8,7 @@ modId="${modId}"
 version="${version}"
 displayName="${name}"
 # logoFile="logo.png"
-credits="SilentChaos512"
+credits="${author},SilentChaos512"
 authors="${author}"
 description='''
 
@@ -26,14 +26,9 @@ mandatory=true
 versionRange="[1.16.4]"
 ordering="NONE"
 side="BOTH"
-# [[dependencies.soulpowered]]
-# modId="jei"
-# mandatory=false
-# versionRange="[7,]"
-# ordering="NONE"
-# side="CLIENT"[[dependencies.soulpowered]]
-modId="silentlib"
-mandatory=true
-versionRange="[4.9,]"
+[[dependencies.soulpowered]]
+modId="jei"
+mandatory=false
+versionRange="[7,]"
 ordering="NONE"
-side="BOTH"
+side="CLIENT"

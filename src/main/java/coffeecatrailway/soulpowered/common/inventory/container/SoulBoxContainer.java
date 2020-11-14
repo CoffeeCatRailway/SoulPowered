@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.silentchaos512.lib.util.InventoryUtils;
 
 /**
  * @author CoffeeCatRailway
@@ -36,7 +35,7 @@ public class SoulBoxContainer extends AbstractEnergyStorageContainer<SoulBoxTile
         this.addSlot(new Slot(this.tileEntity, 0, 44, 34));
         this.addSlot(new Slot(this.tileEntity, 1, 116, 34));
 
-        InventoryUtils.createPlayerSlots(playerInventory, 8, 84).forEach(this::addSlot);
+        this.addPlayerSlots(playerInventory, 8, 84).forEach(this::addSlot);
     }
 
     @Override

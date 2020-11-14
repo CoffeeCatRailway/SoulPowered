@@ -1,7 +1,6 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
-import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImpl;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
 import net.minecraft.block.BlockState;
@@ -13,7 +12,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.silentchaos512.mechanisms.util.TextUtil;
+import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;

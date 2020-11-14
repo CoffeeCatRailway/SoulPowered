@@ -3,11 +3,15 @@ package coffeecatrailway.soulpowered.common.inventory.container;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IIntArray;
-import net.silentchaos512.utils.EnumUtils;
-import net.silentchaos512.utils.MathUtils;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author CoffeeCatRailway
@@ -26,6 +30,17 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
         this.fields = fields;
 
         this.trackIntArray(this.fields);
+    }
+
+    protected Collection<Slot> addPlayerSlots(PlayerInventory playerInventory, int startX, int startY)
+    {
+        Collection<Slot> list = new ArrayList<>();
+        for (int y = 0; y < 3; ++y)
+            for (int x = 0; x < 9; ++x)
+                list.add(new Slot(playerInventory, x + y * 9 + 9, startX + x * 18, startY + y * 18));
+        for (int x = 0; x < 9; ++x)
+            list.add(new Slot(playerInventory, x, 8 + x * 18, startY + 58));
+        return list;
     }
 
     @Override
@@ -61,13 +76,13 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
     public int getEnergyBarHeight()
     {
         int max = this.getMaxEnergyStored();
-        int energyClamped = MathUtils.clamp(this.getEnergyStored(), 0, max);
+        int energyClamped = MathHelper.clamp(this.getEnergyStored(), 0, max);
         return max > 0 ? 50 * energyClamped / max : 0;
     }
 
     public RedstoneMode getRedstoneMode()
     {
-        return EnumUtils.byOrdinal(this.fields.get(4), RedstoneMode.IGNORED);
+        return RedstoneMode.byOrdinal(this.fields.get(4), RedstoneMode.IGNORED);
     }
 
     public void setRedstoneMode(RedstoneMode mode)

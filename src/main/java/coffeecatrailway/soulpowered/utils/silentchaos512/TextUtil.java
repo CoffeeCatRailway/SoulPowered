@@ -1,4 +1,4 @@
-package net.silentchaos512.mechanisms.util;
+package coffeecatrailway.soulpowered.utils.silentchaos512;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import net.minecraft.util.text.IFormattableTextComponent;
