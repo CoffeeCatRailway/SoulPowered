@@ -31,7 +31,7 @@ public class SoulGeneratorContainer extends AbstractEnergyStorageContainer<SoulG
     public SoulGeneratorContainer(ContainerType<? extends SoulGeneratorContainer> type, int id, PlayerInventory playerInventory, SoulGeneratorTileEntity tileEntity, IIntArray fields)
     {
         super(type, id, tileEntity, fields);
-        this.addSlot(new Slot(this.getTileEntity(), 0, 80, 33));
+        this.addSlot(new Slot(this.tileEntity, 0, 80, 33));
         InventoryUtils.createPlayerSlots(playerInventory, 8, 84).forEach(this::addSlot);
     }
 

@@ -41,6 +41,6 @@ public class SoulBottleItem extends Item implements ISoulFuel
     @Override
     public int getBurnTime()
     {
-        return 1600;
+        return 900;
     }
 }
