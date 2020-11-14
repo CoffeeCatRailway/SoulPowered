@@ -21,9 +21,9 @@ import net.silentchaos512.mechanisms.util.TextUtil;
  */
 public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageContainer<?>> extends ContainerScreen<C>
 {
-    public AbstractMachineScreen(C screenContainer, PlayerInventory inv, ITextComponent title)
+    public AbstractMachineScreen(C container, PlayerInventory inv, ITextComponent title)
     {
-        super(screenContainer, inv, title);
+        super(container, inv, title);
     }
 
     public abstract ResourceLocation getGuiTexture();

@@ -1,6 +1,7 @@
 package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -19,6 +20,9 @@ public class SoulTileEntities
 
     public static final RegistryEntry<TileEntityType<SoulGeneratorTileEntity>> SOUL_GENERATOR = REGISTRATE.tileEntity("soul_generator", (NonNullFunction<TileEntityType<SoulGeneratorTileEntity>, SoulGeneratorTileEntity>) SoulGeneratorTileEntity::new)
             .validBlock(SoulBlocks.SOUL_GENERATOR).register();
+
+    public static final RegistryEntry<TileEntityType<SoulBoxTileEntity>> SOUL_BOX = REGISTRATE.tileEntity("soul_box", (NonNullFunction<TileEntityType<SoulBoxTileEntity>, SoulBoxTileEntity>) SoulBoxTileEntity::new)
+            .validBlock(SoulBlocks.SOUL_BOX).register();
 
     public static void load()
     {

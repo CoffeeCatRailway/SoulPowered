@@ -43,6 +43,7 @@ public class SoulData
             provider.add("misc.soulpowered.redstone_mode", "Redstone Mode: %s");
 
             provider.add("container.soulpowered.soul_generator", "Soul Generator");
+            provider.add("container.soulpowered.soul_box", "Soul Box");
         }
     }
 
