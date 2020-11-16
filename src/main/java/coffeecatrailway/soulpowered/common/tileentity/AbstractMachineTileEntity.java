@@ -2,6 +2,7 @@ package coffeecatrailway.soulpowered.common.tileentity;
 
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImpl;
 import coffeecatrailway.soulpowered.utils.RedstoneMode;
+import coffeecatrailway.soulpowered.utils.silentchaos512.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -11,9 +12,9 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import coffeecatrailway.soulpowered.utils.silentchaos512.EnergyUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -106,8 +107,34 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
     public void tick()
     {
         if (this.world == null || this.world.isRemote) return;
-        if (this.maxExtract > 0)
+        if (this.maxExtract > 0 && this.canRun())
             EnergyUtils.trySendToNeighbors(this.world, this.pos, this, this.maxExtract);
+    }
+
+    protected boolean canRun()
+    {
+        return this.world != null && this.redstoneMode.shouldRun(this.world.isBlockPowered(this.pos)) && this.getEnergyStored() < this.getMaxEnergyStored();
+    }
+
+    protected BlockState getActiveState()
+    {
+        return this.getBlockState();
+    }
+
+    protected BlockState getInactiveState()
+    {
+        return this.getBlockState();
+    }
+
+    protected void sendUpdate(BlockState newState, boolean force)
+    {
+        if (this.world == null) return;
+        BlockState oldState = this.world.getBlockState(this.pos);
+        if (oldState != newState || force)
+        {
+            this.world.setBlockState(this.pos, newState, Constants.BlockFlags.DEFAULT);
+            this.world.notifyBlockUpdate(this.pos, oldState, newState, Constants.BlockFlags.DEFAULT);
+        }
     }
 
     @Override

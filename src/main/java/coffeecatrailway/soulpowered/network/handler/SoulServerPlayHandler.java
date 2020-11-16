@@ -22,9 +22,8 @@ public class SoulServerPlayHandler implements ISoulServerPlayHandler
             {
                 if (player.openContainer instanceof AbstractEnergyStorageContainer)
                 {
-                    TileEntity tileEntity = ((AbstractEnergyStorageContainer) player.openContainer).getTileEntity();
-                    if (tileEntity instanceof AbstractMachineTileEntity)
-                        ((AbstractMachineTileEntity) tileEntity).setRedstoneMode(message.getMode());
+                    AbstractMachineTileEntity tileEntity = ((AbstractEnergyStorageContainer<?>) player.openContainer).getTileEntity();
+                    tileEntity.setRedstoneMode(message.getMode());
                 }
             }
         });

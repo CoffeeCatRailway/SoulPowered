@@ -89,12 +89,12 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
 
     protected BlockState getActiveState()
     {
-        return this.getBlockState().with(AbstractFurnaceBlock.LIT, true);
+        return super.getActiveState().with(AbstractFurnaceBlock.LIT, true);
     }
 
     protected BlockState getInactiveState()
     {
-        return this.getBlockState().with(AbstractFurnaceBlock.LIT, false);
+        return super.getInactiveState().with(AbstractFurnaceBlock.LIT, false);
     }
 
     @Override
@@ -107,31 +107,16 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
                 this.consumeFuel();
                 this.sendUpdate(this.getActiveState(), true);
             }
+
+            if (this.burnTime > 0)
+                this.energy.createEnergy(this.getEnergyCreatedPerTick());
         }
 
         if (this.burnTime > 0)
-        {
             this.burnTime--;
-            this.energy.createEnergy(this.getEnergyCreatedPerTick());
-        } else
+        else
             this.sendUpdate(this.getInactiveState(), false);
         super.tick();
-    }
-
-    protected boolean canRun()
-    {
-        return this.world != null && this.redstoneMode.shouldRun(this.world.isBlockPowered(this.pos)) && this.getEnergyStored() < this.getMaxEnergyStored();
-    }
-
-    protected void sendUpdate(BlockState newState, boolean force)
-    {
-        if (this.world == null) return;
-        BlockState oldState = this.world.getBlockState(this.pos);
-        if (oldState != newState || force)
-        {
-            this.world.setBlockState(this.pos, newState, Constants.BlockFlags.DEFAULT);
-            this.world.notifyBlockUpdate(this.pos, oldState, newState, Constants.BlockFlags.DEFAULT);
-        }
     }
 
     @Override
