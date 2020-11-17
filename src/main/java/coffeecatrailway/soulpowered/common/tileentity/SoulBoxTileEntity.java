@@ -9,10 +9,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
-import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
@@ -72,12 +70,6 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
     public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
         return stack.getCapability(CapabilityEnergy.ENERGY).isPresent(); // TODO: Add powered items
-    }
-
-    @Override
-    protected ITextComponent getDefaultName()
-    {
-        return TextUtil.translate("container", "soul_box");
     }
 
     @Override

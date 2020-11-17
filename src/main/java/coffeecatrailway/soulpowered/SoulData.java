@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered;
 
+import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
@@ -8,7 +9,9 @@ import net.minecraft.item.Items;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +22,15 @@ import java.util.Map;
  */
 public class SoulData
 {
-    public static class SoulLang implements NonNullConsumer<RegistrateLangProvider>
+    public static class Lang implements NonNullConsumer<RegistrateLangProvider>
     {
         public static final Map<String, String> EXTRA_LANGS = new HashMap<>();
+
+        private static final String LANG_ENERGY = "misc.soulpowered.energy";
+        private static final String LANG_ENERGY_PER_TICK = "misc.soulpowered.energy_per_tick";
+        private static final String LANG_ENERGY_WITH_MAX = "misc.soulpowered.energy_with_max";
+//        private static final String LANG_FLUID_WITH_MAX = "misc.soulpowered.fluid_with_max";
+        private static final String LANG_REDSTONE_MODE = "misc.soulpowered.redstone_mode";
 
         @Override
         public void accept(RegistrateLangProvider provider)
@@ -36,14 +45,31 @@ public class SoulData
             provider.add("item.soulpowered.soul_curio.description.range", TextFormatting.GOLD + "Range: " + TextFormatting.YELLOW + "%s Blocks");
             provider.add("item.soulpowered.soul_curio.description.soul_gathering", TextFormatting.GOLD + "Soul Gathering: " + TextFormatting.YELLOW + "x%s");
 
-            provider.add("misc.soulpowered.energy", "%s SE");
-            provider.add("misc.soulpowered.energy_per_tick", "%s SE/t");
-            provider.add("misc.soulpowered.energy_with_max", "%s / %s SE");
-            provider.add("misc.soulpowered.fluid_with_max", "%s / %s mB");
-            provider.add("misc.soulpowered.redstone_mode", "Redstone Mode: %s");
+            provider.add(LANG_ENERGY, "%s SE");
+            provider.add(LANG_ENERGY_PER_TICK, "%s SE/t");
+            provider.add(LANG_ENERGY_WITH_MAX, "%s / %s SE");
+//            provider.add(LANG_FLUID_WITH_MAX, "%s / %s mB");
+            provider.add(LANG_REDSTONE_MODE, "Redstone Mode: %s");
+        }
 
-            provider.add("container.soulpowered.soul_generator", "Soul Generator");
-            provider.add("container.soulpowered.soul_box", "Soul Box");
+        public static IFormattableTextComponent energy(int amount)
+        {
+            return new TranslationTextComponent(LANG_ENERGY, amount);
+        }
+
+        public static IFormattableTextComponent energyPerTick(int amount)
+        {
+            return new TranslationTextComponent(LANG_ENERGY_PER_TICK, amount);
+        }
+
+        public static IFormattableTextComponent energyWithMax(int amount, int max)
+        {
+            return new TranslationTextComponent(LANG_ENERGY_WITH_MAX, amount, max);
+        }
+
+        public static IFormattableTextComponent redstoneMode(RedstoneMode mode)
+        {
+            return new TranslationTextComponent(LANG_REDSTONE_MODE, mode.name());
         }
     }
 

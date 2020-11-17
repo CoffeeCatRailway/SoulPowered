@@ -1,12 +1,12 @@
 package coffeecatrailway.soulpowered.client.gui.screen;
 
+import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 /**
  * @author CoffeeCatRailway
@@ -40,7 +40,7 @@ public class SoulBoxScreen extends AbstractMachineScreen<SoulBoxContainer>
     {
         if (isPointInRegion(74, 17, 27, 51, x, y))
         {
-            ITextComponent text = TextUtil.energyWithMax(this.container.getEnergyStored(), this.container.getTileEntity().getMaxEnergyStored());
+            ITextComponent text = SoulData.Lang.energyWithMax(this.container.getEnergyStored(), this.container.getTileEntity().getMaxEnergyStored());
             renderTooltip(matrixStack, text, x, y);
         }
         super.renderHoveredTooltip(matrixStack, x, y);

@@ -11,6 +11,8 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
@@ -189,5 +191,11 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
     {
         super.remove();
         this.energy.invalidate();
+    }
+
+    @Override
+    protected ITextComponent getDefaultName()
+    {
+        return new TranslationTextComponent("container." + this.getBlockState().getBlock().getRegistryName().toString().replace(':', '.'));
     }
 }

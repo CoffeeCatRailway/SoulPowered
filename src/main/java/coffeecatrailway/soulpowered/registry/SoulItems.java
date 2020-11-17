@@ -35,7 +35,7 @@ public class SoulItems
 
     private static <T extends SoulCurioItem> ItemBuilder<T, Registrate> registerSoulCurioItem(String id, String description, NonNullFunction<Item.Properties, T> factory)
     {
-        SoulData.SoulLang.EXTRA_LANGS.put("item." + SoulPoweredMod.MOD_ID + "." + id + ".description", description);
+        SoulData.Lang.EXTRA_LANGS.put("item." + SoulPoweredMod.MOD_ID + "." + id + ".description", description);
         return REGISTRATE.item(id, factory).tag(SoulData.TagItems.CURIOS_NECKLACE);
     }
 

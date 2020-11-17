@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.client.gui.screen;
 
+import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.client.gui.screen.button.RedstoneModeButton;
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergyStorageContainer;
 import coffeecatrailway.soulpowered.network.SetRedstoneModeMessage;
@@ -13,7 +14,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 /**
  * @author CoffeeCatRailway
@@ -43,7 +43,7 @@ public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageConta
     {
         if (this.isPointInRegion(153, 17, 13, 51, x, y))
         {
-            IFormattableTextComponent text = TextUtil.energyWithMax(this.container.getEnergyStored(), this.container.getMaxEnergyStored());
+            IFormattableTextComponent text = SoulData.Lang.energyWithMax(this.container.getEnergyStored(), this.container.getMaxEnergyStored());
             this.renderTooltip(matrixStack, text, x, y);
         }
         super.renderHoveredTooltip(matrixStack, x, y);
@@ -71,7 +71,7 @@ public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageConta
             if (widget.isHovered() && widget instanceof RedstoneModeButton)
             {
                 RedstoneMode mode = ((RedstoneModeButton) widget).getMode();
-                renderTooltip(matrixStack, TextUtil.translate("misc", "redstone_mode", mode.name()), x - this.guiLeft, y - this.guiTop);
+                renderTooltip(matrixStack, SoulData.Lang.redstoneMode(mode), x - this.guiLeft, y - this.guiTop);
             }
         }
     }

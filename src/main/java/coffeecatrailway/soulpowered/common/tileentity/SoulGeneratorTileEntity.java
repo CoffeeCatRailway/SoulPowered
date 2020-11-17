@@ -9,8 +9,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import coffeecatrailway.soulpowered.utils.silentchaos512.TextUtil;
 
 import javax.annotation.Nullable;
 
@@ -88,12 +86,6 @@ public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
     public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
         return !isFuel(stack);
-    }
-
-    @Override
-    protected ITextComponent getDefaultName()
-    {
-        return TextUtil.translate("container", "soul_generator");
     }
 
     @Override
