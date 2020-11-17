@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "s s",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "item": "soulpowered:soul_metal_ingot"
+    },
+    "s": {
+      "tag": "soulpowered:soul_blocks"
+    }
+  },
+  "result": {
+    "item": "soulpowered:machine_frame"
+  }
+}

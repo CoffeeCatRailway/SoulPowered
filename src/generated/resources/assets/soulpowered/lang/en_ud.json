@@ -1,6 +1,8 @@
 {
+  "block.soulpowered.machine_frame": "\u01DD\u026F\u0250\u0279\u2132 \u01DDu\u0131\u0265\u0254\u0250W",
   "block.soulpowered.soul_box": "xo\u15FA \u05DFnoS",
   "block.soulpowered.soul_generator": "\u0279o\u0287\u0250\u0279\u01DDu\u01DD\u2141 \u05DFnoS",
+  "block.soulpowered.soul_metal_block": "\u029E\u0254o\u05DF\u15FA \u05DF\u0250\u0287\u01DDW \u05DFnoS",
   "commands.soulpowered.souls.get": ")s(\u05DFnos %2$s s\u0250\u0265 %1$s",
   "commands.soulpowered.souls.modify.add": "%1$s o\u0287 )s(\u05DFnos %2$s \u01DD\u028C\u0250\u2141",
   "commands.soulpowered.souls.modify.remove": "%1$s o\u0287 )s(\u05DFnos %2$s p\u01DD\u028Co\u026F\u01DD\u1D1A",
@@ -12,10 +14,10 @@
   "item.soulpowered.soul_bottle": "\u01DD\u05DF\u0287\u0287o\u15FA \u05DFnoS",
   "item.soulpowered.soul_curio.description.range": "s\u029E\u0254o\u05DF\u15FA %s\u01DD\u00A7 :\u01DDbu\u0250\u1D1A9\u00A7",
   "item.soulpowered.soul_curio.description.soul_gathering": "%sx\u01DD\u00A7 :bu\u0131\u0279\u01DD\u0265\u0287\u0250\u2141 \u05DFnoS9\u00A7",
+  "item.soulpowered.soul_metal_ingot": "\u0287obuI \u05DF\u0250\u0287\u01DDW \u05DFnoS",
   "itemGroup.soulpowered": "p\u01DD\u0279\u01DD\u028Do\u0500 \u05DFnoS",
   "misc.soulpowered.energy": "\u018ES %s",
   "misc.soulpowered.energy_per_tick": "\u0287/\u018ES %s",
   "misc.soulpowered.energy_with_max": "\u018ES %s / %s",
-  "misc.soulpowered.fluid_with_max": "\u15FA\u026F %s / %s",
   "misc.soulpowered.redstone_mode": "%s :\u01DDpoW \u01DDuo\u0287sp\u01DD\u1D1A"
 }

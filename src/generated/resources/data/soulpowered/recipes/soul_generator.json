@@ -1,19 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "isi",
-    "sbs",
-    "isi"
+    "ifi",
+    "imi"
   ],
   "key": {
     "i": {
-      "item": "minecraft:iron_ingot"
+      "item": "soulpowered:soul_metal_ingot"
     },
-    "s": {
-      "tag": "soulpowered:soul_blocks"
+    "m": {
+      "item": "soulpowered:machine_frame"
     },
-    "b": {
-      "item": "soulpowered:soul_bottle"
+    "f": {
+      "item": "minecraft:furnace"
     }
   },
   "result": {

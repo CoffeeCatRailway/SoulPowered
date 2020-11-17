@@ -8,10 +8,13 @@ import coffeecatrailway.soulpowered.common.item.SoulCurioItem;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ItemTags;
+import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.Logger;
 
 import static coffeecatrailway.soulpowered.SoulPoweredMod.REGISTRATE;
@@ -23,6 +26,9 @@ import static coffeecatrailway.soulpowered.SoulPoweredMod.REGISTRATE;
 public class SoulItems
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Items");
+
+    public static final RegistryEntry<Item> SOUL_METAL_INGOT = REGISTRATE.item("soul_metal_ingot", Item::new).defaultLang().defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
+            .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOUL_METAL_BLOCK.get()), ctx::getEntry, 1, 6)).register();
 
     public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel()
             .tag(SoulData.TagItems.SOUL_GENERATOR_FUEL).register();

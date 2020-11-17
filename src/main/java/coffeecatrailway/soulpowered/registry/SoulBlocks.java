@@ -2,19 +2,20 @@ package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.common.block.MachineFrameBlock;
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
 import coffeecatrailway.soulpowered.common.block.SoulGeneratorBlock;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.item.Items;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -32,6 +33,18 @@ public class SoulBlocks
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Blocks");
 
+    public static final RegistryEntry<Block> SOUL_METAL_BLOCK = REGISTRATE.object("soul_metal_block").block(Block::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
+            .properties(prop -> prop.setRequiresTool().hardnessAndResistance(5f, 6f).sound(SoundType.METAL)).defaultLang().defaultLoot().defaultBlockstate()
+            .recipe((ctx, provider) -> provider.square(DataIngredient.items(SoulItems.SOUL_METAL_INGOT), ctx::getEntry, false)).tag(BlockTags.BEACON_BASE_BLOCKS).simpleItem().register();
+
+    public static final RegistryEntry<MachineFrameBlock> MACHINE_FRAME = REGISTRATE.object("machine_frame").block(MachineFrameBlock::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
+            .defaultLang().defaultLoot().properties(prop -> prop.setRequiresTool().hardnessAndResistance(2.5f).sound(SoundType.METAL))
+            .blockstate((ctx, provider) -> provider.simpleBlock(ctx.getEntry(), provider.models().getExistingFile(SoulPoweredMod.getLocation("block/" + ctx.getName()))))
+            .recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', SoulItems.SOUL_METAL_INGOT.get()).key('s', SoulData.TagItems.SOUL_BLOCKS)
+                    .patternLine("isi").patternLine("s s").patternLine("isi").addCriterion("has_soul_sand", RegistrateRecipeProvider.hasItem(SoulData.TagItems.SOUL_BLOCKS))
+                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_METAL_INGOT.get())).build(provider)).simpleItem().register();
+
+    // Machines
     public static final RegistryEntry<SoulGeneratorBlock> SOUL_GENERATOR = registerMachine(REGISTRATE.object("soul_generator").block(SoulGeneratorBlock::new)
             .blockstate((ctx, provider) -> {
                 ResourceLocation side = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_side");
@@ -69,10 +82,11 @@ public class SoulBlocks
                         .modelForState().modelFile(model_on).rotationY(270).addModel();
             }).defaultLang().defaultLoot().initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
             .properties(prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(SoundType.METAL))
-            .recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', Items.IRON_INGOT).key('s', SoulData.TagItems.SOUL_BLOCKS)
-                    .key('b', SoulItems.SOUL_BOTTLE.get()).patternLine("isi").patternLine("sbs").patternLine("isi")
-                    .addCriterion("has_soul_sand", RegistrateRecipeProvider.hasItem(SoulData.TagItems.SOUL_BLOCKS))
-                    .addCriterion("has_iron", RegistrateRecipeProvider.hasItem(Items.IRON_INGOT)).build(provider)).simpleItem().register();
+            .recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', SoulItems.SOUL_METAL_INGOT.get()).key('m', MACHINE_FRAME.get())
+                    .key('f', Blocks.FURNACE).patternLine("ifi").patternLine("imi")
+                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_METAL_INGOT.get()))
+                    .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(MACHINE_FRAME.get()))
+                    .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE)).build(provider)).simpleItem(), "Soul Generator");
 
     public static final RegistryEntry<SoulBoxBlock> SOUL_BOX = registerMachine(REGISTRATE.object("soul_box").block(SoulBoxBlock::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
             .defaultLang().defaultLoot().properties(prop -> prop.setRequiresTool().hardnessAndResistance(6f, 20f).sound(SoundType.METAL))
@@ -84,6 +98,12 @@ public class SoulBlocks
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue)
     {
         return (state) -> state.get(BlockStateProperties.LIT) ? lightValue : 0;
+    }
+
+    private static <T extends Block> RegistryEntry<T> registerMachine(BlockBuilder<T, Registrate> builder, String name)
+    {
+        SoulData.Lang.EXTRA_LANGS.put("container." + SoulPoweredMod.MOD_ID + "." + builder.getName(), name);
+        return builder.lang(name).register();
     }
 
     public static void load()

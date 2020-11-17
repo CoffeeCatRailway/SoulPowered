@@ -2,10 +2,20 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:soul_generator"
+      "soulpowered:machine_frame"
     ]
   },
   "criteria": {
+    "has_soul_sand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "soulpowered:soul_blocks"
+          }
+        ]
+      }
+    },
     "has_soul_metal": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -16,38 +26,17 @@
         ]
       }
     },
-    "has_machine_frame": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "soulpowered:machine_frame"
-          }
-        ]
-      }
-    },
-    "has_furnace": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "minecraft:furnace"
-          }
-        ]
-      }
-    },
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:soul_generator"
+        "recipe": "soulpowered:machine_frame"
       }
     }
   },
   "requirements": [
     [
+      "has_soul_sand",
       "has_soul_metal",
-      "has_machine_frame",
-      "has_furnace",
       "has_the_recipe"
     ]
   ]
