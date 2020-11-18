@@ -10,7 +10,10 @@ import net.minecraftforge.common.ForgeHooks;
  */
 public final class BurnTimeUtils
 {
-    private BurnTimeUtils() {throw new IllegalAccessError("Utility class");}
+    private BurnTimeUtils()
+    {
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static int getBurnTime(ItemStack stack)
     {
