@@ -26,6 +26,10 @@ public class SoulPoweredConfig
 
         public ForgeConfigSpec.BooleanValue canRightClickEquipCurio;
 
+        public ForgeConfigSpec.IntValue soulAmuletPoweredExtract;
+
+        public ForgeConfigSpec.BooleanValue oreGeneration;
+
         public Server(ForgeConfigSpec.Builder builder)
         {
             builder.comment("Server Configurable Settings").push("soulParticle");
@@ -35,8 +39,15 @@ public class SoulPoweredConfig
                     .defineInRange("soulParticleExpireDistance", .25d, 0d, 1d);
 
             builder.pop().push("curios");
-            this.canRightClickEquipCurio = builder.comment("whether you can press right-click to equip a curios item").translation(CONFIG + "curios.canRightClickEquipCurio")
+            this.canRightClickEquipCurio = builder.comment("Whether you can press right-click to equip a curios item").translation(CONFIG + "curios.canRightClickEquipCurio")
                     .define("canRightClickEquipCurio", true);
+
+            this.soulAmuletPoweredExtract = builder.comment("The amount of power (rf/se) that is extracted from a Powered Soul Amulet").translation(CONFIG + "curios.soulAmuletPoweredExtract")
+                    .defineInRange("soulAmuletPoweredExtract", 50, 0, 5000);
+
+            builder.pop().push("world");
+            this.oreGeneration = builder.comment("Whether ore generation is enabled or not").translation(CONFIG + "world.oreGeneration")
+                    .define("oreGeneration", true);
 
             builder.pop();
         }

@@ -1,8 +1,9 @@
 package coffeecatrailway.soulpowered.intergration.curios;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
 import coffeecatrailway.soulpowered.common.item.ISoulCurios;
-import coffeecatrailway.soulpowered.common.item.SoulCurioItem;
+import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -55,17 +56,17 @@ public class CuriosIntegration
         return artifact.get();
     }
 
-    public static ItemStack hasCurio(PlayerEntity player, String slotName)
+    public static boolean hasCurio(PlayerEntity player, String slotName)
     {
         if (!CuriosApi.getSlotHelper().getSlotType(slotName).isPresent())
-            return ItemStack.EMPTY;
+            return false;
         for (int slot = 0; slot < CuriosApi.getSlotHelper().getSlotType(slotName).get().getSize(); slot++)
         {
             ItemStack charm = getCurioStack(player, slotName, slot);
-            if (charm.getItem() instanceof SoulCurioItem)
-                return charm;
+            if (charm.getItem() instanceof ISoulAmulet)
+                return true;
         }
-        return ItemStack.EMPTY;
+        return false;
     }
 
     public static ICapabilityProvider getCapability(ItemStack stack)

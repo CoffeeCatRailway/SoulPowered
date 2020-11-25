@@ -2,20 +2,10 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:soul_amulet"
+      "soulpowered:soul_amulet_iron"
     ]
   },
   "criteria": {
-    "has_soul_sand": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "soulpowered:soul_blocks"
-          }
-        ]
-      }
-    },
     "has_soul_bottle": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -26,17 +16,27 @@
         ]
       }
     },
+    "has_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:iron_ingot"
+          }
+        ]
+      }
+    },
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:soul_amulet"
+        "recipe": "soulpowered:soul_amulet_iron"
       }
     }
   },
   "requirements": [
     [
-      "has_soul_sand",
       "has_soul_bottle",
+      "has_ingot",
       "has_the_recipe"
     ]
   ]

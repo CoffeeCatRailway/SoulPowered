@@ -19,6 +19,16 @@ public class SoulEnergyStorageImplBase extends EnergyStorage implements ICapabil
 {
     private final LazyOptional<SoulEnergyStorageImplBase> optional;
 
+    public SoulEnergyStorageImplBase(int capacity)
+    {
+        this(capacity, capacity);
+    }
+
+    public SoulEnergyStorageImplBase(int capacity, int transfer)
+    {
+        this(capacity, transfer, transfer);
+    }
+
     public SoulEnergyStorageImplBase(int capacity, int maxReceive, int maxExtract)
     {
         super(capacity, maxReceive, maxExtract, 0);

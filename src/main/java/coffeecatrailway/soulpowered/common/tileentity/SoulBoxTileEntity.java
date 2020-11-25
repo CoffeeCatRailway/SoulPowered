@@ -3,6 +3,7 @@ package coffeecatrailway.soulpowered.common.tileentity;
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -63,13 +64,13 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
     @Override
     public boolean canInsertItem(int index, ItemStack stack, @Nullable Direction direction)
     {
-        return stack.getCapability(CapabilityEnergy.ENERGY).isPresent(); // TODO: Add powered items
+        return EnergyUtils.isPresent(stack);
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
-        return stack.getCapability(CapabilityEnergy.ENERGY).isPresent(); // TODO: Add powered items
+        return EnergyUtils.isPresent(stack);
     }
 
     @Override

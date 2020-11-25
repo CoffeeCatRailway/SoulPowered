@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "soulpowered:soul_amulet"
+    "soulpowered:soul_amulet_iron",
+    "soulpowered:soul_amulet_soul_metal",
+    "soulpowered:soul_amulet_powered"
   ]
 }

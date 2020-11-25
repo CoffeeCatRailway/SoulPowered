@@ -42,8 +42,9 @@ public class SoulData
             provider.add("commands.soulpowered.souls.modify.remove", "Removed %2$s soul(s) to %1$s");
             provider.add("commands.soulpowered.souls.modify.set", "%1$s now has %2$s soul(s)");
 
-            provider.add("item.soulpowered.soul_curio.description.range", TextFormatting.GOLD + "Range: " + TextFormatting.YELLOW + "%s Blocks");
-            provider.add("item.soulpowered.soul_curio.description.soul_gathering", TextFormatting.GOLD + "Soul Gathering: " + TextFormatting.YELLOW + "x%s");
+            provider.add("item.soulpowered.soul_amulet.range", TextFormatting.GOLD + "Range: " + TextFormatting.YELLOW + "%s Blocks");
+            provider.add("item.soulpowered.soul_amulet.soul_gathering_chance", TextFormatting.GOLD + "Soul Gathering Chance: " + TextFormatting.YELLOW + "%s");
+            provider.add("item.soulpowered.soul_amulet.description", "Allows you to gather souls from your kills");
 
             provider.add(LANG_ENERGY, "%s SE");
             provider.add(LANG_ENERGY_PER_TICK, "%s SE/t");

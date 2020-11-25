@@ -1,30 +1,46 @@
 package coffeecatrailway.soulpowered;
 
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
+import coffeecatrailway.soulpowered.common.capability.ISoulsHandler;
+import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
-import coffeecatrailway.soulpowered.common.item.SoulCurioItem;
+import coffeecatrailway.soulpowered.common.item.EnergyItem;
+import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
+import coffeecatrailway.soulpowered.registry.SoulBlocks;
 import coffeecatrailway.soulpowered.registry.SoulItems;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.GlassBottleItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import top.theillusivec4.curios.api.CuriosApi;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author CoffeeCatRailway
@@ -87,28 +103,44 @@ public class CommonEvents
             PlayerEntity player = (PlayerEntity) event.getSource().getTrueSource();
             World world = player.world;
 
-            if (CuriosIntegration.hasCurio(player, "necklace").isEmpty())
+            if (!CuriosIntegration.hasCurio(player, "necklace"))
                 return;
 
-            player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(playerHandler -> {
-                LivingEntity entity = event.getEntityLiving();
-                AtomicInteger soulCount = new AtomicInteger(1);
-                if (entity instanceof PlayerEntity)
-                    entity.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> soulCount.set(player.world.rand.nextInt(handler.getSouls() / 2) + 1));
-                else if (entity != null)
-                    soulCount.set(1);
-
-                for (int slot = 0; slot < CuriosApi.getSlotHelper().getSlotType("necklace").get().getSize(); slot++)
+            for (int slot = 0; slot < CuriosApi.getSlotHelper().getSlotType("necklace").get().getSize(); slot++)
+            {
+                ItemStack charm = CuriosIntegration.getCurioStack(player, "necklace", slot);
+                if (charm.getItem() instanceof ISoulAmulet)
                 {
-                    ItemStack charm = CuriosIntegration.getCurioStack(player, "necklace", slot);
-                    if (charm.getItem() instanceof SoulCurioItem)
-                        soulCount.set(soulCount.get() * charm.getOrCreateTag().getInt("SoulGathering"));
-                }
+                    if (!EnergyUtils.isPresent(charm))
+                        return;
+                    IEnergyStorage energy = EnergyUtils.get(charm).orElse(EnergyUtils.EMPTY);
+                    if (energy.canExtract() && energy.getEnergyStored() > SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get())
+                    {
+                        LivingEntity entityKilled = event.getEntityLiving();
+                        CompoundNBT nbt = charm.getOrCreateTag();
 
-                playerHandler.addSouls(soulCount.get(), false);
-                if (!world.isRemote)
-                    SoulParticle.spawnParticles(world, player, entity.getPositionVec().add(0d, 1d, 0d), soulCount.get() + player.world.getRandom().nextInt(3) + 1, false);
-            });
+                        if (player.getPosition().withinDistance(entityKilled.getPosition(), nbt.getFloat("Range") + .5f) && world.rand.nextFloat() < nbt.getFloat("SoulGatheringChance"))
+                        {
+                            player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(playerHandler -> {
+                                int soulCount = 1;
+                                if (entityKilled instanceof PlayerEntity && entityKilled.getCapability(SoulsCapability.SOULS_CAP).isPresent())
+                                {
+                                    ISoulsHandler handler = entityKilled.getCapability(SoulsCapability.SOULS_CAP).orElse(new SoulsCapability.SoulsWrapper());
+                                    soulCount = player.world.rand.nextInt(Math.max(1, handler.getSouls()) / 2) + 1;
+                                }
+
+                                playerHandler.addSouls(1, false);
+                                if (!world.isRemote)
+                                {
+                                    SoulParticle.spawnParticles(world, player, entityKilled.getPositionVec().add(0d, 1d, 0d), soulCount + player.world.getRandom().nextInt(3) + 1, false);
+                                    if (EnergyUtils.isPresent(charm))
+                                        energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -121,7 +153,7 @@ public class CommonEvents
         if (!(stack.getItem() instanceof GlassBottleItem))
             return;
 
-        if (CuriosIntegration.hasCurio(player, "necklace").isEmpty())
+        if (!CuriosIntegration.hasCurio(player, "necklace"))
             return;
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
@@ -134,5 +166,31 @@ public class CommonEvents
                 }
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void onAttachItemCaps(AttachCapabilitiesEvent<Item> event)
+    {
+        if (event.getObject() instanceof EnergyItem)
+        {
+            EnergyItem item = (EnergyItem) event.getObject();
+            event.addCapability(SoulPoweredMod.getLocation("energy"), new SoulEnergyStorageImplBase(item.getMaxEnergy(), item.getMaxReceive(), item.getMaxExtract()));
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void gen(BiomeLoadingEvent event)
+    {
+        if (SoulPoweredMod.SERVER_CONFIG.oreGeneration.get())
+        {
+            ConfiguredFeature<?, ?> COPPER_ORE = registerConfiguredFeature("copper_ore", Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, SoulBlocks.COPPER_ORE.get().getDefaultState(), 9)).range(64).square().func_242731_b(20));
+            BiomeGenerationSettingsBuilder generation = event.getGeneration();
+            generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, COPPER_ORE);
+        }
+    }
+
+    private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> registerConfiguredFeature(String id, ConfiguredFeature<FC, ?> configuredFeature)
+    {
+        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, SoulPoweredMod.getLocation(id), configuredFeature);
     }
 }

@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "soulpowered:item/soul_amulet_gem"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "soulpowered:powered": 0.0
+      },
+      "model": "soulpowered:item/soul_amulet_powered_off"
+    },
+    {
+      "predicate": {
+        "soulpowered:powered": 1.0
+      },
+      "model": "soulpowered:item/soul_amulet_powered_on"
+    }
+  ]
+}

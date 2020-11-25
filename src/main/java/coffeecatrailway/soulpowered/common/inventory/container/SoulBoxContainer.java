@@ -3,6 +3,7 @@ package coffeecatrailway.soulpowered.common.inventory.container;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.registry.SoulContainers;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
@@ -83,6 +84,6 @@ public class SoulBoxContainer extends AbstractEnergyStorageContainer<SoulBoxTile
 
     private boolean isPoweredItem(ItemStack stack)
     {
-        return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
+        return EnergyUtils.isPresent(stack);
     }
 }

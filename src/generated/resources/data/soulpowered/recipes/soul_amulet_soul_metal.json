@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " b ",
-    "b b",
+    " i ",
+    "i i",
     " s "
   ],
   "key": {
-    "b": {
-      "tag": "soulpowered:soul_blocks"
+    "i": {
+      "item": "soulpowered:soul_metal_ingot"
     },
     "s": {
       "item": "soulpowered:soul_bottle"
     }
   },
   "result": {
-    "item": "soulpowered:soul_amulet"
+    "item": "soulpowered:soul_amulet_soul_metal"
   }
 }

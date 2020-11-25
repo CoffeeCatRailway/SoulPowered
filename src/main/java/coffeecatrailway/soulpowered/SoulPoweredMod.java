@@ -7,10 +7,12 @@ import coffeecatrailway.soulpowered.common.command.SoulsCommand;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.registry.*;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
@@ -83,6 +85,8 @@ public class SoulPoweredMod
 
     private void onClientSetup(FMLClientSetupEvent event)
     {
+        ItemModelsProperties.registerProperty(SoulItems.SOUL_AMULET_POWERED.get(), getLocation("powered"), (stack, world, entity) ->
+            EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f);
         SoulHUDOverlayHandler.init();
     }
 

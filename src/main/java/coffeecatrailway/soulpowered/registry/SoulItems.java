@@ -3,15 +3,26 @@ package coffeecatrailway.soulpowered.registry;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.item.*;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.item.Rarity;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 import static coffeecatrailway.soulpowered.SoulPoweredMod.REGISTRATE;
 
@@ -38,16 +49,38 @@ public class SoulItems
     public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel()
             .tag(SoulData.TagItems.SOUL_GENERATOR_FUEL).register();
 
-    public static final RegistryEntry<SoulAmuletItem> SOUL_AMULET = registerSoulCurioItem("soul_amulet", "Allows you to gather souls from your kills", SoulAmuletItem::new)
-            .defaultLang().defaultModel().properties(prop -> prop.maxStackSize(1)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-                    .key('b', SoulData.TagItems.SOUL_BLOCKS).key('s', SOUL_BOTTLE.get())
-                    .patternLine(" b ").patternLine("b b").patternLine(" s ").addCriterion("has_soul_sand", RegistrateRecipeProvider.hasItem(SoulData.TagItems.SOUL_BLOCKS))
-                    .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SOUL_BOTTLE.get())).build(provider)).register();
+    public static final RegistryEntry<SoulAmuletItem> SOUL_AMULET_IRON = registerSoulAmulet("soul_amulet_iron", prop -> new SoulAmuletItem(prop, 1.5f, .25f),
+            "Iron Soul Amulet", () -> Items.IRON_INGOT);
+    public static final RegistryEntry<SoulAmuletItem> SOUL_AMULET = registerSoulAmulet("soul_amulet_soul_metal", prop -> new SoulAmuletItem(prop, 2f, .5f),
+            "Soul Metal Soul Amulet", SOUL_METAL_INGOT::get);
+    public static final RegistryEntry<SoulAmuletPoweredItem> SOUL_AMULET_POWERED = registerSoulAmulet("soul_amulet_powered", prop -> new SoulAmuletPoweredItem(prop, 2.5f, 1f),
+            "Powered Soul Amulet", SOUL_METAL_INGOT::get, BATTERY::get, NonNullBiConsumer.noop());
 
-    private static <T extends SoulCurioItem> ItemBuilder<T, Registrate> registerSoulCurioItem(String id, String description, NonNullFunction<Item.Properties, T> factory)
+    private static <T extends Item> RegistryEntry<T> registerSoulAmulet(String id, NonNullFunction<Item.Properties, T> item, String name, Supplier<IItemProvider> ingot)
     {
-        SoulData.Lang.EXTRA_LANGS.put("item." + SoulPoweredMod.MOD_ID + "." + id + ".description", description);
-        return REGISTRATE.item(id, factory).tag(SoulData.TagItems.CURIOS_NECKLACE);
+        return registerSoulAmulet(id, item, name, ingot, () -> null, (ctx, provider) -> provider.handheld(ctx::getEntry, SoulPoweredMod.getLocation("item/soul_amulet_gem"))
+                .texture("layer1", SoulPoweredMod.getLocation("item/" + ctx.getName())));
+    }
+
+    private static <T extends Item> RegistryEntry<T> registerSoulAmulet(String id, NonNullFunction<Item.Properties, T> item, String name, Supplier<IItemProvider> ingot, Supplier<IItemProvider> top, NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelProvider> model)
+    {
+        return REGISTRATE.item(id, item).tag(SoulData.TagItems.CURIOS_NECKLACE).lang(name).model(model)
+                .recipe((ctx, provider) -> {
+                    boolean flag = top.get() != null;
+                    ShapedRecipeBuilder builder = ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', ingot.get()).key('s', SOUL_BOTTLE.get());
+
+                    if (flag)
+                        builder.key('t', top.get()).patternLine(" t ");
+                    else
+                        builder.patternLine(" i ");
+
+                    builder.patternLine("i i").patternLine(" s ")
+                            .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SOUL_BOTTLE.get()))
+                            .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(ingot.get()));
+                    if (flag)
+                        builder.addCriterion("has_top", RegistrateRecipeProvider.hasItem(top.get()));
+                    builder.build(provider);
+                }).register();
     }
 
     public static void load()

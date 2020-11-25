@@ -1,0 +1,6 @@
+{
+  "parent": "soulpowered:item/soul_amulet_powered",
+  "textures": {
+    "layer1": "soulpowered:item/soul_amulet_powered_off"
+  }
+}

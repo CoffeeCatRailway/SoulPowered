@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:soul_amulet_powered"
+    ]
+  },
+  "criteria": {
+    "has_soul_bottle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soul_bottle"
+          }
+        ]
+      }
+    },
+    "has_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soul_metal_ingot"
+          }
+        ]
+      }
+    },
+    "has_top": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:battery"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:soul_amulet_powered"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_soul_bottle",
+      "has_ingot",
+      "has_top",
+      "has_the_recipe"
+    ]
+  ]
+}
