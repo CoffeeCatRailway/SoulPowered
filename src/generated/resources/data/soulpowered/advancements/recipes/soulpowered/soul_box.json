@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:soul_generator"
+      "soulpowered:soul_box"
     ]
   },
   "criteria": {
@@ -26,12 +26,12 @@
         ]
       }
     },
-    "has_furnace": {
+    "has_copper_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:furnace"
+            "tag": "forge:ingots/copper"
           }
         ]
       }
@@ -49,7 +49,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:soul_generator"
+        "recipe": "soulpowered:soul_box"
       }
     }
   },
@@ -57,7 +57,7 @@
     [
       "has_soul_metal",
       "has_machine_frame",
-      "has_furnace",
+      "has_copper_ingot",
       "has_battery",
       "has_the_recipe"
     ]

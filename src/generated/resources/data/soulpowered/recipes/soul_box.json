@@ -1,25 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " f ",
-    "ibi",
-    "imi"
+    "scs",
+    "bbb",
+    "sfs"
   ],
   "key": {
-    "i": {
+    "s": {
       "item": "soulpowered:soul_metal_ingot"
     },
-    "m": {
+    "f": {
       "item": "soulpowered:machine_frame"
     },
-    "f": {
-      "item": "minecraft:furnace"
+    "c": {
+      "tag": "forge:ingots/copper"
     },
     "b": {
       "item": "soulpowered:battery"
     }
   },
   "result": {
-    "item": "soulpowered:soul_generator"
+    "item": "soulpowered:soul_box"
   }
 }
