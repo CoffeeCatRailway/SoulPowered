@@ -70,10 +70,9 @@ public class SoulPoweredMod
         MinecraftForge.EVENT_BUS.register(this);
 
         REGISTRATE = Registrate.create(MOD_ID).itemGroup(() -> GROUP_ALL, "Soul Powered")
-//                .addDataGenerator(ProviderType.BLOCK_TAGS, new ExampleTags.Blocks())
                 .addDataGenerator(ProviderType.ITEM_TAGS, new SoulData.TagItems())
+                .addDataGenerator(ProviderType.BLOCK_TAGS, new SoulData.TagBlocks())
                 .addDataGenerator(ProviderType.LANG, new SoulData.Lang());
-//                .addDataGenerator(ProviderType.BLOCKSTATE, new ExampleBlockstates());
 
         SoulBlocks.load();
         SoulItems.load();

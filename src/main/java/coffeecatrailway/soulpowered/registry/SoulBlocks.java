@@ -19,6 +19,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.Logger;
 
 import java.util.function.ToIntFunction;
@@ -33,10 +34,23 @@ public class SoulBlocks
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Blocks");
 
+    // World Gen
+    public static final RegistryEntry<Block> COPPER_ORE = REGISTRATE.object("copper_ore").block(Block::new).initialProperties(Material.ROCK, Material.ROCK.getColor())
+            .defaultLang().defaultLoot().defaultBlockstate().properties(prop -> prop.setRequiresTool().hardnessAndResistance(3f))
+            .tag(SoulData.TagBlocks.ORES_COPPER).item().tag(SoulData.TagItems.ORES_COPPER).build().register();
+
+    // Building Blocks
     public static final RegistryEntry<Block> SOUL_METAL_BLOCK = REGISTRATE.object("soul_metal_block").block(Block::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
             .properties(prop -> prop.setRequiresTool().hardnessAndResistance(5f, 6f).sound(SoundType.METAL)).defaultLang().defaultLoot().defaultBlockstate()
-            .recipe((ctx, provider) -> provider.square(DataIngredient.items(SoulItems.SOUL_METAL_INGOT), ctx::getEntry, false)).tag(BlockTags.BEACON_BASE_BLOCKS).simpleItem().register();
+            .recipe((ctx, provider) -> provider.square(DataIngredient.items(SoulItems.SOUL_METAL_INGOT), ctx::getEntry, false))
+            .tag(Tags.Blocks.STORAGE_BLOCKS, BlockTags.BEACON_BASE_BLOCKS).item().tag(Tags.Items.STORAGE_BLOCKS).build().register();
 
+    public static final RegistryEntry<Block> COPPER_BLOCK = REGISTRATE.object("copper_block").block(Block::new).initialProperties(Material.IRON, MaterialColor.ORANGE_TERRACOTTA)
+            .properties(prop -> prop.setRequiresTool().hardnessAndResistance(5f, 6f).sound(SoundType.METAL)).defaultLang().defaultLoot().defaultBlockstate()
+            .recipe((ctx, provider) -> provider.square(DataIngredient.tag(SoulData.TagItems.INGOTS_COPPER), ctx::getEntry, false))
+            .tag(SoulData.TagBlocks.STORAGE_BLOCKS_COPPER, BlockTags.BEACON_BASE_BLOCKS).item().tag(SoulData.TagItems.STORAGE_BLOCKS_COPPER).build().register();
+
+    // Machines
     public static final RegistryEntry<MachineFrameBlock> MACHINE_FRAME = REGISTRATE.object("machine_frame").block(MachineFrameBlock::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
             .defaultLang().defaultLoot().properties(prop -> prop.setRequiresTool().hardnessAndResistance(2.5f).sound(SoundType.METAL))
             .blockstate((ctx, provider) -> provider.simpleBlock(ctx.getEntry(), provider.models().getExistingFile(SoulPoweredMod.getLocation("block/" + ctx.getName()))))

@@ -1,4 +1,6 @@
 {
+  "block.soulpowered.copper_block": "Copper Block",
+  "block.soulpowered.copper_ore": "Copper Ore",
   "block.soulpowered.machine_frame": "Machine Frame",
   "block.soulpowered.soul_box": "Soul Box",
   "block.soulpowered.soul_generator": "Soul Generator",
@@ -10,6 +12,7 @@
   "container.soulpowered.soul_box": "Soul Box",
   "container.soulpowered.soul_generator": "Soul Generator",
   "item.soulpowered.soul_amulet": "Soul Amulet",
+  "item.soulpowered.copper_ingot": "Copper Ingot",
   "item.soulpowered.soul_amulet.description": "Allows you to gather souls from your kills",
   "item.soulpowered.soul_bottle": "Soul Bottle",
   "item.soulpowered.soul_curio.description.range": "\u00A76Range: \u00A7e%s Blocks",

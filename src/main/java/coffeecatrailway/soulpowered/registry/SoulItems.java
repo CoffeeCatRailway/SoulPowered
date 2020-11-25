@@ -2,11 +2,7 @@ package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
-import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
-import coffeecatrailway.soulpowered.common.item.SoulBottleItem;
-import coffeecatrailway.soulpowered.common.item.SoulCurioItem;
-import com.tterrag.registrate.Registrate;
-import com.tterrag.registrate.builders.ItemBuilder;
+import coffeecatrailway.soulpowered.common.item.*;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -28,8 +24,17 @@ public class SoulItems
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Items");
 
     public static final RegistryEntry<Item> SOUL_METAL_INGOT = REGISTRATE.item("soul_metal_ingot", Item::new).defaultLang().defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
-            .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOUL_METAL_BLOCK.get()), ctx::getEntry, 1, 6)).register();
+            .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOUL_METAL_BLOCK.get()), ctx::getEntry, 1, 9)).register();
 
+    public static final RegistryEntry<Item> COPPER_INGOT = REGISTRATE.item("copper_ingot", Item::new).defaultLang().defaultModel()
+            .tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS, SoulData.TagItems.INGOTS_COPPER)
+            .recipe((ctx, provider) -> {
+                provider.singleItem(DataIngredient.items(SoulBlocks.COPPER_BLOCK.get()), ctx::getEntry, 1, 9);
+                provider.smelting(DataIngredient.items(SoulBlocks.COPPER_ORE), ctx::getEntry, .7f, 200);
+                provider.blasting(DataIngredient.items(SoulBlocks.COPPER_ORE), ctx::getEntry, .7f, 100);
+            }).register();
+
+    // Misc
     public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel()
             .tag(SoulData.TagItems.SOUL_GENERATOR_FUEL).register();
 

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:storage_blocks/copper",
+    "soulpowered:soul_metal_block"
+  ]
+}

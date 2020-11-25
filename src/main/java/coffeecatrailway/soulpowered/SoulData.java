@@ -78,12 +78,33 @@ public class SoulData
         public static final ITag.INamedTag<Item> SOUL_BLOCKS = ItemTags.createOptional(SoulPoweredMod.getLocation("soul_blocks"));
         public static final ITag.INamedTag<Item> SOUL_GENERATOR_FUEL = ItemTags.createOptional(SoulPoweredMod.getLocation("soul_generator_fuel"));
 
+        public static final ITag.INamedTag<Item> INGOTS_COPPER = ItemTags.createOptional(new ResourceLocation("forge", "ingots/copper"));
+        public static final ITag.INamedTag<Item> STORAGE_BLOCKS_COPPER = ItemTags.createOptional(new ResourceLocation("forge", "storage_blocks/copper"));
+        public static final ITag.INamedTag<Item> ORES_COPPER = ItemTags.createOptional(new ResourceLocation("forge", "ores/copper"));
+
         public static final ITag.INamedTag<Item> CURIOS_NECKLACE = ItemTags.createOptional(new ResourceLocation("curios", "necklace"));
 
         @Override
         public void accept(RegistrateTagsProvider<Item> provider)
         {
             provider.getOrCreateBuilder(SOUL_BLOCKS).add(Items.SOUL_SAND, Items.SOUL_SOIL);
+
+            provider.getOrCreateBuilder(Tags.Items.INGOTS).addTag(INGOTS_COPPER);
+            provider.getOrCreateBuilder(Tags.Items.STORAGE_BLOCKS).addTag(STORAGE_BLOCKS_COPPER);
+            provider.getOrCreateBuilder(Tags.Items.ORES).addTag(ORES_COPPER);
+        }
+    }
+
+    public static class TagBlocks implements NonNullConsumer<RegistrateTagsProvider<Block>>
+    {
+        public static final ITag.INamedTag<Block> STORAGE_BLOCKS_COPPER = BlockTags.createOptional(new ResourceLocation("forge", "storage_blocks/copper"));
+        public static final ITag.INamedTag<Block> ORES_COPPER = BlockTags.createOptional(new ResourceLocation("forge", "ores/copper"));
+
+        @Override
+        public void accept(RegistrateTagsProvider<Block> provider)
+        {
+            provider.getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addTag(STORAGE_BLOCKS_COPPER);
+            provider.getOrCreateBuilder(Tags.Blocks.ORES).addTag(ORES_COPPER);
         }
     }
 }
