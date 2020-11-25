@@ -11,6 +11,7 @@
   "commands.soulpowered.souls.modify.set": "%1$s now has %2$s soul(s)",
   "container.soulpowered.soul_box": "Soul Box",
   "container.soulpowered.soul_generator": "Soul Generator",
+  "item.soulpowered.battery": "Battery",
   "item.soulpowered.copper_ingot": "Copper Ingot",
   "item.soulpowered.soul_amulet.description": "Allows you to gather souls from your kills",
   "item.soulpowered.soul_amulet.range": "\u00A76Range: \u00A7e%s Blocks",

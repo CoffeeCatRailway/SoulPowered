@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "scs",
+    "sbs",
+    "scs"
+  ],
+  "key": {
+    "s": {
+      "item": "soulpowered:soul_metal_ingot"
+    },
+    "c": {
+      "tag": "forge:ingots/copper"
+    },
+    "b": {
+      "item": "soulpowered:soul_bottle"
+    }
+  },
+  "result": {
+    "item": "soulpowered:battery"
+  }
+}

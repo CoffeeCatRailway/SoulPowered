@@ -34,6 +34,16 @@ public class SoulItems
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Items");
 
+    // Tech
+    public static final RegistryEntry<EnergyItem> BATTERY = REGISTRATE.item("battery", prop -> new EnergyItem(prop, 200_000, 10_000))
+            .properties(prop -> prop.maxStackSize(1).rarity(Rarity.UNCOMMON)).defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .key('s', SoulItems.SOUL_METAL_INGOT.get()).key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SOUL_BOTTLE.get())
+                    .patternLine("scs").patternLine("sbs").patternLine("scs")
+                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_METAL_INGOT.get()))
+                    .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
+                    .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_BOTTLE.get())).build(provider)).register();
+
+    // Ingots
     public static final RegistryEntry<Item> SOUL_METAL_INGOT = REGISTRATE.item("soul_metal_ingot", Item::new).defaultLang().defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
             .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOUL_METAL_BLOCK.get()), ctx::getEntry, 1, 9)).register();
 

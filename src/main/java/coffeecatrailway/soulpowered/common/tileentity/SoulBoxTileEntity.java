@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
@@ -22,9 +24,9 @@ import java.util.stream.IntStream;
  */
 public class SoulBoxTileEntity extends AbstractMachineTileEntity
 {
-    public static final int MAX_ENERGY = 500_000;
+    public static final int MAX_ENERGY = 600_000;
     public static final int MAX_RECEIVE = 500;
-    public static final int MAX_SEND = 500;
+    public static final int MAX_EXTRACT = 500;
 
     public static final int INVENTORY_SIZE = 2;
     private static final int[] SLOTS = IntStream.range(0, INVENTORY_SIZE).toArray();
@@ -36,7 +38,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
 
     public SoulBoxTileEntity(TileEntityType<? extends SoulBoxTileEntity> type)
     {
-        super(type, INVENTORY_SIZE, MAX_ENERGY, MAX_RECEIVE, MAX_SEND);
+        super(type, INVENTORY_SIZE, MAX_ENERGY, MAX_RECEIVE, MAX_EXTRACT);
     }
 
     @Override
@@ -45,11 +47,41 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
         super.tick();
         if (this.world == null || this.world.isRemote) return;
 
-        boolean hasEnergy = this.energy.getEnergyStored() > 0;
+        if (this.energy.canReceive())
+        {
+            ItemStack inStack = this.getStackInSlot(0);
+            if (EnergyUtils.isPresent(inStack))
+            {
+                IEnergyStorage energyIn = EnergyUtils.get(inStack).orElse(EnergyUtils.EMPTY);
+                if (energyIn.getEnergyStored() > 0)
+                {
+                    int toSend = energyIn.extractEnergy(MAX_RECEIVE, true);
+                    int sent = this.energy.receiveEnergy(toSend, false);
+                    if (sent > 0)
+                        energyIn.extractEnergy(sent, false);
+                }
+            }
+        }
+
+        if (this.energy.canExtract())
+        {
+            ItemStack outStack = this.getStackInSlot(1);
+            if (EnergyUtils.isPresent(outStack))
+            {
+                if (this.energy.getEnergyStored() > 0)
+                {
+                    int toSend = this.energy.extractEnergy(MAX_EXTRACT, true);
+                    int sent = EnergyUtils.get(outStack).orElse(EnergyUtils.EMPTY).receiveEnergy(toSend, false);
+                    if (sent > 0)
+                        this.energy.extractEnergy(sent, false);
+                }
+            }
+        }
+
         if (this.world.getGameTime() % 30 == 0)
         {
             BlockState currentState = this.getBlockState();
-            BlockState newState = this.getBlockState().with(SoulBoxBlock.ON, hasEnergy);
+            BlockState newState = this.getBlockState().with(SoulBoxBlock.ON, this.energy.getEnergyStored() > 0);
             if (currentState != newState)
                 this.world.setBlockState(this.pos, newState, Constants.BlockFlags.DEFAULT);
         }
