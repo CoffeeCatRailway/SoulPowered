@@ -2,8 +2,6 @@ package coffeecatrailway.soulpowered.utils;
 
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
-
 /**
  * @author CoffeeCatRailway
  * Created: 13/11/2020

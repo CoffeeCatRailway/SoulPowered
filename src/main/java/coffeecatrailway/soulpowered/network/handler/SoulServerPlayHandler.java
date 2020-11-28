@@ -4,7 +4,6 @@ import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergySto
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.network.SetRedstoneModeMessage;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 /**

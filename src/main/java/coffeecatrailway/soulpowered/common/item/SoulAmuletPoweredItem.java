@@ -3,7 +3,6 @@ package coffeecatrailway.soulpowered.common.item;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;

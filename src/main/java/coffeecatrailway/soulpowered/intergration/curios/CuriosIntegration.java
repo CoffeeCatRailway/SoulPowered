@@ -3,7 +3,6 @@ package coffeecatrailway.soulpowered.intergration.curios;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
 import coffeecatrailway.soulpowered.common.item.ISoulCurios;
-import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
