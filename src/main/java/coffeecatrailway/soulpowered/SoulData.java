@@ -1,12 +1,18 @@
 package coffeecatrailway.soulpowered;
 
+import coffeecatrailway.soulpowered.registry.OtherRegistries;
+import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
+import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.loot.*;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
@@ -109,6 +115,36 @@ public class SoulData
         {
             provider.getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addTag(STORAGE_BLOCKS_COPPER);
             provider.getOrCreateBuilder(Tags.Blocks.ORES).addTag(ORES_COPPER);
+        }
+    }
+
+    public static class LootTables implements NonNullConsumer<RegistrateLootTableProvider>
+    {
+        @Override
+        public void accept(RegistrateLootTableProvider provider)
+        {
+            provider.addLootAction(LootParameterSets.CHEST, builder -> builder.accept(OtherRegistries.CHESTS_SOUL_CASTLE, LootTable.builder()
+                    .addLootPool(LootPool.builder()
+                            .rolls(RandomValueRange.of(2f, 4f))
+                            .addEntry(ItemLootEntry.builder(SoulItems.SOUL_BOTTLE.get())
+                                    .weight(99)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
+                            .addEntry(ItemLootEntry.builder(Blocks.BLACKSTONE)
+                                    .weight(15)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(3f, 7f))))
+                            .addEntry(ItemLootEntry.builder(Items.IRON_INGOT)
+                                    .weight(15)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 5f))))
+                            .addEntry(ItemLootEntry.builder(Items.GOLD_INGOT)
+                                    .weight(15)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
+                            .addEntry(ItemLootEntry.builder(Items.DIAMOND)
+                                    .weight(5)
+                                    .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
+                            .addEntry(ItemLootEntry.builder(Items.GOLDEN_SWORD)
+                                    .weight(5))
+                            .addEntry(ItemLootEntry.builder(SoulItems.SOUL_AMULET_IRON.get())
+                                    .weight(3)))));
         }
     }
 }

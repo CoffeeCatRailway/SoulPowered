@@ -38,7 +38,7 @@ public class SoulPoweredMod
     public static final String MOD_ID = "soulpowered";
     private static final Logger LOGGER = getLogger("");
 
-    public static SoulPoweredConfig.Client CLIENT_CONFIG;
+    public static SoulPoweredConfig.Common COMMON_CONFIG;
     public static SoulPoweredConfig.Server SERVER_CONFIG;
 
     public static Registrate REGISTRATE;
@@ -60,9 +60,9 @@ public class SoulPoweredMod
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(CuriosIntegration::onInterModComms);
 
-//        final Pair<SoulPoweredConfig.Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Client::new);
-//        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, client.getRight());
-//        CLIENT_CONFIG = client.getLeft();
+        final Pair<SoulPoweredConfig.Common, ForgeConfigSpec> common = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Common::new);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, common.getRight());
+        COMMON_CONFIG = common.getLeft();
 
         final Pair<SoulPoweredConfig.Server, ForgeConfigSpec> server = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Server::new);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, server.getRight());
@@ -74,19 +74,22 @@ public class SoulPoweredMod
         REGISTRATE = Registrate.create(MOD_ID).itemGroup(() -> GROUP_ALL, "Soul Powered")
                 .addDataGenerator(ProviderType.ITEM_TAGS, new SoulData.TagItems())
                 .addDataGenerator(ProviderType.BLOCK_TAGS, new SoulData.TagBlocks())
-                .addDataGenerator(ProviderType.LANG, new SoulData.Lang());
+                .addDataGenerator(ProviderType.LANG, new SoulData.Lang())
+                .addDataGenerator(ProviderType.LOOT, new SoulData.LootTables());
 
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         SoulBlocks.load();
         SoulItems.load();
         SoulTileEntities.load();
         SoulContainers.load();
-        OtherRegistries.load(modEventBus);
+        OtherRegistries.load(bus);
+        SoulWorldGen.load(bus);
     }
 
     private void onClientSetup(FMLClientSetupEvent event)
     {
         ItemModelsProperties.registerProperty(SoulItems.SOUL_AMULET_POWERED.get(), getLocation("powered"), (stack, world, entity) ->
-            EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f);
+                EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f);
         SoulHUDOverlayHandler.init();
     }
 
@@ -97,6 +100,7 @@ public class SoulPoweredMod
 
     private void onCommonSetup(FMLCommonSetupEvent event)
     {
+        event.enqueueWork(SoulWorldGen.StructurePieces::loadStructureTypes);
         SoulsCapability.register();
         SoulMessageHandler.init();
     }

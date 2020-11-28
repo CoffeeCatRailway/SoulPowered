@@ -9,9 +9,11 @@ import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
-import coffeecatrailway.soulpowered.registry.SoulBlocks;
+import coffeecatrailway.soulpowered.registry.SoulFeatures;
 import coffeecatrailway.soulpowered.registry.SoulItems;
+import coffeecatrailway.soulpowered.registry.SoulWorldGen;
 import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,14 +22,15 @@ import net.minecraft.item.GlassBottleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.FlatChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.settings.DimensionStructuresSettings;
+import net.minecraft.world.gen.settings.StructureSeparationSettings;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -36,10 +39,12 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
+import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 
 /**
@@ -49,6 +54,8 @@ import top.theillusivec4.curios.api.CuriosApi;
 @Mod.EventBusSubscriber(modid = SoulPoweredMod.MOD_ID)
 public class CommonEvents
 {
+    private static final Logger LOGGER = SoulPoweredMod.getLogger("Common Events");
+
     @SubscribeEvent
     public static void onAttachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event)
     {
@@ -61,8 +68,11 @@ public class CommonEvents
     {
         PlayerEntity player = event.getPlayer();
         if (player instanceof ServerPlayerEntity)
+        {
             player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler ->
                     SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(player.getEntityId(), handler.getSouls())));
+            LOGGER.debug("Capability - Player logged in, syncing souls");
+        }
     }
 
     @SubscribeEvent
@@ -73,6 +83,7 @@ public class CommonEvents
         PlayerEntity original = event.getOriginal();
         PlayerEntity player = event.getPlayer();
         original.getCapability(SoulsCapability.SOULS_CAP).ifPresent(originalHandler -> player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> handler.setSouls(originalHandler.getSouls())));
+        LOGGER.debug("Capability - Updated souls on death");
     }
 
     @SubscribeEvent
@@ -135,6 +146,7 @@ public class CommonEvents
                                     SoulParticle.spawnParticles(world, player, entityKilled.getPositionVec().add(0d, 1d, 0d), soulCount + player.world.getRandom().nextInt(3) + 1, false);
                                     if (EnergyUtils.isPresent(charm))
                                         energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
+                                    LOGGER.debug("Player killed mob/player, souls given");
                                 }
                             });
                         }
@@ -175,22 +187,39 @@ public class CommonEvents
         {
             EnergyItem item = (EnergyItem) event.getObject();
             event.addCapability(SoulPoweredMod.getLocation("energy"), new SoulEnergyStorageImplBase(item.getMaxEnergy(), item.getMaxReceive(), item.getMaxExtract()));
+            LOGGER.debug("Capability - Energy item capability updated");
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void gen(BiomeLoadingEvent event)
+    public static void onBiomeLoading(BiomeLoadingEvent event)
     {
-        if (SoulPoweredMod.SERVER_CONFIG.oreGeneration.get())
+        BiomeGenerationSettingsBuilder generation = event.getGeneration();
+        if (SoulPoweredMod.COMMON_CONFIG.oreGeneration.get())
         {
-            ConfiguredFeature<?, ?> COPPER_ORE = registerConfiguredFeature("copper_ore", Feature.ORE.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, SoulBlocks.COPPER_ORE.get().getDefaultState(), 9)).range(64).square().func_242731_b(20));
-            BiomeGenerationSettingsBuilder generation = event.getGeneration();
-            generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, COPPER_ORE);
+            generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, SoulFeatures.COPPER_ORE.get());
+        }
+        if (SoulPoweredMod.COMMON_CONFIG.soulCastleGeneration.get())
+        {
+            if (event.getCategory() == Biome.Category.NETHER)
+                generation.getStructures().add(SoulFeatures.SOUL_CASTLE::get);
         }
     }
 
-    private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> registerConfiguredFeature(String id, ConfiguredFeature<FC, ?> configuredFeature)
+    @SubscribeEvent
+    public static void onWorldLoad(final WorldEvent.Load event)
     {
-        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, SoulPoweredMod.getLocation(id), configuredFeature);
+        IWorld world = event.getWorld();
+        if (world.isRemote())
+            return;
+
+        ServerWorld serverWorld = (ServerWorld) world;
+        if ((serverWorld.getChunkProvider().getChunkGenerator() instanceof FlatChunkGenerator && serverWorld.getDimensionKey().equals(World.OVERWORLD)) || !serverWorld.getDimensionKey().equals(World.THE_NETHER))
+            return;
+
+        if (!serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_.containsKey(SoulWorldGen.SOUL_CASTLE.get()))
+            serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
+                    .putAll(serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_)
+                    .put(SoulWorldGen.SOUL_CASTLE.get(), DimensionStructuresSettings.field_236191_b_.get(SoulWorldGen.SOUL_CASTLE.get())).build();
     }
 }

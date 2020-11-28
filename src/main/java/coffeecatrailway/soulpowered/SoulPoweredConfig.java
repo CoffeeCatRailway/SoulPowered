@@ -10,12 +10,29 @@ public class SoulPoweredConfig
 {
     private static final String CONFIG = "config." + SoulPoweredMod.MOD_ID + ".";
 
-    public static class Client
+    public static class Common
     {
-        public Client(ForgeConfigSpec.Builder builder)
+        public ForgeConfigSpec.BooleanValue oreGeneration;
+
+        public ForgeConfigSpec.BooleanValue soulCastleGeneration;
+        public ForgeConfigSpec.IntValue soulCastleChunksMax;
+        public ForgeConfigSpec.IntValue soulCastleChunksMin;
+
+        public Common(ForgeConfigSpec.Builder builder)
         {
-            builder.comment("Client Configurable Settings");
-            builder.pop();
+            builder.comment("Common Configurable Settings").push("world");
+            this.oreGeneration = builder.comment("Whether ore generation is enabled or not").translation(CONFIG + "world.oreGeneration")
+                    .define("oreGeneration", true);
+
+            builder.push("soulCastle");
+            this.soulCastleGeneration = builder.comment("Whether the soul castle is enabled or not").translation(CONFIG + "world.soulCastle.generation")
+                    .define("generation", true);
+            this.soulCastleChunksMax = builder.comment("The max distance between two soul castles").translation(CONFIG + "world.soulCastle.chunksMax")
+                    .defineInRange("chunksMax", 10, 0, 100);
+            this.soulCastleChunksMin = builder.comment("The minimum distance between two soul castles").translation(CONFIG + "world.soulCastle.chunksMin")
+                    .defineInRange("chunksMin", 5, 0, 100);
+
+            builder.pop(2);
         }
     }
 
@@ -27,8 +44,6 @@ public class SoulPoweredConfig
         public ForgeConfigSpec.BooleanValue canRightClickEquipCurio;
 
         public ForgeConfigSpec.IntValue soulAmuletPoweredExtract;
-
-        public ForgeConfigSpec.BooleanValue oreGeneration;
 
         public Server(ForgeConfigSpec.Builder builder)
         {
@@ -44,10 +59,6 @@ public class SoulPoweredConfig
 
             this.soulAmuletPoweredExtract = builder.comment("The amount of power (rf/se) that is extracted from a Powered Soul Amulet").translation(CONFIG + "curios.soulAmuletPoweredExtract")
                     .defineInRange("soulAmuletPoweredExtract", 50, 0, 5000);
-
-            builder.pop().push("world");
-            this.oreGeneration = builder.comment("Whether ore generation is enabled or not").translation(CONFIG + "world.oreGeneration")
-                    .define("oreGeneration", true);
 
             builder.pop();
         }
