@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -21,44 +22,48 @@ import java.util.Optional;
  */
 public interface ISoulCurios
 {
-    void curioTick(String identifier, int index, LivingEntity livingEntity);
+    void curioTick(ItemStack stack, String identifier, int index, LivingEntity livingEntity);
 
-    default boolean canEquip(String identifier, LivingEntity livingEntity)
+    default boolean canEquip(ItemStack stack, String identifier, LivingEntity livingEntity)
     {
+        int i = 0;
         if (livingEntity instanceof PlayerEntity)
         {
-            Optional<ISlotType> necklace = CuriosApi.getSlotHelper().getSlotType("necklace");
-            if (necklace.isPresent())
-                for (int i = 0; i < necklace.get().getSize(); i++)
-                    if (CuriosIntegration.getCurioStack((PlayerEntity) livingEntity, "necklace", i).isEmpty())
-                        return true;
+            if (CuriosIntegration.NECKLACE.get().isPresent())
+                for (int j = 0; j < CuriosIntegration.NECKLACE.get().get().getSize(); j++)
+                    if (CuriosIntegration.getCurioStack((PlayerEntity) livingEntity, "necklace", j).isEmpty())
+                        i++;
+            if (CuriosIntegration.CHARM.get().isPresent())
+                for (int j = 0; j < CuriosIntegration.CHARM.get().get().getSize(); j++)
+                    if (CuriosIntegration.getCurioStack((PlayerEntity) livingEntity, "charm", j).isEmpty())
+                        i++;
         }
-        return false;
+        return i != 0;
     }
 
-    default boolean canUnequip(String identifier, LivingEntity livingEntity)
+    default boolean canUnequip(ItemStack stack, String identifier, LivingEntity livingEntity)
     {
         if (livingEntity instanceof PlayerEntity)
             return this instanceof Item && !((PlayerEntity) livingEntity).getCooldownTracker().hasCooldown((Item) this);
         return false;
     }
 
-    default void playRightClickEquipSound(LivingEntity livingEntity)
+    default void playRightClickEquipSound(ItemStack stack, LivingEntity livingEntity)
     {
         livingEntity.world.playSound(null, new BlockPos(livingEntity.getPositionVec()), SoundEvents.ITEM_ARMOR_EQUIP_GOLD, SoundCategory.NEUTRAL, 1f, 1f);
     }
 
-    default boolean canRightClickEquip()
+    default boolean canRightClickEquip(ItemStack stack)
     {
         return SoulPoweredMod.SERVER_CONFIG.canRightClickEquipCurio.get();
     }
 
-    default boolean canRender(String identifier, int index, LivingEntity livingEntity)
+    default boolean canRender(ItemStack stack, String identifier, int index, LivingEntity livingEntity)
     {
         return false;
     }
 
-    default void render(String identifier, int index, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float netHeadYaw, float headPitch)
+    default void render(ItemStack stack, String identifier, int index, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float netHeadYaw, float headPitch)
     {
     }
 }

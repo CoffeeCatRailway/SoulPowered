@@ -10,6 +10,24 @@ public class SoulPoweredConfig
 {
     private static final String CONFIG = "config." + SoulPoweredMod.MOD_ID + ".";
 
+    public static class Client
+    {
+        public ForgeConfigSpec.DoubleValue soulShieldEndDuration;
+        public ForgeConfigSpec.IntValue soulShieldParticleColor;
+
+        public Client(ForgeConfigSpec.Builder builder)
+        {
+            builder.comment("Client Configurable Settings").push("curios").push("soulShield");
+            this.soulShieldEndDuration = builder.comment("The duration of which a soul shield starts to end (fall)").comment("Stored in ticks: 20 ticks = 1 second")
+                    .translation(CONFIG + "curios.soulShield.soulShieldEndDuration")
+                    .defineInRange("soulShieldEndDuration", 40f, 5f, 100f);
+            this.soulShieldParticleColor = builder.comment("The color of the particles a soul shield makes on creation").translation(CONFIG + "curios.soulShield.soulShieldParticleColor")
+                    .defineInRange("soulShieldParticleColor", 0x60f5fa, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            builder.pop(2);
+        }
+    }
+
     public static class Common
     {
         public ForgeConfigSpec.BooleanValue oreGeneration;
@@ -45,12 +63,16 @@ public class SoulPoweredConfig
 
         public ForgeConfigSpec.IntValue soulAmuletPoweredExtract;
 
+        public ForgeConfigSpec.IntValue soulShieldSoulsUse;
+
+        public ForgeConfigSpec.DoubleValue soulShieldBounceOffset;
+
         public Server(ForgeConfigSpec.Builder builder)
         {
-            builder.comment("Server Configurable Settings").push("soulParticle");
-            this.soulParticleSpeed = builder.comment("The speed at which the particle moves").translation(CONFIG + "soulParticle.soulParticleSpeed")
+            builder.comment("Server Configurable Settings").push("particle");
+            this.soulParticleSpeed = builder.comment("The speed at which the particle moves").translation(CONFIG + "particle.soulParticleSpeed")
                     .defineInRange("soulParticleSpeed", .2d, 0d, 1d);
-            this.soulParticleExpireDistance = builder.comment("The max distance that the particle with 'stay' near a player").translation(CONFIG + "soulParticle.soulParticleExpireDistance")
+            this.soulParticleExpireDistance = builder.comment("The max distance that the particle with 'stay' near a player").translation(CONFIG + "particle.soulParticleExpireDistance")
                     .defineInRange("soulParticleExpireDistance", .25d, 0d, 1d);
 
             builder.pop().push("curios");
@@ -60,7 +82,14 @@ public class SoulPoweredConfig
             this.soulAmuletPoweredExtract = builder.comment("The amount of power (rf/se) that is extracted from a Powered Soul Amulet").translation(CONFIG + "curios.soulAmuletPoweredExtract")
                     .defineInRange("soulAmuletPoweredExtract", 50, 0, 5000);
 
-            builder.pop();
+            builder.push("soulShield");
+            this.soulShieldSoulsUse = builder.comment("The amount of soul(s) that is extracted from the player").translation(CONFIG + "curios.soulShield.soulShieldSoulsUse")
+                    .defineInRange("soulShieldSoulsUse", 2, 0, 20);
+
+            this.soulShieldBounceOffset = builder.comment("How close a projectile appears to bounce off a Soul Shield").translation(CONFIG + "curios.soulShield.shieldBounceOffset")
+                    .defineInRange("shieldBounceOffset", .5d, 0d, 1d);
+
+            builder.pop(2);
         }
     }
 }

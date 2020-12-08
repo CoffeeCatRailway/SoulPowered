@@ -48,7 +48,7 @@ public class SoulHUDOverlayHandler
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
 
-        if (!CuriosIntegration.hasCurio(player, "necklace"))
+        if (!CuriosIntegration.hasCurio(player))
             return;
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {

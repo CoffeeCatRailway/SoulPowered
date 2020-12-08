@@ -16,7 +16,7 @@ import java.util.List;
  * @author CoffeeCatRailway
  * Created: 8/11/2020
  */
-public class SoulAmuletItem extends Item implements ISoulCurios, ISoulAmulet
+public class SoulAmuletItem extends Item implements ISoulAmulet
 {
     private final float range;
     private final float soulGatheringChance;
@@ -29,7 +29,7 @@ public class SoulAmuletItem extends Item implements ISoulCurios, ISoulAmulet
     }
 
     @Override
-    public void curioTick(String identifier, int index, LivingEntity livingEntity)
+    public void curioTick(ItemStack stack, String identifier, int index, LivingEntity livingEntity)
     {
     }
 

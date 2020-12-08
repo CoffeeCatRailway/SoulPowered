@@ -18,7 +18,7 @@ import java.util.List;
  * @author CoffeeCatRailway
  * Created: 25/11/2020
  */
-public interface ISoulAmulet
+public interface ISoulAmulet extends ISoulCurios
 {
     float getRange();
 
@@ -39,10 +39,10 @@ public interface ISoulAmulet
 
     default void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> info, ITooltipFlag flag)
     {
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_amulet.description"));
+        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + "." + stack.getItem().getRegistryName().getPath() + ".description"));
 
         CompoundNBT nbt = stack.getOrCreateTag();
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_amulet.range", nbt.getFloat("Range")));
+        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".curio.range", nbt.getFloat("Range")));
         info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_amulet.soul_gathering_chance", (int) (nbt.getFloat("SoulGatheringChance") * 100)));
     }
 }

@@ -15,12 +15,15 @@ import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.type.ISlotType;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * @author CoffeeCatRailway
@@ -30,15 +33,14 @@ public class CuriosIntegration
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Curios-Integration");
 
+    public static final Supplier<Optional<ISlotType>> NECKLACE = () -> CuriosApi.getSlotHelper().getSlotType("necklace");
+    public static final Supplier<Optional<ISlotType>> CHARM = () -> CuriosApi.getSlotHelper().getSlotType("charm");
+
     public static void onInterModComms(InterModEnqueueEvent event)
     {
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("necklace").build());
-        LOGGER.debug("Necklace slot registered");
-    }
-
-    public static ItemStack getCurioStack(PlayerEntity player, String slotName)
-    {
-        return getCurioStack(player, slotName, -1);
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("charm").build());
+        LOGGER.debug("Curios slots registered");
     }
 
     public static ItemStack getCurioStack(PlayerEntity player, String slotName, int slot)
@@ -55,17 +57,24 @@ public class CuriosIntegration
         return artifact.get();
     }
 
-    public static boolean hasCurio(PlayerEntity player, String slotName)
+    public static boolean hasCurio(PlayerEntity player)
     {
-        if (!CuriosApi.getSlotHelper().getSlotType(slotName).isPresent())
+        if (!NECKLACE.get().isPresent() && !CHARM.get().isPresent())
             return false;
-        for (int slot = 0; slot < CuriosApi.getSlotHelper().getSlotType(slotName).get().getSize(); slot++)
+        int i = 0;
+        for (int slot = 0; slot < NECKLACE.get().get().getSize(); slot++)
         {
-            ItemStack charm = getCurioStack(player, slotName, slot);
-            if (charm.getItem() instanceof ISoulAmulet)
-                return true;
+            ItemStack charm = getCurioStack(player, "necklace", slot);
+            if (charm.getItem() instanceof ISoulCurios)
+                i++;
         }
-        return false;
+        for (int slot = 0; slot < CHARM.get().get().getSize(); slot++)
+        {
+            ItemStack charm = getCurioStack(player, "charm", slot);
+            if (charm.getItem() instanceof ISoulCurios)
+                i++;
+        }
+        return i != 0;
     }
 
     public static ICapabilityProvider getCapability(ItemStack stack)

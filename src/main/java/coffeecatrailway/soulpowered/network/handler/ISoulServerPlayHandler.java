@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.network.handler;
 
+import coffeecatrailway.soulpowered.network.ActivateCurioMessage;
 import coffeecatrailway.soulpowered.network.SetRedstoneModeMessage;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -10,4 +11,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public interface ISoulServerPlayHandler
 {
     void handleSetRedstoneModeMessage(SetRedstoneModeMessage message, NetworkEvent.Context ctx);
+
+    void handleActivateCurioMessage(ActivateCurioMessage activateCurioMessage, NetworkEvent.Context ctx);
 }

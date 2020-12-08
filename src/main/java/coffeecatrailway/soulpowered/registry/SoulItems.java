@@ -66,6 +66,19 @@ public class SoulItems
     public static final RegistryEntry<SoulAmuletPoweredItem> SOUL_AMULET_POWERED = registerSoulAmulet("soul_amulet_powered", prop -> new SoulAmuletPoweredItem(prop, 2.5f, 1f),
             "Powered Soularium Soul Amulet", SOUL_METAL_INGOT::get, BATTERY::get, NonNullBiConsumer.noop());
 
+    public static final RegistryEntry<SoulShieldItem> SOUL_SHIELD = registerCurio(REGISTRATE.item("soul_shield", prop -> new SoulShieldItem(prop, 4f, 10f, 25f))
+            .tag(SoulData.TagItems.CURIOS_CHARM).defaultLang().model(NonNullBiConsumer.noop()).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .key('s', Items.SHIELD).key('b', SOUL_BOTTLE.get()).key('i', SOUL_METAL_INGOT.get()).patternLine("s").patternLine("b").patternLine("i")
+                    .addCriterion("has_shield", RegistrateRecipeProvider.hasItem(Items.SHIELD))
+                    .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SOUL_BOTTLE.get()))
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOUL_METAL_INGOT.get())).build(provider)).register(), "Uses souls to shield you");
+
+    private static <T extends Item> RegistryEntry<T> registerCurio(RegistryEntry<T> entry, String description)
+    {
+        SoulData.Lang.EXTRA_LANGS.put("item." + SoulPoweredMod.MOD_ID + "." + entry.getId().getPath() +  ".description", description);
+        return entry;
+    }
+
     private static <T extends Item> RegistryEntry<T> registerSoulAmulet(String id, NonNullFunction<Item.Properties, T> item, String name, Supplier<IItemProvider> ingot)
     {
         return registerSoulAmulet(id, item, name, ingot, () -> null, (ctx, provider) -> provider.handheld(ctx::getEntry, SoulPoweredMod.getLocation("item/soul_amulet_gem"))

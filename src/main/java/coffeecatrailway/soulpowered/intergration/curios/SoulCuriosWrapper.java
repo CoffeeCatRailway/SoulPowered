@@ -23,42 +23,43 @@ public class SoulCuriosWrapper implements ICurio
     @Override
     public void curioTick(String identifier, int index, LivingEntity livingEntity)
     {
-        ((ISoulCurios) stack.getItem()).curioTick(identifier, index, livingEntity);
+        ((ISoulCurios) this.stack.getItem()).curioTick(this.stack, identifier, index, livingEntity);
     }
 
     @Override
     public boolean canEquip(String identifier, LivingEntity livingEntity)
     {
-        return ((ISoulCurios) stack.getItem()).canEquip(identifier, livingEntity);
+        return ((ISoulCurios) this.stack.getItem()).canEquip(this.stack, identifier, livingEntity);
     }
 
     @Override
     public boolean canUnequip(String identifier, LivingEntity livingEntity)
     {
-        return ((ISoulCurios) stack.getItem()).canUnequip(identifier, livingEntity);
+        return ((ISoulCurios) this.stack.getItem()).canUnequip(this.stack, identifier, livingEntity);
     }
 
     @Override
     public void playRightClickEquipSound(LivingEntity livingEntity)
     {
-        ((ISoulCurios) stack.getItem()).playRightClickEquipSound(livingEntity);
+        ((ISoulCurios) this.stack.getItem()).playRightClickEquipSound(this.stack, livingEntity);
     }
 
     @Override
     public boolean canRightClickEquip()
     {
-        return ((ISoulCurios) stack.getItem()).canRightClickEquip();
+        return ((ISoulCurios) this.stack.getItem()).canRightClickEquip(this.stack);
     }
 
     @Override
     public boolean canRender(String identifier, int index, LivingEntity livingEntity)
     {
-        return ((ISoulCurios) stack.getItem()).canRender(identifier, index, livingEntity);
+        return ((ISoulCurios) this.stack.getItem()).canRender(this.stack, identifier, index, livingEntity);
     }
 
     @Override
     public void render(String identifier, int index, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
     {
-        ((ISoulCurios) stack.getItem()).render(identifier, index, matrixStack, renderTypeBuffer, light, livingEntity, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch);
+        if (this.canRender(identifier, index, livingEntity))
+            ((ISoulCurios) this.stack.getItem()).render(this.stack, identifier, index, matrixStack, renderTypeBuffer, light, livingEntity, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch);
     }
 }

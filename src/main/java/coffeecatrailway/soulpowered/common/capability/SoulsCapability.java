@@ -4,6 +4,7 @@ import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsChangeMessage;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -14,6 +15,8 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullConsumer;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
@@ -147,5 +150,15 @@ public class SoulsCapability
         {
             SoulsCapability.SOULS_CAP.readNBT(this.handler, null, nbt);
         }
+    }
+
+    public static LazyOptional<ISoulsHandler> get(Entity entity)
+    {
+        return entity.getCapability(SOULS_CAP, null);
+    }
+
+    public static void ifPresent(Entity entity, NonNullConsumer<? super ISoulsHandler> consumer)
+    {
+        get(entity).ifPresent(consumer);
     }
 }

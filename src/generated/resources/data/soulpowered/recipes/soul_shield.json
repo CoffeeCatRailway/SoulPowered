@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "s",
+    "b",
+    "i"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:shield"
+    },
+    "b": {
+      "item": "soulpowered:soul_bottle"
+    },
+    "i": {
+      "item": "soulpowered:soul_metal_ingot"
+    }
+  },
+  "result": {
+    "item": "soulpowered:soul_shield"
+  }
+}

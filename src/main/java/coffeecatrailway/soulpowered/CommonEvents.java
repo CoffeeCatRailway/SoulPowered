@@ -6,6 +6,7 @@ import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.item.EnergyItem;
 import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
+import coffeecatrailway.soulpowered.common.item.ISoulCurios;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
@@ -114,7 +115,7 @@ public class CommonEvents
             PlayerEntity player = (PlayerEntity) event.getSource().getTrueSource();
             World world = player.world;
 
-            if (!CuriosIntegration.hasCurio(player, "necklace"))
+            if (!CuriosIntegration.hasCurio(player))
                 return;
 
             for (int slot = 0; slot < CuriosApi.getSlotHelper().getSlotType("necklace").get().getSize(); slot++)
@@ -165,7 +166,7 @@ public class CommonEvents
         if (!(stack.getItem() instanceof GlassBottleItem))
             return;
 
-        if (!CuriosIntegration.hasCurio(player, "necklace"))
+        if (!CuriosIntegration.hasCurio(player))
             return;
 
         player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
