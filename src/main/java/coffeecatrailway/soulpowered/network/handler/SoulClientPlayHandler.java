@@ -18,7 +18,8 @@ public class SoulClientPlayHandler implements ISoulClientPlayHandler
     {
         ctx.enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().world.getEntityByID(message.getOwner());
-            entity.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> handler.setSouls(message.getSouls()));
+            if (entity != null)
+                SoulsCapability.ifPresent(entity, handler -> handler.setSouls(message.getSouls()));
         });
         ctx.setPacketHandled(true);
     }
@@ -28,12 +29,13 @@ public class SoulClientPlayHandler implements ISoulClientPlayHandler
     {
         ctx.enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().world.getEntityByID(message.getOwner());
-            entity.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
-                if (message.isRemove())
-                    handler.removeSouls(message.getAmount(), false);
-                else
-                    handler.addSouls(message.getAmount(), false);
-            });
+            if (entity != null)
+                SoulsCapability.ifPresent(entity, handler -> {
+                    if (message.isRemove())
+                        handler.removeSouls(message.getAmount(), false);
+                    else
+                        handler.addSouls(message.getAmount(), false);
+                });
         });
         ctx.setPacketHandled(true);
     }

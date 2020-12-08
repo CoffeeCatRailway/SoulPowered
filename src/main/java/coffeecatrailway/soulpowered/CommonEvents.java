@@ -69,7 +69,7 @@ public class CommonEvents
         PlayerEntity player = event.getPlayer();
         if (player instanceof ServerPlayerEntity)
         {
-            player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler ->
+            SoulsCapability.ifPresent(player, handler ->
                     SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(player.getEntityId(), handler.getSouls())));
             LOGGER.debug("Capability - Player logged in, syncing souls");
         }
@@ -82,7 +82,7 @@ public class CommonEvents
             return;
         PlayerEntity original = event.getOriginal();
         PlayerEntity player = event.getPlayer();
-        original.getCapability(SoulsCapability.SOULS_CAP).ifPresent(originalHandler -> player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> handler.setSouls(originalHandler.getSouls())));
+        SoulsCapability.ifPresent(original, originalHandler -> SoulsCapability.ifPresent(player, handler -> handler.setSouls(originalHandler.getSouls())));
         LOGGER.debug("Capability - Updated souls on death");
     }
 
@@ -93,14 +93,14 @@ public class CommonEvents
         PlayerEntity player = event.getPlayer();
 
         if (player instanceof ServerPlayerEntity)
-            target.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(target.getEntityId(), handler.getSouls())));
+            SoulsCapability.ifPresent(target, handler -> SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(target.getEntityId(), handler.getSouls())));
     }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
         PlayerEntity player = event.player;
-        player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
+        SoulsCapability.ifPresent(player, handler -> {
             if (handler.getSouls() == 20 && !player.world.isRemote())
                 SoulParticle.spawnParticles(player.world, player, player.getPositionVec().add(0d, 2d, 0d), 1, true);
         });
@@ -132,13 +132,10 @@ public class CommonEvents
 
                         if (player.getPosition().withinDistance(entityKilled.getPosition(), nbt.getFloat("Range") + .5f) && world.rand.nextFloat() < nbt.getFloat("SoulGatheringChance"))
                         {
-                            player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(playerHandler -> {
+                            SoulsCapability.ifPresent(player, playerHandler -> {
                                 int soulCount = 1;
-                                if (entityKilled instanceof PlayerEntity && entityKilled.getCapability(SoulsCapability.SOULS_CAP).isPresent())
-                                {
-                                    ISoulsHandler handler = entityKilled.getCapability(SoulsCapability.SOULS_CAP).orElse(new SoulsCapability.SoulsWrapper());
-                                    soulCount = player.world.rand.nextInt(Math.max(1, handler.getSouls()) / 2) + 1;
-                                }
+                                if (entityKilled instanceof PlayerEntity && SoulsCapability.isPresent(entityKilled))
+                                    soulCount = player.world.rand.nextInt(Math.max(1, SoulsCapability.get(entityKilled).orElse(SoulsCapability.EMPTY).getSouls()) / 2) + 1;
 
                                 playerHandler.addSouls(1, false);
                                 if (!world.isRemote)
@@ -168,7 +165,7 @@ public class CommonEvents
         if (!CuriosIntegration.hasCurio(player))
             return;
 
-        player.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler -> {
+        SoulsCapability.ifPresent(player, handler -> {
             if (handler.getSouls() > 1)
             {
                 if (handler.removeSouls(2, false) && !player.isCreative())
