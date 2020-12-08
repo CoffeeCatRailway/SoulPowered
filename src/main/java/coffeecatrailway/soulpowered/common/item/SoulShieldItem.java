@@ -4,7 +4,6 @@ import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.entity.SoulShieldEntity;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +17,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 import java.awt.*;

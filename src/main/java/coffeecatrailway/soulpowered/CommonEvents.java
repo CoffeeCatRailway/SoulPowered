@@ -6,7 +6,6 @@ import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.item.EnergyItem;
 import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
-import coffeecatrailway.soulpowered.common.item.ISoulCurios;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;

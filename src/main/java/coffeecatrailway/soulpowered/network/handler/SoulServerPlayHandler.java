@@ -1,7 +1,6 @@
 package coffeecatrailway.soulpowered.network.handler;
 
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergyStorageContainer;
-import coffeecatrailway.soulpowered.common.item.ISoulCurios;
 import coffeecatrailway.soulpowered.common.item.SoulShieldItem;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
