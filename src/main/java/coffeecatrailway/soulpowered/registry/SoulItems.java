@@ -2,10 +2,7 @@ package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
-import coffeecatrailway.soulpowered.common.item.EnergyItem;
-import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
-import coffeecatrailway.soulpowered.common.item.SoulAmuletPoweredItem;
-import coffeecatrailway.soulpowered.common.item.SoulBottleItem;
+import coffeecatrailway.soulpowered.common.item.*;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
@@ -44,7 +41,7 @@ public class SoulItems
                     .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_BOTTLE.get())).build(provider)).register();
 
     // Ingots
-    public static final RegistryEntry<Item> SOUL_METAL_INGOT = REGISTRATE.item("soul_metal_ingot", Item::new).lang("Soularium").defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
+    public static final RegistryEntry<Item> SOUL_METAL_INGOT = REGISTRATE.item("soul_metal_ingot", Item::new).lang("Soulium").defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
             .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOUL_METAL_BLOCK.get()), ctx::getEntry, 1, 9)).register();
 
     public static final RegistryEntry<Item> COPPER_INGOT = REGISTRATE.item("copper_ingot", Item::new).defaultLang().defaultModel()
@@ -62,9 +59,9 @@ public class SoulItems
     public static final RegistryEntry<SoulAmuletItem> SOUL_AMULET_IRON = registerSoulAmulet("soul_amulet_iron", prop -> new SoulAmuletItem(prop, 1.5f, .25f),
             "Iron Soul Amulet", () -> Items.IRON_INGOT);
     public static final RegistryEntry<SoulAmuletItem> SOUL_AMULET = registerSoulAmulet("soul_amulet_soul_metal", prop -> new SoulAmuletItem(prop, 2f, .5f),
-            "Soularium Soul Amulet", SOUL_METAL_INGOT::get);
+            "Soulium Soul Amulet", SOUL_METAL_INGOT::get);
     public static final RegistryEntry<SoulAmuletPoweredItem> SOUL_AMULET_POWERED = registerSoulAmulet("soul_amulet_powered", prop -> new SoulAmuletPoweredItem(prop, 2.5f, 1f),
-            "Powered Soularium Soul Amulet", SOUL_METAL_INGOT::get, BATTERY::get, NonNullBiConsumer.noop());
+            "Powered Soulium Soul Amulet", SOUL_METAL_INGOT::get, BATTERY::get, NonNullBiConsumer.noop());
 
     public static final RegistryEntry<SoulShieldItem> SOUL_SHIELD = registerCurio(REGISTRATE.item("soul_shield", prop -> new SoulShieldItem(prop, 4f, 10f, 25f))
             .tag(SoulData.TagItems.CURIOS_CHARM).defaultLang().model(NonNullBiConsumer.noop()).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
@@ -87,7 +84,7 @@ public class SoulItems
 
     private static <T extends Item> RegistryEntry<T> registerSoulAmulet(String id, NonNullFunction<Item.Properties, T> item, String name, Supplier<IItemProvider> ingot, Supplier<IItemProvider> top, NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelProvider> model)
     {
-        return REGISTRATE.item(id, item).tag(SoulData.TagItems.CURIOS_NECKLACE).lang(name).model(model)
+        return registerCurio(REGISTRATE.item(id, item).tag(SoulData.TagItems.CURIOS_NECKLACE).lang(name).model(model)
                 .recipe((ctx, provider) -> {
                     boolean flag = top.get() != null;
                     ShapedRecipeBuilder builder = ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', ingot.get()).key('s', SOUL_BOTTLE.get());
@@ -103,7 +100,7 @@ public class SoulItems
                     if (flag)
                         builder.addCriterion("has_top", RegistrateRecipeProvider.hasItem(top.get()));
                     builder.build(provider);
-                }).register();
+                }).register(), "Allows you to gather souls from your kills");
     }
 
     public static void load()
