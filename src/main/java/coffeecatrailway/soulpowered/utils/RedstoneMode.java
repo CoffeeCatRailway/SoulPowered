@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * @author CoffeeCatRailway
  * Created: 13/11/2020
+ * Original: https://github.com/SilentChaos512/Silents-Mechanisms
  */
 public enum RedstoneMode
 {
