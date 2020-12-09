@@ -21,7 +21,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = "${project.version}-${project.mcVersion}"
-group = project.group + '.' + project.modId
+group = 'coffeeCatRailway.' + project.modId
 archivesBaseName = project.modId
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
