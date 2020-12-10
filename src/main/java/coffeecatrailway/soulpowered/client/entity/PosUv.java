@@ -1,4 +1,4 @@
-package coffeecatrailway.soulpowered.utils;
+package coffeecatrailway.soulpowered.client.entity;
 
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3f;

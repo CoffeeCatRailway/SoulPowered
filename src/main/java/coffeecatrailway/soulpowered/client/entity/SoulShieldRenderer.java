@@ -3,7 +3,6 @@ package coffeecatrailway.soulpowered.client.entity;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.entity.SoulShieldEntity;
 import coffeecatrailway.soulpowered.common.item.SoulShieldItem;
-import coffeecatrailway.soulpowered.utils.PosUv;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
