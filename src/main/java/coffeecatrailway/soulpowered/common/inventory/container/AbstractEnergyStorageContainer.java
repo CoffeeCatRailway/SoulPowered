@@ -77,7 +77,7 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
     {
         int max = this.getMaxEnergyStored();
         int energyClamped = MathHelper.clamp(this.getEnergyStored(), 0, max);
-        return max > 0 ? 50 * energyClamped / max : 0;
+        return max > 0 ? 52 * energyClamped / max : 0;
     }
 
     public RedstoneMode getRedstoneMode()

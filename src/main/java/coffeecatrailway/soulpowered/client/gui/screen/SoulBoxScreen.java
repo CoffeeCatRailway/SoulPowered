@@ -3,6 +3,7 @@ package coffeecatrailway.soulpowered.client.gui.screen;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -56,8 +57,6 @@ public class SoulBoxScreen extends AbstractMachineScreen<SoulBoxContainer>
         int yPos = (this.height - this.ySize) / 2;
 
         // Energy meter
-        int energyBarHeight = this.container.getEnergyBarHeight();
-        if (energyBarHeight > 0)
-            blit(matrixStack, xPos + 75, yPos + 68 - energyBarHeight, 176, 50 - energyBarHeight, 26, energyBarHeight);
+        EnergyUtils.renderWideEnergyBar(matrixStack, xPos + 74, yPos + 67, this.container.getEnergyBarHeight());
     }
 }
