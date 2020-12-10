@@ -32,7 +32,7 @@ public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageConta
     protected void init()
     {
         super.init();
-        this.addButton(new RedstoneModeButton(this.container, this.guiLeft - 16, this.guiTop, 16, 16, button -> {
+        this.addButton(new RedstoneModeButton(this.container, this.guiLeft - 22, this.guiTop, 26, 26, button -> {
             RedstoneMode mode = ((RedstoneModeButton) button).getMode();
             SoulMessageHandler.PLAY.sendToServer(new SetRedstoneModeMessage(mode));
         }));

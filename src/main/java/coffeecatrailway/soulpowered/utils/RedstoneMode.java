@@ -1,7 +1,5 @@
 package coffeecatrailway.soulpowered.utils;
 
-import net.minecraft.util.ResourceLocation;
-
 /**
  * @author CoffeeCatRailway
  * Created: 13/11/2020
@@ -9,16 +7,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public enum RedstoneMode
 {
-    IGNORED(new ResourceLocation("textures/item/barrier.png")),
-    ON(new ResourceLocation("textures/block/redstone_torch.png")),
-    OFF(new ResourceLocation("textures/block/redstone_torch_off.png"));
-
-    private final ResourceLocation texture;
-
-    RedstoneMode(ResourceLocation texture)
-    {
-        this.texture = texture;
-    }
+    IGNORED, ON, OFF;
 
     public static RedstoneMode byOrdinal(int ordinal, RedstoneMode other)
     {
@@ -39,10 +28,5 @@ public enum RedstoneMode
             default:
                 return true;
         }
-    }
-
-    public ResourceLocation getTexture()
-    {
-        return texture;
     }
 }

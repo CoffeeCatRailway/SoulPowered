@@ -1,11 +1,13 @@
 package coffeecatrailway.soulpowered.client.gui.screen.button;
 
+import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergyStorageContainer;
 import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 
 /**
@@ -14,6 +16,8 @@ import net.minecraft.util.text.StringTextComponent;
  */
 public class RedstoneModeButton extends Button
 {
+    public static final ResourceLocation REDSTONE_MODE = SoulPoweredMod.getLocation("textures/gui/container/redstone_mode.png");
+
     private final AbstractEnergyStorageContainer<?> container;
 
     public RedstoneModeButton(AbstractEnergyStorageContainer<?> container, int x, int y, int width, int height, IPressable onPress)
@@ -42,10 +46,25 @@ public class RedstoneModeButton extends Button
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindTexture(this.container.getRedstoneMode().getTexture());
+        minecraft.getTextureManager().bindTexture(REDSTONE_MODE);
         GlStateManager.disableDepthTest();
 
-        blit(matrixStack, this.x, this.y, 0, 0, this.width, this.height, 16, 16);
+        blit(matrixStack, this.x, this.y, this.width, this.height, 0, 0, 26, 26, 48, 48);
+        int offsetX = 6;
+        int offsetY = 4;
+        switch (this.container.getRedstoneMode())
+        {
+            case IGNORED:
+                blit(matrixStack, this.x + offsetX, this.y + offsetY, 16, 16, 32, 0, 16, 16, 48, 48);
+                break;
+            case ON:
+                blit(matrixStack, this.x + offsetX, this.y + offsetY, 16, 16, 32, 32, 16, 16, 48, 48);
+                break;
+            case OFF:
+                blit(matrixStack, this.x + offsetX, this.y + offsetY, 16, 16, 32, 16, 16, 16, 48, 48);
+                break;
+        }
+
         GlStateManager.enableDepthTest();
     }
 }
