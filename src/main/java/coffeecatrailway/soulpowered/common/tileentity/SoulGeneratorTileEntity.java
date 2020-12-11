@@ -2,8 +2,8 @@ package coffeecatrailway.soulpowered.common.tileentity;
 
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulGeneratorContainer;
+import coffeecatrailway.soulpowered.common.item.ISoulFuel;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
-import coffeecatrailway.soulpowered.utils.BurnTimeUtils;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
     protected void consumeFuel()
     {
         ItemStack fuel = this.getStackInSlot(0);
-        this.burnTime = BurnTimeUtils.getBurnTime(fuel);
+        this.burnTime = ISoulFuel.getBurnTime(fuel);
         if (this.burnTime > 0)
         {
             this.totalBurnTime = this.burnTime;
