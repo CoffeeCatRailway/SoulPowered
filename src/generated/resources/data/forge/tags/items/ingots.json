@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#forge:ingots/copper",
-    "soulpowered:soul_metal_ingot",
+    "soulpowered:soulium_ingot",
     "soulpowered:copper_ingot"
   ]
 }

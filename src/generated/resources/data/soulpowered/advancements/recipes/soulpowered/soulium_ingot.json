@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:soul_metal_block"
+      "soulpowered:soulium_ingot"
     ]
   },
   "criteria": {
-    "has_soul_metal_ingot": {
+    "has_soulium_block": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:soul_metal_ingot"
+            "item": "soulpowered:soulium_block"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:soul_metal_block"
+        "recipe": "soulpowered:soulium_ingot"
       }
     }
   },
   "requirements": [
     [
-      "has_soul_metal_ingot",
+      "has_soulium_block",
       "has_the_recipe"
     ]
   ]

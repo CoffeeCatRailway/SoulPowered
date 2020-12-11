@@ -7,10 +7,10 @@
   ],
   "key": {
     "X": {
-      "item": "soulpowered:soul_metal_ingot"
+      "item": "soulpowered:soulium_ingot"
     }
   },
   "result": {
-    "item": "soulpowered:soul_metal_block"
+    "item": "soulpowered:soulium_block"
   }
 }

@@ -34,15 +34,15 @@ public class SoulItems
     // Tech
     public static final RegistryEntry<EnergyItem> BATTERY = REGISTRATE.item("battery", prop -> new EnergyItem(prop, 200_000, 10_000))
             .properties(prop -> prop.maxStackSize(1).rarity(Rarity.UNCOMMON)).defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-                    .key('s', SoulItems.SOUL_METAL_INGOT.get()).key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SOUL_BOTTLE.get())
+                    .key('s', SoulItems.SOULIUM_INGOT.get()).key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SOUL_BOTTLE.get())
                     .patternLine("scs").patternLine("sbs").patternLine("scs")
-                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_METAL_INGOT.get()))
+                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
                     .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
                     .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_BOTTLE.get())).build(provider)).register();
 
     // Ingots
-    public static final RegistryEntry<Item> SOUL_METAL_INGOT = REGISTRATE.item("soul_metal_ingot", Item::new).lang("Soulium").defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
-            .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOUL_METAL_BLOCK.get()), ctx::getEntry, 1, 9)).register();
+    public static final RegistryEntry<Item> SOULIUM_INGOT = REGISTRATE.item("soulium_ingot", Item::new).defaultLang().defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
+            .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOULIUM_BLOCK.get()), ctx::getEntry, 1, 9)).register();
 
     public static final RegistryEntry<Item> COPPER_INGOT = REGISTRATE.item("copper_ingot", Item::new).defaultLang().defaultModel()
             .tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS, SoulData.TagItems.INGOTS_COPPER)
@@ -65,10 +65,10 @@ public class SoulItems
 
     public static final RegistryEntry<SoulShieldItem> SOUL_SHIELD = registerCurio(REGISTRATE.item("soul_shield", prop -> new SoulShieldItem(prop, 4f, 10f, 25f))
             .tag(SoulData.TagItems.CURIOS_CHARM).defaultLang().model(NonNullBiConsumer.noop()).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-                    .key('s', Items.SHIELD).key('b', SOUL_BOTTLE.get()).key('i', SOUL_METAL_INGOT.get()).patternLine("s").patternLine("b").patternLine("i")
+                    .key('s', Items.SHIELD).key('b', SOUL_BOTTLE.get()).key('i', SOULIUM_INGOT.get()).patternLine("s").patternLine("b").patternLine("i")
                     .addCriterion("has_shield", RegistrateRecipeProvider.hasItem(Items.SHIELD))
                     .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SOUL_BOTTLE.get()))
-                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOUL_METAL_INGOT.get())).build(provider)).register(), "Uses souls to shield you");
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get())).build(provider)).register(), "Uses souls to shield you");
 
     private static <T extends Item> RegistryEntry<T> registerCurio(RegistryEntry<T> entry, String description)
     {

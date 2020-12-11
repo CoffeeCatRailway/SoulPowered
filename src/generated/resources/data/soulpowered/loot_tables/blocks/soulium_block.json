@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "soulpowered:soul_metal_block"
+          "name": "soulpowered:soulium_block"
         }
       ],
       "conditions": [

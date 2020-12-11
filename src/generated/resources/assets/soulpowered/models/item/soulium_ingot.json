@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "soulpowered:item/soul_metal_ingot"
+    "layer0": "soulpowered:item/soulium_ingot"
   }
 }
