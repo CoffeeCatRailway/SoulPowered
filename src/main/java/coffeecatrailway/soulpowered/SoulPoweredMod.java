@@ -52,7 +52,7 @@ public class SoulPoweredMod
         @Override
         public ItemStack createIcon()
         {
-            return new ItemStack(SoulItems.SOUL_AMULET.get());
+            return new ItemStack(SoulItems.SOULIUM_SOUL_AMULET.get());
         }
     };
     public static final String KEY_CATEGORY = "key." + MOD_ID + ".category";
@@ -99,7 +99,7 @@ public class SoulPoweredMod
 
     private void onClientSetup(FMLClientSetupEvent event)
     {
-        ItemModelsProperties.registerProperty(SoulItems.SOUL_AMULET_POWERED.get(), getLocation("powered"), (stack, world, entity) ->
+        ItemModelsProperties.registerProperty(SoulItems.POWERED_SOULIUM_SOUL_AMULET.get(), getLocation("powered"), (stack, world, entity) ->
                 EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f);
         SoulHUDOverlayHandler.init();
         ClientRegistry.registerKeyBinding(ACTIVATE_CURIO);

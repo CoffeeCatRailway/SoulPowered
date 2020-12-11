@@ -1,8 +1,11 @@
 {
   "replace": false,
   "values": [
-    "soulpowered:soul_amulet_iron",
-    "soulpowered:soul_amulet_soul_metal",
-    "soulpowered:soul_amulet_powered"
+    "soulpowered:gold_soul_amulet",
+    "soulpowered:copper_soul_amulet",
+    "soulpowered:iron_soul_amulet",
+    "soulpowered:diamond_soul_amulet",
+    "soulpowered:soulium_soul_amulet",
+    "soulpowered:powered_soul_amulet"
   ]
 }

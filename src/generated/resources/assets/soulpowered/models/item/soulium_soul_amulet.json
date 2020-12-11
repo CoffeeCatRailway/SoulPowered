@@ -2,6 +2,6 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "soulpowered:item/soul_amulet_gem",
-    "layer1": "soulpowered:item/soul_amulet_soul_metal"
+    "layer1": "soulpowered:item/soulium_soul_amulet"
   }
 }

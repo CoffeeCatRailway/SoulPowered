@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "soulpowered:item/soul_amulet_gem",
+    "layer1": "soulpowered:item/diamond_soul_amulet"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    "i i",
+    " s "
+  ],
+  "key": {
+    "i": {
+      "item": "soulpowered:copper_ingot"
+    },
+    "s": {
+      "item": "soulpowered:soul_bottle"
+    }
+  },
+  "result": {
+    "item": "soulpowered:copper_soul_amulet"
+  }
+}

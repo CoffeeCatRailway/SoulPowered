@@ -1,11 +1,14 @@
 package coffeecatrailway.soulpowered.common.item;
 
+import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,6 +27,8 @@ import java.util.List;
  */
 public class SoulAmuletPoweredItem extends EnergyItem implements ISoulAmulet
 {
+    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/models/powered_soul_amulet.png");
+
     private final float range;
     private final float soulGatheringChance;
 
@@ -76,5 +81,17 @@ public class SoulAmuletPoweredItem extends EnergyItem implements ISoulAmulet
     public float getSoulGatheringChance()
     {
         return this.soulGatheringChance;
+    }
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return TEXTURE;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack)
+    {
+        return EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0;
     }
 }

@@ -91,7 +91,12 @@
         {
           "type": "minecraft:item",
           "weight": 3,
-          "name": "soulpowered:soul_amulet_iron"
+          "name": "soulpowered:gold_soul_amulet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "soulpowered:copper_soul_amulet"
         }
       ]
     }

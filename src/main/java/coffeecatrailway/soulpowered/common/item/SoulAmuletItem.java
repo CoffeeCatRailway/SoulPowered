@@ -1,13 +1,22 @@
 package coffeecatrailway.soulpowered.common.item;
 
+import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.client.entity.model.AmuletModel;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,12 +29,14 @@ public class SoulAmuletItem extends Item implements ISoulAmulet
 {
     private final float range;
     private final float soulGatheringChance;
+    private final ResourceLocation modelTexture;
 
-    public SoulAmuletItem(Properties properties, float range, float soulGatheringChance)
+    public SoulAmuletItem(Properties properties, float range, float soulGatheringChance, ResourceLocation modelTexture)
     {
         super(properties);
         this.range = range;
         this.soulGatheringChance = soulGatheringChance;
+        this.modelTexture = modelTexture;
     }
 
     @Override
@@ -56,5 +67,11 @@ public class SoulAmuletItem extends Item implements ISoulAmulet
     public float getSoulGatheringChance()
     {
         return this.soulGatheringChance;
+    }
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return this.modelTexture;
     }
 }

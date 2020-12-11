@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:soul_amulet_iron"
+      "soulpowered:powered_soul_amulet"
     ]
   },
   "criteria": {
@@ -21,7 +21,17 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:iron_ingot"
+            "item": "soulpowered:soulium_ingot"
+          }
+        ]
+      }
+    },
+    "has_top": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:battery"
           }
         ]
       }
@@ -29,7 +39,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:soul_amulet_iron"
+        "recipe": "soulpowered:powered_soul_amulet"
       }
     }
   },
@@ -37,6 +47,7 @@
     [
       "has_soul_bottle",
       "has_ingot",
+      "has_top",
       "has_the_recipe"
     ]
   ]

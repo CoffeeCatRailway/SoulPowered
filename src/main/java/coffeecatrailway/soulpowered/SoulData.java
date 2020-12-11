@@ -146,7 +146,9 @@ public class SoulData
                                     .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
                             .addEntry(ItemLootEntry.builder(Items.GOLDEN_SWORD)
                                     .weight(5))
-                            .addEntry(ItemLootEntry.builder(SoulItems.SOUL_AMULET_IRON.get())
+                            .addEntry(ItemLootEntry.builder(SoulItems.GOLD_SOUL_AMULET.get())
+                                    .weight(3))
+                            .addEntry(ItemLootEntry.builder(SoulItems.COPPER_SOUL_AMULET.get())
                                     .weight(3)))));
         }
     }
