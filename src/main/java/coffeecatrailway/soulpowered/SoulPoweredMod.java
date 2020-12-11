@@ -95,6 +95,9 @@ public class SoulPoweredMod
         OtherRegistries.load(bus);
         SoulWorldGen.load(bus);
         SoulEntities.load();
+
+//        if (ModList.get().isLoaded("tconstruct"))
+//            bus.register(new SoulTinkerFluids());
     }
 
     private void onClientSetup(FMLClientSetupEvent event)

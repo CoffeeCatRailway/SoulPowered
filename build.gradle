@@ -89,7 +89,7 @@ repositories {
     maven { // Curios
         url = "https://maven.theillusivec4.top/"
     }
-    maven { // JustEnoughItems
+    maven { // JustEnoughItems, Tinkers, Mantle
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven { // Registrate
@@ -110,6 +110,12 @@ dependencies {
 
 //    runtimeOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}")
 //    compileOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}:api")
+
+    runtimeOnly fg.deobf("slimeknights.mantle:Mantle:${project.mantleVersion}")
+    compileOnly fg.deobf("slimeknights.mantle:Mantle:${project.mantleVersion}")
+
+    runtimeOnly fg.deobf("slimeknights.tconstruct:TConstruct:${project.tinkersVersion}")
+    compileOnly fg.deobf("slimeknights.tconstruct:TConstruct:${project.tinkersVersion}")
 
     def registrate = "com.tterrag.registrate:Registrate:MC${project.registrateVersion}"
     implementation fg.deobf(registrate)
