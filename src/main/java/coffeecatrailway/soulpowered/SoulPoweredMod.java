@@ -56,7 +56,7 @@ public class SoulPoweredMod
         }
     };
     public static final String KEY_CATEGORY = "key." + MOD_ID + ".category";
-    public static final KeyBinding ACTIVATE_CURIO = new KeyBinding("key." + MOD_ID + ".activate_curio", GLFW.GLFW_KEY_X, KEY_CATEGORY);
+    public static final KeyBinding ACTIVATE_CURIO = new KeyBinding("key." + MOD_ID + ".activate_curio", GLFW.GLFW_KEY_H, KEY_CATEGORY);
 
     public SoulPoweredMod()
     {
