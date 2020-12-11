@@ -108,8 +108,8 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curiosVersion}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${project.curiosVersion}:api")
 
-//    runtimeOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}")
-//    compileOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}:api")
 
     def registrate = "com.tterrag.registrate:Registrate:MC${project.registrateVersion}"
     implementation fg.deobf(registrate)
