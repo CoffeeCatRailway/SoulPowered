@@ -92,9 +92,12 @@ repositories {
     maven { // JustEnoughItems
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { // Registrate
+    maven { // Top, Registrate
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
+    }
+    maven { // Hwyla
+        url = "https://maven.tehnut.info"
     }
     maven { // Sonar
         name = "Jitpack"
@@ -110,6 +113,12 @@ dependencies {
 
     runtimeOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}")
     compileOnly fg.deobf("mezz.jei:jei-${project.jeiVersion}:api")
+
+    compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${project.topVersion}:api")
+    runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${project.topVersion}")
+
+    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${project.hwylaVersion}:api")
+    runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${project.hwylaVersion}")
 
     def registrate = "com.tterrag.registrate:Registrate:MC${project.registrateVersion}"
     implementation fg.deobf(registrate)
