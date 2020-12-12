@@ -50,7 +50,7 @@ public class SoulShieldEntity extends Entity
     public SoulShieldEntity(World world, PlayerEntity player, ItemStack stack, float durationInTicks)
     {
         super(SoulEntities.SOUL_SHIELD.get(), world);
-        this.setPosition(player.getPositionVec().x, player.getPositionVec().y, player.getPositionVec().z);
+        this.setPositionAndRotation(player.getPositionVec().x, player.getPositionVec().y, player.getPositionVec().z, player.rotationYaw, player.rotationPitch);
         this.setShieldStack(stack.copy());
         this.setDuration(durationInTicks);
     }
