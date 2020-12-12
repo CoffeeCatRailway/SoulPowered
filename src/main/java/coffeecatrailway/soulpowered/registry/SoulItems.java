@@ -66,7 +66,7 @@ public class SoulItems
                     SoulPoweredMod.getLocation("textures/models/iron_soul_amulet.png")), "Iron Soul Amulet", () -> Items.IRON_INGOT);
 
     public static final RegistryEntry<SoulAmuletItem> DIAMOND_SOUL_AMULET = registerSoulAmulet("diamond_soul_amulet", prop -> new SoulAmuletItem(prop, 1.75f, .5f,
-                    SoulPoweredMod.getLocation("textures/models/diamond_soul_amulet.png")), "Diamond Soul Amulet", () -> Items.IRON_INGOT);
+                    SoulPoweredMod.getLocation("textures/models/diamond_soul_amulet.png")), "Diamond Soul Amulet", () -> Items.DIAMOND);
 
     public static final RegistryEntry<SoulAmuletItem> SOULIUM_SOUL_AMULET = registerSoulAmulet("soulium_soul_amulet", prop -> new SoulAmuletItem(prop, 2f, .75f,
                     SoulPoweredMod.getLocation("textures/models/soulium_soul_amulet.png")), "Soulium Soul Amulet", SOULIUM_INGOT::get);
