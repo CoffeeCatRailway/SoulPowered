@@ -59,20 +59,20 @@ public class SoulItems
     public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel()
             .tag(SoulData.TagItems.SOUL_GENERATOR_FUEL).register();
 
-    public static final RegistryEntry<SoulAmuletItem> GOLD_SOUL_AMULET = registerSoulAmulet("gold_soul_amulet", prop -> new SoulAmuletItem(prop, 1.25f, .1f,
+    public static final RegistryEntry<SoulAmuletItem> GOLD_SOUL_AMULET = registerSoulAmulet("gold_soul_amulet", prop -> new SoulAmuletItem(prop, ItemTier.GOLD, 1.5f, .1f,
                     SoulPoweredMod.getLocation("textures/models/gold_soul_amulet.png")), "Golden Soul Amulet", () -> Items.GOLD_INGOT)
             .tag(ItemTags.PIGLIN_LOVED).register();
 
-    public static final RegistryEntry<SoulAmuletItem> COPPER_SOUL_AMULET = registerSoulAmulet("copper_soul_amulet", prop -> new SoulAmuletItem(prop, 1.5f, .15f,
+    public static final RegistryEntry<SoulAmuletItem> COPPER_SOUL_AMULET = registerSoulAmulet("copper_soul_amulet", prop -> new SoulAmuletItem(prop, 100, 1.5f, .15f,
                     SoulPoweredMod.getLocation("textures/models/copper_soul_amulet.png")), "Copper Soul Amulet", COPPER_INGOT::get).register();
 
-    public static final RegistryEntry<SoulAmuletItem> IRON_SOUL_AMULET = registerSoulAmulet("iron_soul_amulet", prop -> new SoulAmuletItem(prop, 1.5f, .25f,
+    public static final RegistryEntry<SoulAmuletItem> IRON_SOUL_AMULET = registerSoulAmulet("iron_soul_amulet", prop -> new SoulAmuletItem(prop, ItemTier.IRON, 1.75f, .25f,
                     SoulPoweredMod.getLocation("textures/models/iron_soul_amulet.png")), "Iron Soul Amulet", () -> Items.IRON_INGOT).register();
 
-    public static final RegistryEntry<SoulAmuletItem> DIAMOND_SOUL_AMULET = registerSoulAmulet("diamond_soul_amulet", prop -> new SoulAmuletItem(prop, 1.75f, .5f,
+    public static final RegistryEntry<SoulAmuletItem> DIAMOND_SOUL_AMULET = registerSoulAmulet("diamond_soul_amulet", prop -> new SoulAmuletItem(prop, ItemTier.DIAMOND, 2f, .5f,
                     SoulPoweredMod.getLocation("textures/models/diamond_soul_amulet.png")), "Diamond Soul Amulet", () -> Items.DIAMOND).register();
 
-    public static final RegistryEntry<SoulAmuletItem> SOULIUM_SOUL_AMULET = registerSoulAmulet("soulium_soul_amulet", prop -> new SoulAmuletItem(prop, 2f, .75f,
+    public static final RegistryEntry<SoulAmuletItem> SOULIUM_SOUL_AMULET = registerSoulAmulet("soulium_soul_amulet", prop -> new SoulAmuletItem(prop, 1750, 2.5f, .75f,
                     SoulPoweredMod.getLocation("textures/models/soulium_soul_amulet.png")), "Soulium Soul Amulet", SOULIUM_INGOT::get).register();
 
     public static final RegistryEntry<SoulAmuletPoweredItem> POWERED_SOULIUM_SOUL_AMULET = registerSoulAmulet("powered_soulium_soul_amulet", prop -> new SoulAmuletPoweredItem(prop, 3f, 1f),

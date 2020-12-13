@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/handheld",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "soulpowered:item/soul_amulet_gem",
     "layer1": "soulpowered:item/copper_soul_amulet"
