@@ -61,6 +61,11 @@ public final class EnergyUtils
         return !stack.isEmpty() ? stack.getCapability(CapabilityEnergy.ENERGY, null) : LazyOptional.empty();
     }
 
+    public static LazyOptional<IEnergyStorage> getIfPresent(ItemStack stack)
+    {
+        return isPresent(stack) ? get(stack) : LazyOptional.empty();
+    }
+
     public static boolean isPresent(ItemStack stack)
     {
         return get(stack).isPresent();

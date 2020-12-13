@@ -1,7 +1,6 @@
 package coffeecatrailway.soulpowered;
 
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
-import coffeecatrailway.soulpowered.common.capability.ISoulsHandler;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.item.EnergyItem;
@@ -122,31 +121,32 @@ public class CommonEvents
                 ItemStack charm = CuriosIntegration.getCurioStack(player, "necklace", slot);
                 if (charm.getItem() instanceof ISoulAmulet)
                 {
-                    if (!EnergyUtils.isPresent(charm))
+                    boolean isPowered = EnergyUtils.isPresent(charm);
+                    IEnergyStorage energy = EnergyUtils.getIfPresent(charm).orElse(EnergyUtils.EMPTY);
+                    if (isPowered && energy.canExtract() && energy.getEnergyStored() < SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get())
                         return;
-                    IEnergyStorage energy = EnergyUtils.get(charm).orElse(EnergyUtils.EMPTY);
-                    if (energy.canExtract() && energy.getEnergyStored() > SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get())
+
+                    LivingEntity entityKilled = event.getEntityLiving();
+                    CompoundNBT nbt = charm.getOrCreateTag();
+
+                    if (player.getPosition().withinDistance(entityKilled.getPosition(), nbt.getFloat("Range") + .5f) && world.rand.nextFloat() < nbt.getFloat("SoulGatheringChance"))
                     {
-                        LivingEntity entityKilled = event.getEntityLiving();
-                        CompoundNBT nbt = charm.getOrCreateTag();
+                        SoulsCapability.ifPresent(player, playerHandler -> {
+                            int soulCount = 1;
+                            if (entityKilled instanceof PlayerEntity && SoulsCapability.isPresent(entityKilled))
+                                soulCount = player.world.rand.nextInt(Math.max(1, SoulsCapability.get(entityKilled).orElse(SoulsCapability.EMPTY).getSouls()) / 2) + 1;
 
-                        if (player.getPosition().withinDistance(entityKilled.getPosition(), nbt.getFloat("Range") + .5f) && world.rand.nextFloat() < nbt.getFloat("SoulGatheringChance"))
-                        {
-                            SoulsCapability.ifPresent(player, playerHandler -> {
-                                int soulCount = 1;
-                                if (entityKilled instanceof PlayerEntity && SoulsCapability.isPresent(entityKilled))
-                                    soulCount = player.world.rand.nextInt(Math.max(1, SoulsCapability.get(entityKilled).orElse(SoulsCapability.EMPTY).getSouls()) / 2) + 1;
-
-                                playerHandler.addSouls(1, false);
-                                if (!world.isRemote)
-                                {
-                                    SoulParticle.spawnParticles(world, player, entityKilled.getPositionVec().add(0d, 1d, 0d), soulCount + player.world.getRandom().nextInt(3) + 1, false);
-                                    if (EnergyUtils.isPresent(charm))
-                                        energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
-                                    LOGGER.debug("Player killed mob/player, souls given");
-                                }
-                            });
-                        }
+                            playerHandler.addSouls(1, false);
+                            if (!world.isRemote)
+                            {
+                                SoulParticle.spawnParticles(world, player, entityKilled.getPositionVec().add(0d, 1d, 0d), soulCount + player.world.getRandom().nextInt(3) + 1, false);
+                                if (isPowered)
+                                    energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
+                                else if (player instanceof ServerPlayerEntity)
+                                    charm.attemptDamageItem(1, world.rand, (ServerPlayerEntity) player);
+                                LOGGER.debug("Player killed mob/player, souls given");
+                            }
+                        });
                     }
                 }
             }
