@@ -12,6 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.loot.*;
+import net.minecraft.loot.functions.EnchantRandomly;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
@@ -38,7 +39,7 @@ public class SoulData
         private static final String LANG_ENERGY = "misc.soulpowered.energy";
         private static final String LANG_ENERGY_PER_TICK = "misc.soulpowered.energy_per_tick";
         private static final String LANG_ENERGY_WITH_MAX = "misc.soulpowered.energy_with_max";
-//        private static final String LANG_FLUID_WITH_MAX = "misc.soulpowered.fluid_with_max";
+        //        private static final String LANG_FLUID_WITH_MAX = "misc.soulpowered.fluid_with_max";
         private static final String LANG_REDSTONE_MODE = "misc.soulpowered.redstone_mode";
 
         @Override
@@ -133,23 +134,26 @@ public class SoulData
                                     .weight(99)
                                     .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
                             .addEntry(ItemLootEntry.builder(Blocks.BLACKSTONE)
-                                    .weight(15)
+                                    .weight(20)
                                     .acceptFunction(SetCount.builder(RandomValueRange.of(3f, 7f))))
                             .addEntry(ItemLootEntry.builder(Items.IRON_INGOT)
-                                    .weight(15)
+                                    .weight(20)
                                     .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 5f))))
                             .addEntry(ItemLootEntry.builder(Items.GOLD_INGOT)
-                                    .weight(15)
+                                    .weight(20)
                                     .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
                             .addEntry(ItemLootEntry.builder(Items.DIAMOND)
-                                    .weight(5)
+                                    .weight(10)
                                     .acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f))))
                             .addEntry(ItemLootEntry.builder(Items.GOLDEN_SWORD)
-                                    .weight(5))
+                                    .weight(10)
+                                    .acceptFunction(EnchantRandomly.func_215900_c()))
                             .addEntry(ItemLootEntry.builder(SoulItems.GOLD_SOUL_AMULET.get())
-                                    .weight(3))
+                                    .weight(5))
                             .addEntry(ItemLootEntry.builder(SoulItems.COPPER_SOUL_AMULET.get())
-                                    .weight(3)))));
+                                    .weight(5))
+                            .addEntry(ItemLootEntry.builder(SoulItems.NETHERITE_SOUL_AMULET.get())
+                                    .weight(1)))));
         }
     }
 }

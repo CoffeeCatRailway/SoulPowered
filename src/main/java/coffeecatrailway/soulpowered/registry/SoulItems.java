@@ -14,6 +14,7 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemTier;
 import net.minecraft.item.Items;
 import net.minecraft.item.Rarity;
 import net.minecraft.tags.ItemTags;
@@ -77,6 +78,9 @@ public class SoulItems
     public static final RegistryEntry<SoulAmuletPoweredItem> POWERED_SOULIUM_SOUL_AMULET = registerSoulAmulet("powered_soulium_soul_amulet", prop -> new SoulAmuletPoweredItem(prop, 3f, 1f),
             "Powered Soulium Soul Amulet", SOULIUM_INGOT::get, BATTERY::get, NonNullBiConsumer.noop()).register();
 
+    public static final RegistryEntry<SoulAmuletItem> NETHERITE_SOUL_AMULET = registerSoulAmulet("netherite_soul_amulet", prop -> new SoulAmuletItem(prop, ItemTier.NETHERITE, 3.5f, 1f,
+            SoulPoweredMod.getLocation("textures/models/netherite_soul_amulet.png")), "Netherite Soul Amulet", () -> Items.NETHERITE_INGOT).register();
+
     public static final RegistryEntry<SoulShieldItem> SOUL_SHIELD = registerCurio(REGISTRATE.item("soul_shield", prop -> new SoulShieldItem(prop, 4f, 10f, 25f))
             .tag(SoulData.TagItems.CURIOS_CHARM).defaultLang().model(NonNullBiConsumer.noop()).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
                     .key('s', Items.SHIELD).key('b', SOUL_BOTTLE.get()).key('i', SOULIUM_INGOT.get()).patternLine("s").patternLine("b").patternLine("i")
@@ -92,7 +96,7 @@ public class SoulItems
 
     private static <T extends Item> ItemBuilder<T, Registrate> registerSoulAmulet(String id, NonNullFunction<Item.Properties, T> item, String name, Supplier<IItemProvider> ingot)
     {
-        return registerSoulAmulet(id, item, name, ingot, () -> null, (ctx, provider) -> provider.handheld(ctx::getEntry, SoulPoweredMod.getLocation("item/soul_amulet_gem"))
+        return registerSoulAmulet(id, item, name, ingot, () -> null, (ctx, provider) -> provider.generated(ctx::getEntry, SoulPoweredMod.getLocation("item/soul_amulet_gem"))
                 .texture("layer1", SoulPoweredMod.getLocation("item/" + ctx.getName())));
     }
 

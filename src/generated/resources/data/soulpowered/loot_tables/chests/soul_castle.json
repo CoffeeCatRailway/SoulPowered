@@ -25,7 +25,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 15,
+          "weight": 20,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -40,7 +40,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 15,
+          "weight": 20,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -55,7 +55,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 15,
+          "weight": 20,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -70,7 +70,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "weight": 10,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -85,18 +85,27 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ],
           "name": "minecraft:golden_sword"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 5,
           "name": "soulpowered:gold_soul_amulet"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 5,
           "name": "soulpowered:copper_soul_amulet"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "soulpowered:netherite_soul_amulet"
         }
       ]
     }
