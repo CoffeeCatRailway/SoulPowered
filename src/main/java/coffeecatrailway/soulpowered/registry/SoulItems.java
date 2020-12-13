@@ -74,7 +74,7 @@ public class SoulItems
     public static final RegistryEntry<SoulAmuletItem> SOULIUM_SOUL_AMULET = registerSoulAmulet("soulium_soul_amulet", prop -> new SoulAmuletItem(prop, 2f, .75f,
                     SoulPoweredMod.getLocation("textures/models/soulium_soul_amulet.png")), "Soulium Soul Amulet", SOULIUM_INGOT::get).register();
 
-    public static final RegistryEntry<SoulAmuletPoweredItem> POWERED_SOULIUM_SOUL_AMULET = registerSoulAmulet("powered_soul_amulet", prop -> new SoulAmuletPoweredItem(prop, 2.5f, 1f),
+    public static final RegistryEntry<SoulAmuletPoweredItem> POWERED_SOULIUM_SOUL_AMULET = registerSoulAmulet("powered_soulium_soul_amulet", prop -> new SoulAmuletPoweredItem(prop, 3f, 1f),
             "Powered Soulium Soul Amulet", SOULIUM_INGOT::get, BATTERY::get, NonNullBiConsumer.noop()).register();
 
     public static final RegistryEntry<SoulShieldItem> SOUL_SHIELD = registerCurio(REGISTRATE.item("soul_shield", prop -> new SoulShieldItem(prop, 4f, 10f, 25f))

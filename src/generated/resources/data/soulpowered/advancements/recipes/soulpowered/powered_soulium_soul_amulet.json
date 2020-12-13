@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:powered_soul_amulet"
+      "soulpowered:powered_soulium_soul_amulet"
     ]
   },
   "criteria": {
@@ -39,7 +39,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:powered_soul_amulet"
+        "recipe": "soulpowered:powered_soulium_soul_amulet"
       }
     }
   },

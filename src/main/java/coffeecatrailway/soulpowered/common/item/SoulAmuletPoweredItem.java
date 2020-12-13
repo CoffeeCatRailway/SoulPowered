@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class SoulAmuletPoweredItem extends EnergyItem implements ISoulAmulet
 {
-    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/models/powered_soul_amulet.png");
+    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/models/powered_soulium_soul_amulet.png");
 
     private final float range;
     private final float soulGatheringChance;
