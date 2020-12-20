@@ -1,0 +1,33 @@
+{
+  "type": "soulpowered:alloy_smelting",
+  "processTime": 200,
+  "result": {
+    "item": "soulpowered:soulium_ingot",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "value": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 1
+    },
+    {
+      "value": [
+        {
+          "item": "minecraft:soul_sand"
+        },
+        {
+          "item": "minecraft:soul_soil"
+        }
+      ],
+      "count": 2
+    },
+    {
+      "value": {
+        "item": "soulpowered:soul_bottle"
+      },
+      "count": 1
+    }
+  ]
+}
