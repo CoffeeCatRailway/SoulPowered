@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
  */
 public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
 {
-    public static final int MAX_ENERGY = 10_000;
-    public static final int MAX_SEND = 500;
+    public static final int MAX_ENERGY = 20_000;
+    public static final int MAX_SEND = 1000;
     public static final int ENERGY_CREATED_PER_TICK = 60;
 
     public SoulGeneratorTileEntity()

@@ -86,11 +86,13 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
 
     protected abstract int getEnergyCreatedPerTick();
 
+    @Override
     protected BlockState getActiveState()
     {
         return super.getActiveState().with(AbstractFurnaceBlock.LIT, true);
     }
 
+    @Override
     protected BlockState getInactiveState()
     {
         return super.getInactiveState().with(AbstractFurnaceBlock.LIT, false);

@@ -23,8 +23,7 @@ import java.util.stream.IntStream;
 public class SoulBoxTileEntity extends AbstractMachineTileEntity
 {
     public static final int MAX_ENERGY = 600_000;
-    public static final int MAX_RECEIVE = 500;
-    public static final int MAX_EXTRACT = 500;
+    public static final int MAX_TRANSFER = 1000;
 
     public static final int INVENTORY_SIZE = 2;
     private static final int[] SLOTS = IntStream.range(0, INVENTORY_SIZE).toArray();
@@ -36,7 +35,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
 
     public SoulBoxTileEntity(TileEntityType<? extends SoulBoxTileEntity> type)
     {
-        super(type, INVENTORY_SIZE, MAX_ENERGY, MAX_RECEIVE, MAX_EXTRACT);
+        super(type, INVENTORY_SIZE, MAX_ENERGY, MAX_TRANSFER, MAX_TRANSFER);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
                 IEnergyStorage energyIn = EnergyUtils.get(inStack).orElse(EnergyUtils.EMPTY);
                 if (energyIn.getEnergyStored() > 0)
                 {
-                    int toSend = energyIn.extractEnergy(MAX_RECEIVE, true);
+                    int toSend = energyIn.extractEnergy(MAX_TRANSFER, true);
                     int sent = this.energy.receiveEnergy(toSend, false);
                     if (sent > 0)
                         energyIn.extractEnergy(sent, false);
@@ -68,7 +67,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
             {
                 if (this.energy.getEnergyStored() > 0)
                 {
-                    int toSend = this.energy.extractEnergy(MAX_EXTRACT, true);
+                    int toSend = this.energy.extractEnergy(MAX_TRANSFER, true);
                     int sent = EnergyUtils.get(outStack).orElse(EnergyUtils.EMPTY).receiveEnergy(toSend, false);
                     if (sent > 0)
                         this.energy.extractEnergy(sent, false);
