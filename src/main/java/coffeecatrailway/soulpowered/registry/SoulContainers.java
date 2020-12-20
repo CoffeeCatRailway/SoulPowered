@@ -1,8 +1,10 @@
 package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.client.gui.screen.AlloySmelterScreen;
 import coffeecatrailway.soulpowered.client.gui.screen.SoulBoxScreen;
 import coffeecatrailway.soulpowered.client.gui.screen.SoulGeneratorScreen;
+import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulGeneratorContainer;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -19,11 +21,11 @@ public class SoulContainers
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Containers");
 
-    public static final RegistryEntry<ContainerType<SoulGeneratorContainer>> SOUL_GENERATOR = REGISTRATE.container("soul_generator", SoulGeneratorContainer::new, () -> SoulGeneratorScreen::new)
-            .register();
+    public static final RegistryEntry<ContainerType<SoulGeneratorContainer>> SOUL_GENERATOR = REGISTRATE.container("soul_generator", SoulGeneratorContainer::new, () -> SoulGeneratorScreen::new).register();
 
-    public static final RegistryEntry<ContainerType<SoulBoxContainer>> SOUL_BOX = REGISTRATE.container("soul_box", SoulBoxContainer::new, () -> SoulBoxScreen::new)
-            .register();
+    public static final RegistryEntry<ContainerType<SoulBoxContainer>> SOUL_BOX = REGISTRATE.container("soul_box", SoulBoxContainer::new, () -> SoulBoxScreen::new).register();
+
+    public static final RegistryEntry<ContainerType<AlloySmelterContainer>> ALLOY_SMELTER = REGISTRATE.container("alloy_smelter", AlloySmelterContainer::new, () -> AlloySmelterScreen::new).register();
 
     public static void load()
     {

@@ -1,4 +1,5 @@
 {
+  "block.soulpowered.alloy_smelter": "Alloy Smelter",
   "block.soulpowered.copper_block": "Copper Block",
   "block.soulpowered.copper_ore": "Copper Ore",
   "block.soulpowered.machine_frame": "Soulium Machine Frame",
@@ -9,6 +10,7 @@
   "commands.soulpowered.souls.modify.add": "Gave %2$s soul(s) to %1$s",
   "commands.soulpowered.souls.modify.remove": "Removed %2$s soul(s) to %1$s",
   "commands.soulpowered.souls.modify.set": "%1$s now has %2$s soul(s)",
+  "container.soulpowered.alloy_smelter": "Alloy Smelter",
   "container.soulpowered.soul_box": "Soul Box",
   "container.soulpowered.soul_generator": "Soul Generator",
   "entity.soulpowered.soul_shield": "Soul Shield",

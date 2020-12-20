@@ -95,6 +95,7 @@ public class SoulPoweredMod
         OtherRegistries.load(bus);
         SoulWorldGen.load(bus);
         SoulEntities.load();
+        SoulRecipes.load(bus);
     }
 
     private void onClientSetup(FMLClientSetupEvent event)

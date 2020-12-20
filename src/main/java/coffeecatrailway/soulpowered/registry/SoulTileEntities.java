@@ -1,6 +1,7 @@
 package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.common.tileentity.AlloySmelterTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -23,6 +24,9 @@ public class SoulTileEntities
 
     public static final RegistryEntry<TileEntityType<SoulBoxTileEntity>> SOUL_BOX = REGISTRATE.tileEntity("soul_box", (NonNullFunction<TileEntityType<SoulBoxTileEntity>, SoulBoxTileEntity>) SoulBoxTileEntity::new)
             .validBlock(SoulBlocks.SOUL_BOX).register();
+
+    public static final RegistryEntry<TileEntityType<AlloySmelterTileEntity>> ALLOY_SMELTER = REGISTRATE.tileEntity("alloy_smelter", (NonNullFunction<TileEntityType<AlloySmelterTileEntity>, AlloySmelterTileEntity>) AlloySmelterTileEntity::new)
+            .validBlock(SoulBlocks.ALLOY_SMELTER).register();
 
     public static void load()
     {

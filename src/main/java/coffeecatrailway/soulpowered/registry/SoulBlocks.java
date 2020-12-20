@@ -2,14 +2,18 @@ package coffeecatrailway.soulpowered.registry;
 
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.common.block.AlloySmelterBlock;
 import coffeecatrailway.soulpowered.common.block.MachineFrameBlock;
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
 import coffeecatrailway.soulpowered.common.block.SoulGeneratorBlock;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -59,41 +63,7 @@ public class SoulBlocks
                     .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get())).build(provider)).simpleItem().register();
 
     public static final RegistryEntry<SoulGeneratorBlock> SOUL_GENERATOR = registerMachine(REGISTRATE.object("soul_generator").block(SoulGeneratorBlock::new)
-            .blockstate((ctx, provider) -> {
-                ResourceLocation side = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_side");
-                ResourceLocation front = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_front");
-                ResourceLocation front_on = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_front_on");
-
-                ModelFile model_off = provider.models().cube(ctx.getName(), side, side, front, side, side, side).texture("particle", side);
-                ModelFile model_on = provider.models().cube(ctx.getName() + "_on", side, side, front_on, side, side, side).texture("particle", side);
-
-                model_off.assertExistence();
-                model_on.assertExistence();
-
-                provider.getVariantBuilder(ctx.getEntry()) // North
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, false)
-                        .modelForState().modelFile(model_off).addModel()
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, true)
-                        .modelForState().modelFile(model_on).addModel()
-
-                        // South
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, false)
-                        .modelForState().modelFile(model_off).rotationY(180).addModel()
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, true)
-                        .modelForState().modelFile(model_on).rotationY(180).addModel()
-
-                        // East
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, false)
-                        .modelForState().modelFile(model_off).rotationY(90).addModel()
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, true)
-                        .modelForState().modelFile(model_on).rotationY(90).addModel()
-
-                        // West
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, false)
-                        .modelForState().modelFile(model_off).rotationY(270).addModel()
-                        .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, true)
-                        .modelForState().modelFile(model_on).rotationY(270).addModel();
-            }).defaultLang().defaultLoot().initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
+            .blockstate(sidedFurnaceModel()).defaultLang().defaultLoot().initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
             .properties(prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(SoundType.METAL))
             .recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', SoulItems.SOULIUM_INGOT.get()).key('m', MACHINE_FRAME.get())
                     .key('f', Blocks.FURNACE).key('b', SoulItems.BATTERY.get()).patternLine(" f ").patternLine("ibi").patternLine("imi")
@@ -114,9 +84,58 @@ public class SoulBlocks
                     .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.BATTERY.get())).build(provider)).simpleItem(), "Soul Box");
 
+    public static final RegistryEntry<AlloySmelterBlock> ALLOY_SMELTER = registerMachine(REGISTRATE.object("alloy_smelter").block(AlloySmelterBlock::new)
+            .blockstate(sidedFurnaceModel()).defaultLang().defaultLoot().initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
+            .properties(prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(SoundType.METAL))
+            .recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', SoulItems.SOULIUM_INGOT.get()).key('m', MACHINE_FRAME.get())
+                    .key('f', Blocks.FURNACE).key('b', SoulItems.BATTERY.get()).patternLine("fff").patternLine("ibi").patternLine("imi")
+                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
+                    .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(MACHINE_FRAME.get()))
+                    .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.BATTERY.get())).build(provider)).simpleItem(), "Alloy Smelter");
+
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue)
     {
-        return (state) -> state.get(BlockStateProperties.LIT) ? lightValue : 0;
+        return state -> state.get(BlockStateProperties.LIT) ? lightValue : 0;
+    }
+
+    private static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> sidedFurnaceModel()
+    {
+        return (ctx, provider) -> {
+            ResourceLocation side = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_side");
+            ResourceLocation front = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_front");
+            ResourceLocation front_on = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_front_on");
+
+            ModelFile model_off = provider.models().cube(ctx.getName(), side, side, front, side, side, side).texture("particle", side);
+            ModelFile model_on = provider.models().cube(ctx.getName() + "_on", side, side, front_on, side, side, side).texture("particle", side);
+
+            model_off.assertExistence();
+            model_on.assertExistence();
+
+            provider.getVariantBuilder(ctx.getEntry()) // North
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, false)
+                    .modelForState().modelFile(model_off).addModel()
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, true)
+                    .modelForState().modelFile(model_on).addModel()
+
+                    // South
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, false)
+                    .modelForState().modelFile(model_off).rotationY(180).addModel()
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, true)
+                    .modelForState().modelFile(model_on).rotationY(180).addModel()
+
+                    // East
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, false)
+                    .modelForState().modelFile(model_off).rotationY(90).addModel()
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, true)
+                    .modelForState().modelFile(model_on).rotationY(90).addModel()
+
+                    // West
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, false)
+                    .modelForState().modelFile(model_off).rotationY(270).addModel()
+                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, true)
+                    .modelForState().modelFile(model_on).rotationY(270).addModel();
+        };
     }
 
     private static <T extends Block> RegistryEntry<T> registerMachine(BlockBuilder<T, Registrate> builder, String name)

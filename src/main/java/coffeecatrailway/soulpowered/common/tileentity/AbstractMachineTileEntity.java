@@ -115,7 +115,7 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
 
     protected boolean canRun()
     {
-        return this.world != null && this.redstoneMode.shouldRun(this.world.isBlockPowered(this.pos)) && this.getEnergyStored() < this.getMaxEnergyStored();
+        return this.world != null && this.redstoneMode.shouldRun(this.world.isBlockPowered(this.pos)) && this.getEnergyStored() <= this.getMaxEnergyStored();
     }
 
     protected BlockState getActiveState()

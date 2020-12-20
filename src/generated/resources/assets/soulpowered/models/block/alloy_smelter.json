@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "soulpowered:block/alloy_smelter_side",
+    "up": "soulpowered:block/alloy_smelter_side",
+    "north": "soulpowered:block/alloy_smelter_front",
+    "south": "soulpowered:block/alloy_smelter_side",
+    "east": "soulpowered:block/alloy_smelter_side",
+    "west": "soulpowered:block/alloy_smelter_side",
+    "particle": "soulpowered:block/alloy_smelter_side"
+  }
+}
