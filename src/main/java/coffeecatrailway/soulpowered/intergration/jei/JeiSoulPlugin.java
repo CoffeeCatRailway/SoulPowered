@@ -4,10 +4,13 @@ import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.client.gui.screen.AlloySmelterScreen;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
+import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.registry.SoulRecipes;
+import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -34,6 +37,19 @@ public class JeiSoulPlugin implements IModPlugin
     public ResourceLocation getPluginUid()
     {
         return UID;
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration)
+    {
+        ISubtypeInterpreter interpreter = stack -> {
+            if (!EnergyUtils.isPresent(stack))
+                return ISubtypeInterpreter.NONE;
+            return String.valueOf(EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored());
+        };
+        registration.registerSubtypeInterpreter(SoulItems.BATTERY.get(), interpreter);
+        registration.registerSubtypeInterpreter(SoulItems.SIMPLE_BATTERY.get(), interpreter);
+        registration.registerSubtypeInterpreter(SoulItems.POWERED_SOULIUM_SOUL_AMULET.get(), interpreter);
     }
 
     @Override
