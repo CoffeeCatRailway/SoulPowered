@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.client.gui.screen.button;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.api.RedstoneMode;
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergyStorageContainer;
-import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;

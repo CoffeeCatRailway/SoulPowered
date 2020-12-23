@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
+import coffeecatrailway.soulpowered.api.RedstoneMode;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImpl;
 import coffeecatrailway.soulpowered.utils.EnergyUtils;
-import coffeecatrailway.soulpowered.utils.RedstoneMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;

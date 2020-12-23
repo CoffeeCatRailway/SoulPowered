@@ -6,7 +6,6 @@ import coffeecatrailway.soulpowered.network.SyncSoulsChangeMessage;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;

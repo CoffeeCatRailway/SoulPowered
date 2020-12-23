@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
 import coffeecatrailway.soulpowered.SoulData;
+import coffeecatrailway.soulpowered.api.item.ISoulFuel;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulGeneratorContainer;
-import coffeecatrailway.soulpowered.common.item.ISoulFuel;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

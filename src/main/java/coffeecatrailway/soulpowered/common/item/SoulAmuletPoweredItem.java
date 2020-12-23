@@ -2,7 +2,6 @@ package coffeecatrailway.soulpowered.common.item;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.item.IEnergyItem;
-import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemGroup;
@@ -17,7 +16,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import top.theillusivec4.curios.api.CuriosCapability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

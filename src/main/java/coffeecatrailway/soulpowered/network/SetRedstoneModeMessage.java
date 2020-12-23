@@ -1,7 +1,7 @@
 package coffeecatrailway.soulpowered.network;
 
-import coffeecatrailway.soulpowered.network.handler.ISoulServerPlayHandler;
 import coffeecatrailway.soulpowered.api.RedstoneMode;
+import coffeecatrailway.soulpowered.network.handler.ISoulServerPlayHandler;
 import io.github.ocelot.sonar.common.network.message.SonarMessage;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

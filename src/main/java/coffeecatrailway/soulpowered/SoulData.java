@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered;
 
+import coffeecatrailway.soulpowered.api.RedstoneMode;
 import coffeecatrailway.soulpowered.registry.OtherRegistries;
 import coffeecatrailway.soulpowered.registry.SoulItems;
-import coffeecatrailway.soulpowered.api.RedstoneMode;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;

@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
-import coffeecatrailway.soulpowered.utils.RedstoneMode;
+import coffeecatrailway.soulpowered.api.RedstoneMode;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
