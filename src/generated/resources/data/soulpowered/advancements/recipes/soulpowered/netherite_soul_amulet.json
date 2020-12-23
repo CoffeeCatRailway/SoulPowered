@@ -6,22 +6,22 @@
     ]
   },
   "criteria": {
-    "has_soul_bottle": {
+    "has_diamond_soul_amulet": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:soul_bottle"
+            "item": "soulpowered:diamond_soul_amulet"
           }
         ]
       }
     },
-    "has_ingot": {
+    "has_netherite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:netherite_ingot"
+            "tag": "forge:ingots/netherite"
           }
         ]
       }
@@ -35,8 +35,8 @@
   },
   "requirements": [
     [
-      "has_soul_bottle",
-      "has_ingot",
+      "has_diamond_soul_amulet",
+      "has_netherite",
       "has_the_recipe"
     ]
   ]

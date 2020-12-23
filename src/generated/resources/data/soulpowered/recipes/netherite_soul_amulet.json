@@ -1,17 +1,10 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " i ",
-    "i i",
-    " s "
-  ],
-  "key": {
-    "i": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "s": {
-      "item": "soulpowered:soul_bottle"
-    }
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "soulpowered:diamond_soul_amulet"
+  },
+  "addition": {
+    "tag": "forge:ingots/netherite"
   },
   "result": {
     "item": "soulpowered:netherite_soul_amulet"
