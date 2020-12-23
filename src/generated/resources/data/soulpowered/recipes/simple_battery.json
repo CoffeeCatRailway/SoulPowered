@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ici",
+    "srs",
+    "ici"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "c": {
+      "tag": "forge:ingots/copper"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "s": {
+      "tag": "forge:stone"
+    }
+  },
+  "result": {
+    "item": "soulpowered:simple_battery"
+  }
+}

@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
+import coffeecatrailway.soulpowered.api.item.ISoulFuel;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import net.minecraft.entity.player.PlayerEntity;

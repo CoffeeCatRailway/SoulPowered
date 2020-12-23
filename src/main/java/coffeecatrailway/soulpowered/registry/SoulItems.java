@@ -35,8 +35,17 @@ public class SoulItems
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Items");
 
     // Tech
-    public static final RegistryEntry<EnergyItem> BATTERY = REGISTRATE.item("battery", prop -> new EnergyItem(prop, 200_000, 10_000))
-            .properties(prop -> prop.maxStackSize(1).rarity(Rarity.UNCOMMON)).defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+    public static final RegistryEntry<BatteryItem> SIMPLE_BATTERY = REGISTRATE.item("simple_battery", prop -> new BatteryItem(prop, Tier.SIMPLE))
+            .defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .key('i', Tags.Items.INGOTS_IRON).key('c', SoulData.TagItems.INGOTS_COPPER).key('r', Tags.Items.DUSTS_REDSTONE).key('s', Tags.Items.STONE)
+                    .patternLine("ici").patternLine("srs").patternLine("ici")
+                    .addCriterion("has_iron_ingot", RegistrateRecipeProvider.hasItem(Tags.Items.INGOTS_IRON))
+                    .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
+                    .addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
+                    .addCriterion("has_redstone", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE)).build(provider)).register();
+
+    public static final RegistryEntry<BatteryItem> BATTERY = REGISTRATE.item("battery", prop -> new BatteryItem(prop, Tier.SOULIUM))
+            .defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
                     .key('s', SoulItems.SOULIUM_INGOT.get()).key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SOUL_BOTTLE.get())
                     .patternLine("scs").patternLine("sbs").patternLine("scs")
                     .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))

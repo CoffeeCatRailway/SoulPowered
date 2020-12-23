@@ -1,10 +1,10 @@
 package coffeecatrailway.soulpowered;
 
+import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
-import coffeecatrailway.soulpowered.common.item.EnergyItem;
-import coffeecatrailway.soulpowered.common.item.ISoulAmulet;
+import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
@@ -119,7 +119,7 @@ public class CommonEvents
             for (int slot = 0; slot < CuriosApi.getSlotHelper().getSlotType("necklace").get().getSize(); slot++)
             {
                 ItemStack charm = CuriosIntegration.getCurioStack(player, "necklace", slot);
-                if (charm.getItem() instanceof ISoulAmulet)
+                if (charm.getItem() instanceof SoulAmuletItem)
                 {
                     boolean isPowered = EnergyUtils.isPresent(charm);
                     IEnergyStorage energy = EnergyUtils.getIfPresent(charm).orElse(EnergyUtils.EMPTY);
@@ -180,9 +180,9 @@ public class CommonEvents
     @SubscribeEvent
     public static void onAttachItemCaps(AttachCapabilitiesEvent<Item> event)
     {
-        if (event.getObject() instanceof EnergyItem)
+        if (event.getObject() instanceof IEnergyItem)
         {
-            EnergyItem item = (EnergyItem) event.getObject();
+            IEnergyItem item = (IEnergyItem) event.getObject();
             event.addCapability(SoulPoweredMod.getLocation("energy"), new SoulEnergyStorageImplBase(item.getMaxEnergy(), item.getMaxReceive(), item.getMaxExtract()));
             LOGGER.debug("Capability - Energy item capability updated");
         }

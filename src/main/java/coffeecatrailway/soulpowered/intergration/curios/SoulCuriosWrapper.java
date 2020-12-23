@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.intergration.curios;
 
-import coffeecatrailway.soulpowered.common.item.ISoulCurios;
+import coffeecatrailway.soulpowered.api.item.ISoulCurios;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.LivingEntity;

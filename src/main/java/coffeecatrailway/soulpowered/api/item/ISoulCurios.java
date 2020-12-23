@@ -1,4 +1,4 @@
-package coffeecatrailway.soulpowered.common.item;
+package coffeecatrailway.soulpowered.api.item;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;

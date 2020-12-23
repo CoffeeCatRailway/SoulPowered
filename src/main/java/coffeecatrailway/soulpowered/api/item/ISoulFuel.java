@@ -1,4 +1,4 @@
-package coffeecatrailway.soulpowered.common.item;
+package coffeecatrailway.soulpowered.api.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
@@ -6,6 +6,8 @@ import net.minecraftforge.common.ForgeHooks;
 /**
  * @author CoffeeCatRailway
  * Created: 13/11/2020
+ *
+ * Used to identify custom fuel items for {@link coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity}
  */
 public interface ISoulFuel
 {

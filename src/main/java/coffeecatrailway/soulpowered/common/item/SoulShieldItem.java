@@ -1,6 +1,7 @@
 package coffeecatrailway.soulpowered.common.item;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.api.item.ISoulCurios;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.entity.SoulShieldEntity;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;

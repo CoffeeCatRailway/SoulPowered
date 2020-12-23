@@ -1,13 +1,15 @@
 package coffeecatrailway.soulpowered.common.item;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.utils.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -25,30 +27,21 @@ import java.util.List;
  * @author CoffeeCatRailway
  * Created: 25/11/2020
  */
-public class SoulAmuletPoweredItem extends EnergyItem implements ISoulAmulet
+public class SoulAmuletPoweredItem extends SoulAmuletItem implements IEnergyItem
 {
     public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/models/powered_soulium_soul_amulet.png");
-
-    private final float range;
-    private final float soulGatheringChance;
+    public static final int CAPACITY = 10_000;
+    public static final int TRANSFER = 5000;
 
     public SoulAmuletPoweredItem(Properties properties, float range, float soulGatheringChance)
     {
-        super(properties, 10_000, 5000);
-        this.range = range;
-        this.soulGatheringChance = soulGatheringChance;
-    }
-
-    @Override
-    public void curioTick(ItemStack stack, String identifier, int index, LivingEntity livingEntity)
-    {
+        super(properties, 0, range, soulGatheringChance, TEXTURE);
     }
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt)
     {
-        ISoulAmulet.super.initCapabilities(stack, nbt);
         return new ICapabilityProvider()
         {
             @Nonnull
@@ -56,42 +49,46 @@ public class SoulAmuletPoweredItem extends EnergyItem implements ISoulAmulet
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
             {
                 if (cap == CapabilityEnergy.ENERGY)
-                    return SoulAmuletPoweredItem.super.initCapabilities(stack, nbt).getCapability(cap, side);
-                if (cap == CuriosCapability.ITEM)
-                    return CuriosIntegration.getCapability(stack).getCapability(cap, side);
-                return LazyOptional.empty();
+                    return SoulAmuletPoweredItem.this.getCapability(stack, cap, side);
+                return SoulAmuletPoweredItem.super.initCapabilities(stack, nbt).getCapability(cap, side);
             }
         };
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> info, ITooltipFlag flag)
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
     {
-        super.addInformation(stack, world, info, flag);
-        ISoulAmulet.super.addInformation(stack, world, info, flag);
+        IEnergyItem.super.fillItemGroup(group, items);
     }
 
     @Override
-    public float getRange()
+    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
     {
-        return this.range;
-    }
-
-    @Override
-    public float getSoulGatheringChance()
-    {
-        return this.soulGatheringChance;
-    }
-
-    @Override
-    public ResourceLocation getTexture()
-    {
-        return TEXTURE;
+        super.addInformation(stack, world, tooltip, flag);
+        IEnergyItem.super.addInformation(stack, world, tooltip, flag);
     }
 
     @Override
     public boolean hasEffect(ItemStack stack)
     {
         return EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0;
+    }
+
+    @Override
+    public int getMaxEnergy()
+    {
+        return CAPACITY;
+    }
+
+    @Override
+    public int getMaxReceive()
+    {
+        return TRANSFER;
+    }
+
+    @Override
+    public int getMaxExtract()
+    {
+        return TRANSFER;
     }
 }

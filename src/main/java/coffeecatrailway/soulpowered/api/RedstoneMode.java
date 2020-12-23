@@ -1,4 +1,4 @@
-package coffeecatrailway.soulpowered.utils;
+package coffeecatrailway.soulpowered.api;
 
 /**
  * @author CoffeeCatRailway
