@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.api.item;
 
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;

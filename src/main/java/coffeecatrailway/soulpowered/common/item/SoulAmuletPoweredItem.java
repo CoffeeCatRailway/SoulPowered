@@ -2,7 +2,7 @@ package coffeecatrailway.soulpowered.common.item;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.item.IEnergyItem;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

@@ -4,7 +4,7 @@ import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.registry.SoulContainers;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;

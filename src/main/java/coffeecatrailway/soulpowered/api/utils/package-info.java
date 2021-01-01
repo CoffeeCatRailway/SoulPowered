@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package coffeecatrailway.soulpowered.utils;
+package coffeecatrailway.soulpowered.api.utils;
 
 import mcp.MethodsReturnNonnullByDefault;
 

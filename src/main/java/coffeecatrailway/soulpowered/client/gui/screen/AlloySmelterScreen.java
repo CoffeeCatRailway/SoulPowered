@@ -3,7 +3,7 @@ package coffeecatrailway.soulpowered.client.gui.screen;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

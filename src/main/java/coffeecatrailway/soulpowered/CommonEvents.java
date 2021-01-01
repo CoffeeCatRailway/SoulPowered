@@ -11,7 +11,7 @@ import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
 import coffeecatrailway.soulpowered.registry.SoulFeatures;
 import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.registry.SoulWorldGen;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

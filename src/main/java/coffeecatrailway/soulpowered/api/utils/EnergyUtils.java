@@ -1,4 +1,4 @@
-package coffeecatrailway.soulpowered.utils;
+package coffeecatrailway.soulpowered.api.utils;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;

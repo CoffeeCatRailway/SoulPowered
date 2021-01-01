@@ -4,7 +4,7 @@ import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImpl;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageItemImpl;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;

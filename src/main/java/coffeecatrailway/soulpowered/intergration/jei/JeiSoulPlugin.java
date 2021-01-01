@@ -6,7 +6,7 @@ import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterConta
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
 import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.registry.SoulRecipes;
-import coffeecatrailway.soulpowered.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
