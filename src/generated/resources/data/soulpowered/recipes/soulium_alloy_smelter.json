@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "fff",
+    "ibi",
+    "imi"
+  ],
+  "key": {
+    "i": {
+      "item": "soulpowered:soulium_ingot"
+    },
+    "m": {
+      "item": "soulpowered:soulium_machine_frame"
+    },
+    "f": {
+      "item": "minecraft:furnace"
+    },
+    "b": {
+      "item": "soulpowered:soulium_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:soulium_alloy_smelter"
+  }
+}

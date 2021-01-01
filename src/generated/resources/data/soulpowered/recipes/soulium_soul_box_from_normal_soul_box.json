@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sbs",
+    "bob",
+    "sfs"
+  ],
+  "key": {
+    "s": {
+      "item": "soulpowered:soulium_ingot"
+    },
+    "f": {
+      "item": "soulpowered:soulium_machine_frame"
+    },
+    "o": {
+      "item": "soulpowered:normal_soul_box"
+    },
+    "b": {
+      "item": "soulpowered:normal_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:soulium_soul_box"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pcp",
+    "bbb",
+    "pfp"
+  ],
+  "key": {
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "f": {
+      "item": "soulpowered:simple_machine_frame"
+    },
+    "c": {
+      "tag": "forge:ingots/copper"
+    },
+    "b": {
+      "item": "soulpowered:simple_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:simple_soul_box"
+  }
+}

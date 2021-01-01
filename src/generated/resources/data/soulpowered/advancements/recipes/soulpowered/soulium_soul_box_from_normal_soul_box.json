@@ -1,0 +1,65 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:soulium_soul_box_from_normal_soul_box"
+    ]
+  },
+  "criteria": {
+    "has_soul_metal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_ingot"
+          }
+        ]
+      }
+    },
+    "has_machine_frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_machine_frame"
+          }
+        ]
+      }
+    },
+    "has_normal_soul_box": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:normal_soul_box"
+          }
+        ]
+      }
+    },
+    "has_battery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:normal_battery"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:soulium_soul_box_from_normal_soul_box"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_soul_metal",
+      "has_machine_frame",
+      "has_normal_soul_box",
+      "has_battery",
+      "has_the_recipe"
+    ]
+  ]
+}

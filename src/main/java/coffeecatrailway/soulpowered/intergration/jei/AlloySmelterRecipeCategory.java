@@ -36,12 +36,12 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory<AlloySmelterR
     public AlloySmelterRecipeCategory(IGuiHelper guiHelper)
     {
         this.background = guiHelper.createDrawable(AlloySmelterScreen.TEXTURE, 57, 13, 62, 56);
-        this.icon = guiHelper.createDrawableIngredient(new ItemStack(SoulBlocks.ALLOY_SMELTER.get()));
+        this.icon = guiHelper.createDrawableIngredient(new ItemStack(SoulBlocks.SOULIUM_ALLOY_SMELTER.get()));
 
         this.progress = guiHelper.drawableBuilder(AlloySmelterScreen.TEXTURE, 176, 0, 46, 20)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.TOP, true);
 
-        this.localizedName = SoulBlocks.ALLOY_SMELTER.get().getTranslatedName().getString();
+        this.localizedName = SoulBlocks.SOULIUM_ALLOY_SMELTER.get().getTranslatedName().getString();
     }
 
     @Override

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " o ",
+    "sbs",
+    " o "
+  ],
+  "key": {
+    "s": {
+      "item": "soulpowered:soulium_ingot"
+    },
+    "o": {
+      "item": "soulpowered:normal_battery"
+    },
+    "b": {
+      "item": "soulpowered:soul_bottle"
+    }
+  },
+  "result": {
+    "item": "soulpowered:soulium_battery"
+  }
+}

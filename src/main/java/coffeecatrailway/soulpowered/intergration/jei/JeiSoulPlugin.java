@@ -47,9 +47,21 @@ public class JeiSoulPlugin implements IModPlugin
                 return ISubtypeInterpreter.NONE;
             return String.valueOf(EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored());
         };
-        registration.registerSubtypeInterpreter(SoulItems.BATTERY.get(), interpreter);
         registration.registerSubtypeInterpreter(SoulItems.SIMPLE_BATTERY.get(), interpreter);
+        registration.registerSubtypeInterpreter(SoulItems.NORMAL_BATTERY.get(), interpreter);
+        registration.registerSubtypeInterpreter(SoulItems.SOULIUM_BATTERY.get(), interpreter);
+
         registration.registerSubtypeInterpreter(SoulItems.POWERED_SOULIUM_SOUL_AMULET.get(), interpreter);
+
+        registration.registerSubtypeInterpreter(SoulBlocks.SOUL_GENERATOR.get().asItem(), interpreter);
+
+        registration.registerSubtypeInterpreter(SoulBlocks.SIMPLE_SOUL_BOX.get().asItem(), interpreter);
+        registration.registerSubtypeInterpreter(SoulBlocks.NORMAL_SOUL_BOX.get().asItem(), interpreter);
+        registration.registerSubtypeInterpreter(SoulBlocks.SOULIUM_SOUL_BOX.get().asItem(), interpreter);
+
+        registration.registerSubtypeInterpreter(SoulBlocks.SIMPLE_ALLOY_SMELTER.get().asItem(), interpreter);
+        registration.registerSubtypeInterpreter(SoulBlocks.NORMAL_ALLOY_SMELTER.get().asItem(), interpreter);
+        registration.registerSubtypeInterpreter(SoulBlocks.SOULIUM_ALLOY_SMELTER.get().asItem(), interpreter);
     }
 
     @Override
@@ -80,7 +92,9 @@ public class JeiSoulPlugin implements IModPlugin
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
-        registration.addRecipeCatalyst(new ItemStack(SoulBlocks.ALLOY_SMELTER.get()), ALLOY_SMELTER_ID);
+        registration.addRecipeCatalyst(new ItemStack(SoulBlocks.SIMPLE_ALLOY_SMELTER.get()), ALLOY_SMELTER_ID);
+        registration.addRecipeCatalyst(new ItemStack(SoulBlocks.NORMAL_ALLOY_SMELTER.get()), ALLOY_SMELTER_ID);
+        registration.addRecipeCatalyst(new ItemStack(SoulBlocks.SOULIUM_ALLOY_SMELTER.get()), ALLOY_SMELTER_ID);
     }
 
     @Override

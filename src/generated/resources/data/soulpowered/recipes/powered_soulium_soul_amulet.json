@@ -4,7 +4,7 @@
     "item": "soulpowered:soulium_soul_amulet"
   },
   "addition": {
-    "item": "soulpowered:battery"
+    "item": "soulpowered:soulium_battery"
   },
   "result": {
     "item": "soulpowered:powered_soulium_soul_amulet"

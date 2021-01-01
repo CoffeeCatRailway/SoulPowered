@@ -4,6 +4,7 @@ import io.github.ocelot.sonar.common.util.VoxelShapeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -15,7 +16,7 @@ import net.minecraftforge.common.util.NonNullFunction;
  * @author CoffeeCatRailway
  * Created: 15/11/2020
  */
-public class MachineFrameBlock extends Block
+public class MachineFrameBlock extends RotatedPillarBlock
 {
     private static final VoxelShape SHAPE = generateShape();
 

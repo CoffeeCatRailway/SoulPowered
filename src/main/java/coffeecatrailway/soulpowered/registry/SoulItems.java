@@ -39,20 +39,45 @@ public class SoulItems
     // Tech
     public static final RegistryEntry<BatteryItem> SIMPLE_BATTERY = REGISTRATE.item("simple_battery", prop -> new BatteryItem(prop, Tier.SIMPLE))
             .defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-                    .key('i', Tags.Items.INGOTS_IRON).key('c', SoulData.TagItems.INGOTS_COPPER).key('r', Tags.Items.DUSTS_REDSTONE).key('s', Tags.Items.STONE)
-                    .patternLine("ici").patternLine("srs").patternLine("ici")
+                    .key('p', ItemTags.PLANKS).key('c', SoulData.TagItems.INGOTS_COPPER).key('r', Tags.Items.DUSTS_REDSTONE).key('s', Tags.Items.RODS_WOODEN)
+                    .patternLine("scs").patternLine("prp").patternLine("scs")
                     .addCriterion("has_iron_ingot", RegistrateRecipeProvider.hasItem(Tags.Items.INGOTS_IRON))
                     .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
                     .addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
                     .addCriterion("has_redstone", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE)).build(provider)).register();
 
-    public static final RegistryEntry<BatteryItem> BATTERY = REGISTRATE.item("battery", prop -> new BatteryItem(prop, Tier.SOULIUM))
-            .defaultModel().defaultLang().recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-                    .key('s', SoulItems.SOULIUM_INGOT.get()).key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SOUL_BOTTLE.get())
-                    .patternLine("scs").patternLine("sbs").patternLine("scs")
-                    .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
-                    .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
-                    .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_BOTTLE.get())).build(provider)).register();
+    public static final RegistryEntry<BatteryItem> NORMAL_BATTERY = REGISTRATE.item("normal_battery", prop -> new BatteryItem(prop, Tier.NORMAL))
+            .defaultModel().lang("Battery").recipe((ctx, provider) -> {
+                ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                        .key('i', Tags.Items.INGOTS_IRON).key('c', SoulData.TagItems.INGOTS_COPPER).key('r', Tags.Items.DUSTS_REDSTONE).key('s', Tags.Items.STONE)
+                        .patternLine("ici").patternLine("srs").patternLine("ici")
+                        .addCriterion("has_iron_ingot", RegistrateRecipeProvider.hasItem(Tags.Items.INGOTS_IRON))
+                        .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
+                        .addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
+                        .addCriterion("has_redstone", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE)).build(provider);
+                ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                        .key('s', Tags.Items.STONE).key('o', SIMPLE_BATTERY.get()).key('r', Tags.Items.DUSTS_REDSTONE)
+                        .patternLine(" o ").patternLine("srs").patternLine(" o ")
+                        .addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
+                        .addCriterion("has_simple_battery", RegistrateRecipeProvider.hasItem(SIMPLE_BATTERY.get()))
+                        .addCriterion("has_redstone", RegistrateRecipeProvider.hasItem(Tags.Items.DUSTS_REDSTONE)).build(provider, SoulPoweredMod.getLocation("normal_battery_from_simple_battery"));
+            }).register();
+
+    public static final RegistryEntry<BatteryItem> SOULIUM_BATTERY = REGISTRATE.item("soulium_battery", prop -> new BatteryItem(prop, Tier.SOULIUM))
+            .defaultModel().defaultLang().recipe((ctx, provider) -> {
+                ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                        .key('s', SoulItems.SOULIUM_INGOT.get()).key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SOUL_BOTTLE.get())
+                        .patternLine("scs").patternLine("sbs").patternLine("scs")
+                        .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
+                        .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
+                        .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_BOTTLE.get())).build(provider);
+                ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                        .key('s', SoulItems.SOULIUM_INGOT.get()).key('o', NORMAL_BATTERY.get()).key('b', SoulItems.SOUL_BOTTLE.get())
+                        .patternLine(" o ").patternLine("sbs").patternLine(" o ")
+                        .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
+                        .addCriterion("has_normal_battery", RegistrateRecipeProvider.hasItem(NORMAL_BATTERY.get()))
+                        .addCriterion("has_soul_bottle", RegistrateRecipeProvider.hasItem(SoulItems.SOUL_BOTTLE.get())).build(provider, SoulPoweredMod.getLocation("soulium_battery_from_normal_battery"));
+            }).register();
 
     // Ingots
     public static final RegistryEntry<Item> SOULIUM_INGOT = REGISTRATE.item("soulium_ingot", Item::new).defaultLang().defaultModel().tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS)
@@ -87,10 +112,10 @@ public class SoulItems
             SoulPoweredMod.getLocation("textures/models/soulium_soul_amulet.png")), "Soulium Soul Amulet", SOULIUM_INGOT::get).register();
 
     public static final RegistryEntry<SoulAmuletPoweredItem> POWERED_SOULIUM_SOUL_AMULET = registerSoulAmulet("powered_soulium_soul_amulet", prop -> new SoulAmuletPoweredItem(prop, 3f, 1f),
-            "Powered Soulium Soul Amulet", SOULIUM_INGOT::get, BATTERY::get, NonNullBiConsumer.noop(), true)
-            .recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_SOUL_AMULET.get()), Ingredient.fromItems(BATTERY.get()), ctx.getEntry())
+            "Powered Soulium Soul Amulet", SOULIUM_INGOT::get, SOULIUM_BATTERY::get, NonNullBiConsumer.noop(), true)
+            .recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_SOUL_AMULET.get()), Ingredient.fromItems(SOULIUM_BATTERY.get()), ctx.getEntry())
                     .addCriterion("has_soulium_soul_amulet", RegistrateRecipeProvider.hasItem(SOULIUM_SOUL_AMULET.get()))
-                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(BATTERY.get())).build(provider, ctx.getId())).register();
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())).register();
 
     public static final RegistryEntry<SoulAmuletItem> NETHERITE_SOUL_AMULET = registerSoulAmulet("netherite_soul_amulet", prop -> new SoulAmuletItem(prop, ItemTier.NETHERITE, 3.5f, 1f,
             SoulPoweredMod.getLocation("textures/models/netherite_soul_amulet.png")), "Netherite Soul Amulet", () -> Items.NETHERITE_INGOT, true)

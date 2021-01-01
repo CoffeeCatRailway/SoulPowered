@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ici",
+    "bbb",
+    "ifi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "f": {
+      "item": "soulpowered:normal_machine_frame"
+    },
+    "c": {
+      "tag": "forge:ingots/copper"
+    },
+    "b": {
+      "item": "soulpowered:normal_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:normal_soul_box"
+  }
+}

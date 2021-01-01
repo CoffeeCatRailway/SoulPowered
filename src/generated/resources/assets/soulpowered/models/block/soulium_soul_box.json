@@ -1,0 +1,7 @@
+{
+  "parent": "soulpowered:block/soul_box_template",
+  "textures": {
+    "side": "soulpowered:block/soulium_soul_box_side",
+    "top": "soulpowered:block/soulium_soul_box_top"
+  }
+}

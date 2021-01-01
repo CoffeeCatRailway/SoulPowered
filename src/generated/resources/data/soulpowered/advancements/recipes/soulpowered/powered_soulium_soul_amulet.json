@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:battery"
+            "item": "soulpowered:soulium_battery"
           }
         ]
       }

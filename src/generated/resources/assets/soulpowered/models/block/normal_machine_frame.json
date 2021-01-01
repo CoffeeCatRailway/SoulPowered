@@ -1,0 +1,7 @@
+{
+  "parent": "soulpowered:block/machine_frame_template",
+  "textures": {
+    "end": "soulpowered:block/normal_machine_frame",
+    "side": "soulpowered:block/normal_machine_frame"
+  }
+}

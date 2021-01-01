@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.common.inventory.container;
 
+import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.tileentity.AlloySmelterTileEntity;
 import coffeecatrailway.soulpowered.registry.SoulContainers;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,14 +21,14 @@ public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloyS
 {
     protected final World world;
 
-    public AlloySmelterContainer(ContainerType<? extends AlloySmelterContainer> type, int id, PlayerInventory playerInventory)
+    public AlloySmelterContainer(ContainerType<? extends AlloySmelterContainer> type, int id, PlayerInventory playerInventory, Tier tier)
     {
-        this(type, id, playerInventory, new AlloySmelterTileEntity(), new IntArray(AlloySmelterTileEntity.FIELDS_COUNT));
+        this(type, id, playerInventory, new AlloySmelterTileEntity(tier), new IntArray(AlloySmelterTileEntity.FIELDS_COUNT));
     }
 
-    public AlloySmelterContainer(int id, PlayerInventory playerInventory, AlloySmelterTileEntity tileEntity, IIntArray fields)
+    public AlloySmelterContainer(int id, PlayerInventory playerInventory, AlloySmelterTileEntity tileEntity, IIntArray fields, Tier tier)
     {
-        this(SoulContainers.ALLOY_SMELTER.get(), id, playerInventory, tileEntity, fields);
+        this(SoulContainers.ALLOY_SMELTER.get(tier).get(), id, playerInventory, tileEntity, fields);
     }
 
     public AlloySmelterContainer(ContainerType<? extends AlloySmelterContainer> type, int id, PlayerInventory playerInventory, AlloySmelterTileEntity tileEntity, IIntArray fields)

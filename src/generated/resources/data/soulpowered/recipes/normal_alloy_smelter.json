@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "fff",
+    "ibi",
+    "imi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "m": {
+      "item": "soulpowered:normal_machine_frame"
+    },
+    "f": {
+      "item": "minecraft:furnace"
+    },
+    "b": {
+      "item": "soulpowered:normal_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:normal_alloy_smelter"
+  }
+}

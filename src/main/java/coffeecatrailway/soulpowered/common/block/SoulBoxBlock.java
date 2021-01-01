@@ -1,5 +1,7 @@
 package coffeecatrailway.soulpowered.common.block;
 
+import coffeecatrailway.soulpowered.api.Tier;
+import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import io.github.ocelot.sonar.common.util.VoxelShapeHelper;
 import net.minecraft.block.Block;
@@ -29,7 +31,7 @@ import javax.annotation.Nullable;
  * @author CoffeeCatRailway
  * Created: 14/11/2020
  */
-public class SoulBoxBlock extends Block
+public class SoulBoxBlock extends Block implements IEnergyItem.PickableBlock
 {
     public static final BooleanProperty ON = BooleanProperty.create("on");
 
@@ -39,10 +41,13 @@ public class SoulBoxBlock extends Block
             VoxelShapeHelper.makeCuboidShape(13d, 16d, 13d, 15d, 17d, 15d, Direction.EAST),
             VoxelShapeHelper.makeCuboidShape(13d, 16d, 1d, 15d, 17d, 3d, Direction.EAST)).build();
 
-    public SoulBoxBlock(Properties properties)
+    private final Tier tier;
+
+    public SoulBoxBlock(Properties properties, Tier tier)
     {
         super(properties);
         this.setDefaultState(this.getStateContainer().getBaseState().with(ON, false));
+        this.tier = tier;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class SoulBoxBlock extends Block
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        return new SoulBoxTileEntity();
+        return new SoulBoxTileEntity(this.tier);
     }
 
     @Override
@@ -89,7 +94,7 @@ public class SoulBoxBlock extends Block
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack)
+    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         if (stack.hasDisplayName())
         {
@@ -97,6 +102,7 @@ public class SoulBoxBlock extends Block
             if (tile instanceof SoulBoxTileEntity)
                 ((SoulBoxTileEntity) tile).setCustomName(stack.getDisplayName());
         }
+        IEnergyItem.PickableBlock.super.onBlockPlaceBy(world, pos, state, placer, stack);
     }
 
     @Override

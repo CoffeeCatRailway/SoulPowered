@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "on=false": {
+      "model": "soulpowered:block/soulium_soul_box"
+    },
+    "on=true": {
+      "model": "soulpowered:block/soulium_soul_box_on"
+    }
+  }
+}

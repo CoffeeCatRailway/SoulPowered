@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:machine_frame"
+            "item": "soulpowered:soulium_machine_frame"
           }
         ]
       }
@@ -41,7 +41,7 @@
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:battery"
+            "item": "soulpowered:soulium_battery"
           }
         ]
       }

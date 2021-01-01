@@ -1,8 +1,11 @@
 package coffeecatrailway.soulpowered.common.block;
 
+import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -19,7 +22,7 @@ import java.util.Random;
  * @author CoffeeCatRailway
  * Created: 9/11/2020
  */
-public class SoulGeneratorBlock extends AbstractMachineBlock
+public class SoulGeneratorBlock extends AbstractMachineBlock implements IEnergyItem.PickableBlock
 {
     public SoulGeneratorBlock(Properties properties)
     {
@@ -42,8 +45,10 @@ public class SoulGeneratorBlock extends AbstractMachineBlock
     }
 
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-        if (state.get(LIT)) {
+    public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+    {
+        if (state.get(LIT))
+        {
             double d0 = (double) pos.getX() + .5d;
             double d1 = pos.getY();
             double d2 = (double) pos.getZ() + .5d;
@@ -59,5 +64,12 @@ public class SoulGeneratorBlock extends AbstractMachineBlock
             world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
         }
+    }
+
+    @Override
+    public void onBlockPlaceBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    {
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
+        IEnergyItem.PickableBlock.super.onBlockPlaceBy(world, pos, state, placer, stack);
     }
 }

@@ -1,0 +1,65 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:soulium_alloy_smelter_from_normal_alloy_smelter"
+    ]
+  },
+  "criteria": {
+    "has_soul_metal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_ingot"
+          }
+        ]
+      }
+    },
+    "has_machine_frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_machine_frame"
+          }
+        ]
+      }
+    },
+    "has_simple_alloy_smelter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:normal_alloy_smelter"
+          }
+        ]
+      }
+    },
+    "has_battery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:normal_battery"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:soulium_alloy_smelter_from_normal_alloy_smelter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_soul_metal",
+      "has_machine_frame",
+      "has_simple_alloy_smelter",
+      "has_battery",
+      "has_the_recipe"
+    ]
+  ]
+}

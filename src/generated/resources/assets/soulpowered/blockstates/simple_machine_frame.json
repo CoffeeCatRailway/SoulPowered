@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "soulpowered:block/simple_machine_frame",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "soulpowered:block/simple_machine_frame"
+    },
+    "axis=z": {
+      "model": "soulpowered:block/simple_machine_frame",
+      "x": 90
+    }
+  }
+}

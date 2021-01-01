@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "fff",
+    "ibi",
+    "imi"
+  ],
+  "key": {
+    "i": {
+      "tag": "minecraft:planks"
+    },
+    "m": {
+      "item": "soulpowered:simple_machine_frame"
+    },
+    "f": {
+      "item": "minecraft:furnace"
+    },
+    "b": {
+      "item": "soulpowered:simple_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:simple_alloy_smelter"
+  }
+}

@@ -10,13 +10,13 @@
       "item": "soulpowered:soulium_ingot"
     },
     "m": {
-      "item": "soulpowered:machine_frame"
+      "item": "soulpowered:soulium_machine_frame"
     },
     "f": {
       "item": "minecraft:furnace"
     },
     "b": {
-      "item": "soulpowered:battery"
+      "item": "soulpowered:soulium_battery"
     }
   },
   "result": {

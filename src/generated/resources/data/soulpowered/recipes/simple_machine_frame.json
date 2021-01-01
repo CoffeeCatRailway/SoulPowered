@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "s s",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "minecraft:logs"
+    },
+    "s": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "item": "soulpowered:simple_machine_frame"
+  }
+}

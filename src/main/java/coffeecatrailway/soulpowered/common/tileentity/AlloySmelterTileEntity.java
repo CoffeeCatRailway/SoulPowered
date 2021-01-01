@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
+import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
 import coffeecatrailway.soulpowered.common.item.crafting.AlloySmelterRecipe;
 import coffeecatrailway.soulpowered.registry.SoulRecipes;
@@ -30,20 +31,23 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     private static final int[] SLOTS_OUTPUT = {INVENTORY_SIZE - 1};
     private static final int[] SLOTS_ALL = IntStream.range(0, INVENTORY_SIZE).toArray();
 
-    public AlloySmelterTileEntity()
+    private final Tier tier;
+
+    public AlloySmelterTileEntity(Tier tier)
     {
-        this(SoulTileEntities.ALLOY_SMELTER.get());
+        this(SoulTileEntities.ALLOY_SMELTER.get(tier).get(), tier);
     }
 
-    public AlloySmelterTileEntity(TileEntityType<?> type)
+    public AlloySmelterTileEntity(TileEntityType<?> type, Tier tier)
     {
-        super(type, INVENTORY_SIZE, MAX_ENERGY, MAX_RECEIVE, 0);
+        super(type, INVENTORY_SIZE, (int) (MAX_ENERGY * tier.getEnergyCapacity()), (int) (MAX_RECEIVE * tier.getEnergyTransfer()), 0);
+        this.tier = tier;
     }
 
     @Override
     protected int getEnergyConsumedPerTick()
     {
-        return ENERGY_CONSUMPTION;
+        return (int) (ENERGY_CONSUMPTION * this.tier.getPowerConsumeMultiplier());
     }
 
     @Override
@@ -69,7 +73,7 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     @Override
     protected int getProcessTime(AlloySmelterRecipe recipe)
     {
-        return recipe.getProcessTime();
+        return (int) (recipe.getProcessTime() * this.tier.getProcessTime());
     }
 
     @Override
@@ -105,6 +109,6 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     @Override
     protected Container createMenu(int id, PlayerInventory player)
     {
-        return new AlloySmelterContainer(id, player, this, this.getFields());
+        return new AlloySmelterContainer(id, player, this, this.getFields(), this.tier);
     }
 }

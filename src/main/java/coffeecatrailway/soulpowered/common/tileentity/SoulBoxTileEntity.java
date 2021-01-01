@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
+import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
@@ -14,6 +15,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
@@ -23,19 +25,22 @@ import java.util.stream.IntStream;
 public class SoulBoxTileEntity extends AbstractMachineTileEntity
 {
     public static final int MAX_ENERGY = 600_000;
-    public static final int MAX_TRANSFER = 1000;
+    public static final Function<Tier, Integer> MAX_TRANSFER = tier -> (int) (1000 * tier.getEnergyTransfer());
 
     public static final int INVENTORY_SIZE = 2;
     private static final int[] SLOTS = IntStream.range(0, INVENTORY_SIZE).toArray();
 
-    public SoulBoxTileEntity()
+    private final Tier tier;
+
+    public SoulBoxTileEntity(Tier tier)
     {
-        this(SoulTileEntities.SOUL_BOX.get());
+        this(SoulTileEntities.SOUL_BOX.get(tier).get(), tier);
     }
 
-    public SoulBoxTileEntity(TileEntityType<? extends SoulBoxTileEntity> type)
+    public SoulBoxTileEntity(TileEntityType<? extends SoulBoxTileEntity> type, Tier tier)
     {
-        super(type, INVENTORY_SIZE, MAX_ENERGY, MAX_TRANSFER, MAX_TRANSFER);
+        super(type, INVENTORY_SIZE, (int) (MAX_ENERGY * tier.getEnergyCapacity()), MAX_TRANSFER.apply(tier), MAX_TRANSFER.apply(tier));
+        this.tier = tier;
     }
 
     @Override
@@ -52,7 +57,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
                 IEnergyStorage energyIn = EnergyUtils.get(inStack).orElse(EnergyUtils.EMPTY);
                 if (energyIn.getEnergyStored() > 0)
                 {
-                    int toSend = energyIn.extractEnergy(MAX_TRANSFER, true);
+                    int toSend = energyIn.extractEnergy(MAX_TRANSFER.apply(this.tier), true);
                     int sent = this.energy.receiveEnergy(toSend, false);
                     if (sent > 0)
                         energyIn.extractEnergy(sent, false);
@@ -67,7 +72,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
             {
                 if (this.energy.getEnergyStored() > 0)
                 {
-                    int toSend = this.energy.extractEnergy(MAX_TRANSFER, true);
+                    int toSend = this.energy.extractEnergy(MAX_TRANSFER.apply(this.tier), true);
                     int sent = EnergyUtils.get(outStack).orElse(EnergyUtils.EMPTY).receiveEnergy(toSend, false);
                     if (sent > 0)
                         this.energy.extractEnergy(sent, false);
@@ -105,6 +110,6 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
     @Override
     protected Container createMenu(int id, PlayerInventory playerInventory)
     {
-        return new SoulBoxContainer(id, playerInventory, this, this.getFields());
+        return new SoulBoxContainer(id, playerInventory, this, this.getFields(), this.tier);
     }
 }

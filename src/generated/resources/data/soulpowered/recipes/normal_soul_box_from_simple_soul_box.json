@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ibi",
+    "bob",
+    "ifi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "f": {
+      "item": "soulpowered:normal_machine_frame"
+    },
+    "o": {
+      "item": "soulpowered:simple_soul_box"
+    },
+    "b": {
+      "item": "soulpowered:simple_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:normal_soul_box"
+  }
+}

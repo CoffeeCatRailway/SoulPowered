@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " o ",
+    "srs",
+    " o "
+  ],
+  "key": {
+    "s": {
+      "tag": "forge:stone"
+    },
+    "o": {
+      "item": "soulpowered:simple_battery"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "soulpowered:normal_battery"
+  }
+}

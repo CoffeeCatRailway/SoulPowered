@@ -1,8 +1,12 @@
 package coffeecatrailway.soulpowered.common.block;
 
+import coffeecatrailway.soulpowered.api.Tier;
+import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.common.tileentity.AlloySmelterTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -19,11 +23,14 @@ import java.util.Random;
  * @author CoffeeCatRailway
  * Created: 13/12/2020
  */
-public class AlloySmelterBlock extends AbstractMachineBlock
+public class AlloySmelterBlock extends AbstractMachineBlock implements IEnergyItem.PickableBlock
 {
-    public AlloySmelterBlock(Properties properties)
+    private final Tier tier;
+
+    public AlloySmelterBlock(Properties properties, Tier tier)
     {
         super(properties);
+        this.tier = tier;
     }
 
     @Override
@@ -36,9 +43,9 @@ public class AlloySmelterBlock extends AbstractMachineBlock
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn)
+    public TileEntity createNewTileEntity(IBlockReader world)
     {
-        return new AlloySmelterTileEntity();
+        return new AlloySmelterTileEntity(this.tier);
     }
 
     @Override
@@ -61,5 +68,12 @@ public class AlloySmelterBlock extends AbstractMachineBlock
             world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
         }
+    }
+
+    @Override
+    public void onBlockPlaceBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    {
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
+        IEnergyItem.PickableBlock.super.onBlockPlaceBy(world, pos, state, placer, stack);
     }
 }

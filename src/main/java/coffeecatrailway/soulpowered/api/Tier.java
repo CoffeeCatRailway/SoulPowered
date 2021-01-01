@@ -6,8 +6,11 @@ package coffeecatrailway.soulpowered.api;
  */
 public enum Tier
 {
-    SIMPLE(2f, 1.5f, .5f, .5f, .5f),
-    SOULIUM(1f, 1f, 1f, 1f, 1f);
+    SIMPLE("simple", 2f, 1.5f, .5f, .5f, .5f),
+    NORMAL("normal", 1f, 1f, 1f, 1f, 1f),
+    SOULIUM("soulium", .75f, .75f, 1.5f, 1.5f, 1.5f);
+
+    String id;
 
     float processTime;
 
@@ -17,8 +20,10 @@ public enum Tier
     float energyCapacity;
     float energyTransfer;
 
-    Tier(float processTime, float powerMultiplier, float powerGeneratedMultiplier, float energyCapacity, float energyTransfer)
+    Tier(String id, float processTime, float powerMultiplier, float powerGeneratedMultiplier, float energyCapacity, float energyTransfer)
     {
+        this.id = id;
+
         this.processTime = processTime;
 
         this.powerConsumeMultiplier = powerMultiplier;
@@ -28,28 +33,33 @@ public enum Tier
         this.energyTransfer = energyTransfer;
     }
 
+    public String getId()
+    {
+        return this.id;
+    }
+
     public float getProcessTime()
     {
-        return processTime;
+        return this.processTime;
     }
 
     public float getPowerConsumeMultiplier()
     {
-        return powerConsumeMultiplier;
+        return this.powerConsumeMultiplier;
     }
 
     public float getPowerGeneratedMultiplier()
     {
-        return powerGeneratedMultiplier;
+        return this.powerGeneratedMultiplier;
     }
 
     public float getEnergyCapacity()
     {
-        return energyCapacity;
+        return this.energyCapacity;
     }
 
     public float getEnergyTransfer()
     {
-        return energyTransfer;
+        return this.energyTransfer;
     }
 }

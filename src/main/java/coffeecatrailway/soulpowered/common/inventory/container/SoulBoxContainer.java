@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.common.inventory.container;
 
+import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.registry.SoulContainers;
@@ -18,14 +19,14 @@ import net.minecraft.util.IntArray;
  */
 public class SoulBoxContainer extends AbstractEnergyStorageContainer<SoulBoxTileEntity>
 {
-    public SoulBoxContainer(ContainerType<? extends SoulBoxContainer> type, int id, PlayerInventory playerInventory)
+    public SoulBoxContainer(ContainerType<? extends SoulBoxContainer> type, int id, PlayerInventory playerInventory, Tier tier)
     {
-        this(type, id, playerInventory, new SoulBoxTileEntity(), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));
+        this(type, id, playerInventory, new SoulBoxTileEntity(tier), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));
     }
 
-    public SoulBoxContainer(int id, PlayerInventory playerInventory, SoulBoxTileEntity tileEntity, IIntArray fields)
+    public SoulBoxContainer(int id, PlayerInventory playerInventory, SoulBoxTileEntity tileEntity, IIntArray fields, Tier tier)
     {
-        this(SoulContainers.SOUL_BOX.get(), id, playerInventory, tileEntity, fields);
+        this(SoulContainers.SOUL_BOX.get(tier).get(), id, playerInventory, tileEntity, fields);
     }
 
     public SoulBoxContainer(ContainerType<? extends SoulBoxContainer> type, int id, PlayerInventory playerInventory, SoulBoxTileEntity tileEntity, IIntArray fields)
