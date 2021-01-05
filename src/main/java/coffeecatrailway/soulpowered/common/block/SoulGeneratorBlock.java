@@ -22,19 +22,11 @@ import java.util.Random;
  * @author CoffeeCatRailway
  * Created: 9/11/2020
  */
-public class SoulGeneratorBlock extends AbstractMachineBlock implements IEnergyItem.PickableBlock
+public class SoulGeneratorBlock extends AbstractMachineBlock
 {
     public SoulGeneratorBlock(Properties properties)
     {
         super(properties);
-    }
-
-    @Override
-    protected void interactWith(World world, BlockPos pos, PlayerEntity player)
-    {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof SoulGeneratorTileEntity)
-            player.openContainer((SoulGeneratorTileEntity) tile);
     }
 
     @Nullable
@@ -64,12 +56,5 @@ public class SoulGeneratorBlock extends AbstractMachineBlock implements IEnergyI
             world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
         }
-    }
-
-    @Override
-    public void onBlockPlaceBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        super.onBlockPlacedBy(world, pos, state, placer, stack);
-        IEnergyItem.PickableBlock.super.onBlockPlaceBy(world, pos, state, placer, stack);
     }
 }

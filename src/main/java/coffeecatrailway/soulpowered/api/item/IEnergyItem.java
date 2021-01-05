@@ -126,39 +126,4 @@ public interface IEnergyItem extends IItemProvider, IForgeItem
     int getMaxReceive();
 
     int getMaxExtract();
-
-    interface PickableBlock extends IForgeBlock
-    {
-        @Override
-        default ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
-        {
-            ItemStack stack = new ItemStack(this.getBlock());
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof AbstractMachineTileEntity && tile.getCapability(CapabilityEnergy.ENERGY).isPresent() && EnergyUtils.isPresent(stack))
-            {
-                IEnergyStorage stackCap = EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY);
-                if (stackCap instanceof SoulEnergyStorageImpl)
-                {
-                    IEnergyStorage tileCap = tile.getCapability(CapabilityEnergy.ENERGY).orElse(EnergyUtils.EMPTY);
-                    ((SoulEnergyStorageImpl) stackCap).setEnergyExact(tileCap.getEnergyStored());
-                }
-            }
-
-            return stack;
-        }
-
-        default void onBlockPlaceBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-        {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof AbstractMachineTileEntity && tile.getCapability(CapabilityEnergy.ENERGY).isPresent() && EnergyUtils.isPresent(stack))
-            {
-                IEnergyStorage tileCap = tile.getCapability(CapabilityEnergy.ENERGY).orElse(EnergyUtils.EMPTY);
-                if (tileCap instanceof SoulEnergyStorageImpl)
-                {
-                    IEnergyStorage stackCap = EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY);
-                    ((SoulEnergyStorageImpl) tileCap).setEnergyExact(stackCap.getEnergyStored());
-                }
-            }
-        }
-    }
 }
