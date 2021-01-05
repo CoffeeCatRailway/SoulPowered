@@ -1,7 +1,6 @@
 package coffeecatrailway.soulpowered.common.block;
 
 import io.github.ocelot.sonar.common.util.VoxelShapeHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;

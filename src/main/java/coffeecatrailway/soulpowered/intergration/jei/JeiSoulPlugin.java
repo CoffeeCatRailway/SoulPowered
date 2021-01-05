@@ -1,12 +1,12 @@
 package coffeecatrailway.soulpowered.intergration.jei;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.gui.screen.AlloySmelterScreen;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
 import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.registry.SoulRecipes;
-import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;

@@ -1,6 +1,7 @@
 package coffeecatrailway.soulpowered;
 
 import coffeecatrailway.soulpowered.api.item.IEnergyItem;
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
@@ -11,7 +12,6 @@ import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
 import coffeecatrailway.soulpowered.registry.SoulFeatures;
 import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.registry.SoulWorldGen;
-import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

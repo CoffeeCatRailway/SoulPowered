@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.api.utils;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
-import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.api.tileentity.IEnergyHandler;
+import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;

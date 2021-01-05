@@ -1,11 +1,7 @@
 package coffeecatrailway.soulpowered.common.block;
 
-import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
