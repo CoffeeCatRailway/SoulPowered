@@ -3,7 +3,6 @@ package coffeecatrailway.soulpowered.registry;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.Tier;
-import coffeecatrailway.soulpowered.api.item.MachineBlockItem;
 import coffeecatrailway.soulpowered.common.block.AlloySmelterBlock;
 import coffeecatrailway.soulpowered.common.block.MachineFrameBlock;
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
@@ -27,6 +26,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.Logger;
 
@@ -82,7 +82,7 @@ public class SoulBlocks
                     .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
                     .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(SOULIUM_MACHINE_FRAME.get()))
                     .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
-                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_BATTERY.get())).build(provider)).item(MachineBlockItem::new).build(), "Soul Generator");
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_BATTERY.get())).build(provider)).simpleItem(), "Soul Generator");
 
     public static final RegistryEntry<SoulBoxBlock> SIMPLE_SOUL_BOX = registerSoulBox("simple_soul_box", "Simple Soul Box", Tier.SIMPLE, (ctx, provider) ->
             ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('p', ItemTags.PLANKS).key('f', SIMPLE_MACHINE_FRAME.get())
@@ -194,9 +194,8 @@ public class SoulBlocks
                             .texture("top", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_top"));
                     modelOn.assertExistence();
 
-                })
-                .recipe(recipe).item(MachineBlockItem::new).build(), name);
                     addModels(provider.getVariantBuilder(ctx.getEntry()), modelOn, modelOff);
+                }).recipe(recipe).simpleItem(), name);
     }
 
     private static RegistryEntry<AlloySmelterBlock> registerAlloySmelter(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, AlloySmelterBlock>, RegistrateRecipeProvider> recipe, SoundType soundType)
@@ -204,7 +203,7 @@ public class SoulBlocks
         return registerMachine(REGISTRATE.object(id).block(prop -> new AlloySmelterBlock(prop, tier)).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
                 .properties(prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(soundType))
                 .blockstate(sidedFurnaceModel(true)).lang(name).defaultLoot()
-                .recipe(recipe).item(MachineBlockItem::new).build(), name);
+                .recipe(recipe).simpleItem(), name);
     }
 
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue)
