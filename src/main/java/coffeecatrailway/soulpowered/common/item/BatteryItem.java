@@ -34,7 +34,9 @@ public class BatteryItem extends Item implements IEnergyItem
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
     {
-        IEnergyItem.super.fillItemGroup(group, items);
+        super.fillItemGroup(group, items);
+        if (this.isInGroup(group))
+            this.addItemVarients(items);
     }
 
     @Override

@@ -31,10 +31,8 @@ import javax.annotation.Nullable;
  * @author CoffeeCatRailway
  * Created: 14/11/2020
  */
-public class SoulBoxBlock extends Block implements IEnergyItem.PickableBlock
+public class SoulBoxBlock extends AbstractMachineBlock
 {
-    public static final BooleanProperty ON = BooleanProperty.create("on");
-
     private static final VoxelShape SHAPE = new VoxelShapeHelper.Builder().append(VoxelShapes.fullCube(),
             VoxelShapeHelper.makeCuboidShape(1d, 16d, 1d, 3d, 17d, 3d, Direction.EAST),
             VoxelShapeHelper.makeCuboidShape(1d, 16d, 13d, 3d, 17d, 15d, Direction.EAST),
@@ -46,27 +44,14 @@ public class SoulBoxBlock extends Block implements IEnergyItem.PickableBlock
     public SoulBoxBlock(Properties properties, Tier tier)
     {
         super(properties);
-        this.setDefaultState(this.getStateContainer().getBaseState().with(ON, false));
         this.tier = tier;
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
+    public TileEntity createNewTileEntity(IBlockReader world)
     {
         return new SoulBoxTileEntity(this.tier);
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(ON);
     }
 
     @Override
@@ -79,44 +64,5 @@ public class SoulBoxBlock extends Block implements IEnergyItem.PickableBlock
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
     {
         return SHAPE;
-    }
-
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-    {
-        if (!world.isRemote)
-        {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof SoulBoxTileEntity)
-                player.openContainer((SoulBoxTileEntity) tile);
-        }
-        return ActionResultType.SUCCESS;
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        if (stack.hasDisplayName())
-        {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof SoulBoxTileEntity)
-                ((SoulBoxTileEntity) tile).setCustomName(stack.getDisplayName());
-        }
-        IEnergyItem.PickableBlock.super.onBlockPlaceBy(world, pos, state, placer, stack);
-    }
-
-    @Override
-    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        if (state.getBlock() != newState.getBlock())
-        {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof SoulBoxTileEntity)
-            {
-                InventoryHelper.dropInventoryItems(world, pos, (SoulBoxTileEntity) tile);
-                world.updateComparatorOutputLevel(pos, this);
-            }
-            super.onReplaced(state, world, pos, newState, isMoving);
-        }
     }
 }

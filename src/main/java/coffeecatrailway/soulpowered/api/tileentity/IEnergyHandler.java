@@ -1,5 +1,6 @@
-package coffeecatrailway.soulpowered.common.tileentity;
+package coffeecatrailway.soulpowered.api.tileentity;
 
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImpl;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -25,13 +26,13 @@ public interface IEnergyHandler
 
     default int getEnergyStored()
     {
-        IEnergyStorage energy = this.getEnergy(null).orElse(new EnergyStorage(100_000));
+        IEnergyStorage energy = this.getEnergy(null).orElse(EnergyUtils.EMPTY);
         return energy.getEnergyStored();
     }
 
     default int getMaxEnergyStored()
     {
-        IEnergyStorage energy = getEnergy(null).orElse(new EnergyStorage(100_000));
+        IEnergyStorage energy = getEnergy(null).orElse(EnergyUtils.EMPTY);
         return energy.getMaxEnergyStored();
     }
 

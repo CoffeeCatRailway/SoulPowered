@@ -1,6 +1,7 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
 import coffeecatrailway.soulpowered.api.Tier;
+import coffeecatrailway.soulpowered.common.block.AbstractMachineBlock;
 import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
@@ -83,7 +84,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
         if (this.world.getGameTime() % 30 == 0)
         {
             BlockState currentState = this.getBlockState();
-            BlockState newState = this.getBlockState().with(SoulBoxBlock.ON, this.energy.getEnergyStored() > 0);
+            BlockState newState = this.getBlockState().with(AbstractMachineBlock.LIT, this.energy.getEnergyStored() > 0);
             if (currentState != newState)
                 this.world.setBlockState(this.pos, newState, Constants.BlockFlags.DEFAULT);
         }

@@ -20,6 +20,13 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.RandomValueRange;
+import net.minecraft.loot.conditions.SurvivesExplosion;
+import net.minecraft.loot.functions.CopyName;
+import net.minecraft.loot.functions.CopyNbt;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -27,6 +34,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.Logger;
 
@@ -184,17 +192,18 @@ public class SoulBlocks
         return registerMachine(REGISTRATE.object(id).block(prop -> new SoulBoxBlock(prop, tier)).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY).lang(name).defaultLoot()
                 .properties(prop -> prop.setRequiresTool().hardnessAndResistance(6f, 20f).sound(soundType))
                 .blockstate((ctx, provider) -> {
-                    ModelFile off = provider.models().withExistingParent(ctx.getName(), SoulPoweredMod.getLocation("block/soul_box_template"))
+                    ModelFile modelOff = provider.models().withExistingParent(ctx.getName(), SoulPoweredMod.getLocation("block/soul_box_template"))
                             .texture("side", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_side"))
                             .texture("top", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_top"));
-                    ModelFile on = provider.models().withExistingParent(ctx.getName() + "_on", SoulPoweredMod.getLocation("block/soul_box_template"))
+                    modelOff.assertExistence();
+
+                    ModelFile modelOn = provider.models().withExistingParent(ctx.getName() + "_on", SoulPoweredMod.getLocation("block/soul_box_template"))
                             .texture("side", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_side_on"))
                             .texture("top", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_top"));
+                    modelOn.assertExistence();
 
-                    provider.getVariantBuilder(ctx.getEntry()).partialState().with(SoulBoxBlock.ON, false).modelForState().modelFile(off).addModel()
-                            .partialState().with(SoulBoxBlock.ON, true).modelForState().modelFile(on).addModel();
-                })
-                .recipe(recipe).item(MachineBlockItem::new).build(), name);
+                    addModels(provider.getVariantBuilder(ctx.getEntry()), modelOn, modelOff);
+                }).recipe(recipe).item(MachineBlockItem::new).build(), name);
     }
 
     private static RegistryEntry<AlloySmelterBlock> registerAlloySmelter(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, AlloySmelterBlock>, RegistrateRecipeProvider> recipe, SoundType soundType)
@@ -218,36 +227,41 @@ public class SoulBlocks
             ResourceLocation front = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_front");
             ResourceLocation front_on = SoulPoweredMod.getLocation("block/" + ctx.getName() + "_front_on");
 
-            ModelFile model_off = provider.models().cube(ctx.getName(), top, top, front, side, side, side).texture("particle", side);
-            ModelFile model_on = provider.models().cube(ctx.getName() + "_on", top, top, front_on, side, side, side).texture("particle", side);
+            ModelFile modelOff = provider.models().cube(ctx.getName(), top, top, front, side, side, side).texture("particle", side);
+            ModelFile modelOn = provider.models().cube(ctx.getName() + "_on", top, top, front_on, side, side, side).texture("particle", side);
 
-            model_off.assertExistence();
-            model_on.assertExistence();
+            modelOff.assertExistence();
+            modelOn.assertExistence();
 
-            provider.getVariantBuilder(ctx.getEntry()) // North
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, false)
-                    .modelForState().modelFile(model_off).addModel()
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, true)
-                    .modelForState().modelFile(model_on).addModel()
-
-                    // South
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, false)
-                    .modelForState().modelFile(model_off).rotationY(180).addModel()
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, true)
-                    .modelForState().modelFile(model_on).rotationY(180).addModel()
-
-                    // East
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, false)
-                    .modelForState().modelFile(model_off).rotationY(90).addModel()
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, true)
-                    .modelForState().modelFile(model_on).rotationY(90).addModel()
-
-                    // West
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, false)
-                    .modelForState().modelFile(model_off).rotationY(270).addModel()
-                    .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, true)
-                    .modelForState().modelFile(model_on).rotationY(270).addModel();
+            addModels(provider.getVariantBuilder(ctx.getEntry()), modelOn, modelOff);
         };
+    }
+
+    private static void addModels(VariantBlockStateBuilder builder, ModelFile modelOn, ModelFile modelOff)
+    {
+        // North
+        builder.partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, false)
+                .modelForState().modelFile(modelOff).addModel()
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.NORTH).with(AbstractFurnaceBlock.LIT, true)
+                .modelForState().modelFile(modelOn).addModel()
+
+                // South
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, false)
+                .modelForState().modelFile(modelOff).rotationY(180).addModel()
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH).with(AbstractFurnaceBlock.LIT, true)
+                .modelForState().modelFile(modelOn).rotationY(180).addModel()
+
+                // East
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, false)
+                .modelForState().modelFile(modelOff).rotationY(90).addModel()
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.EAST).with(AbstractFurnaceBlock.LIT, true)
+                .modelForState().modelFile(modelOn).rotationY(90).addModel()
+
+                // West
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, false)
+                .modelForState().modelFile(modelOff).rotationY(270).addModel()
+                .partialState().with(AbstractFurnaceBlock.FACING, Direction.WEST).with(AbstractFurnaceBlock.LIT, true)
+                .modelForState().modelFile(modelOn).rotationY(270).addModel();
     }
 
     private static <T extends Block> RegistryEntry<T> registerMachine(BlockBuilder<T, Registrate> builder, String name)

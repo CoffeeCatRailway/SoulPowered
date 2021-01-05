@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered;
 
+import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.gui.SoulHUDOverlayHandler;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
@@ -7,7 +8,6 @@ import coffeecatrailway.soulpowered.common.command.SoulsCommand;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.registry.*;
-import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
