@@ -267,7 +267,12 @@ public class SoulBlocks
     private static <T extends Block> RegistryEntry<T> registerMachine(BlockBuilder<T, Registrate> builder, String name)
     {
         SoulData.Lang.EXTRA_LANGS.put("container." + SoulPoweredMod.MOD_ID + "." + builder.getName(), name);
-        return builder.lang(name).register();
+        return builder.lang(name).loot((tables, block) -> tables.registerLootTable(block, LootTable.builder().addLootPool(LootPool.builder().rolls(new RandomValueRange(1))
+                .addEntry(ItemLootEntry.builder(block).acceptCondition(SurvivesExplosion.builder())
+                        .acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
+                        .acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+                                .replaceOperation("Energy", "Energy")
+                                .replaceOperation("RedstoneMode", "RedstoneMode")))))).register();
     }
 
     public static void load()

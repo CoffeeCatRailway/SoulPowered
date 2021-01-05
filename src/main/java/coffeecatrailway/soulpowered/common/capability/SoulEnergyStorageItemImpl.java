@@ -49,7 +49,7 @@ public class SoulEnergyStorageItemImpl extends EnergyStorage
         return this.stack.getOrCreateTag().getInt("Energy");
     }
 
-    private void setEnergyStored(int amount)
+    public void setEnergyStored(int amount)
     {
         this.stack.getOrCreateTag().putInt("Energy", amount);
     }

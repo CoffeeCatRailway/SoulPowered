@@ -35,6 +35,16 @@ public class MachineBlockItem extends BlockItem implements IEnergyItem
         super(block, properties);
     }
 
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt)
+    {
+        CompoundNBT stackNbt = stack.getOrCreateTag();
+        if (!stackNbt.contains("RedstoneMode", Constants.NBT.TAG_ANY_NUMERIC))
+            stackNbt.putByte("RedstoneMode", (byte) RedstoneMode.IGNORED.ordinal());
+        return IEnergyItem.super.initCapabilities(stack, nbt);
+    }
+
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
     {
@@ -48,16 +58,27 @@ public class MachineBlockItem extends BlockItem implements IEnergyItem
     {
         super.addInformation(stack, world, tooltip, flag);
         IEnergyItem.super.addInformation(stack, world, tooltip, flag);
+        CompoundNBT nbt = stack.getOrCreateTag();
+        if (nbt.contains("RedstoneMode", Constants.NBT.TAG_ANY_NUMERIC))
+            tooltip.add(SoulData.Lang.redstoneMode(RedstoneMode.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED)));
     }
 
     @Override
     public boolean updateItemStackNBT(CompoundNBT nbt)
     {
         super.updateItemStackNBT(nbt);
+        int i = 0;
         if (nbt.contains("Energy", Constants.NBT.TAG_ANY_NUMERIC))
         {
+            nbt.putInt("Energy", nbt.getInt("Energy"));
+            i++;
         }
-        return false;
+        if (nbt.contains("RedstoneMode", Constants.NBT.TAG_ANY_NUMERIC))
+        {
+            nbt.putByte("RedstoneMode", nbt.getByte("RedstoneMode"));
+            i++;
+        }
+        return i > 0;
     }
 
     @Override

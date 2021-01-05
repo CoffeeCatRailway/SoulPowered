@@ -35,6 +35,16 @@ public class SoulEnergyStorageImplBase extends EnergyStorage implements ICapabil
         this.optional = LazyOptional.of(() -> this);
     }
 
+    public int getMaxReceive()
+    {
+        return this.maxReceive;
+    }
+
+    public int getMaxExtract()
+    {
+        return this.maxExtract;
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)

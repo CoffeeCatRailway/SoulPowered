@@ -2,16 +2,38 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
       "entries": [
         {
           "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Energy",
+                  "target": "Energy",
+                  "op": "replace"
+                },
+                {
+                  "source": "RedstoneMode",
+                  "target": "RedstoneMode",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
           "name": "soulpowered:simple_alloy_smelter"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }

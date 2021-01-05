@@ -67,6 +67,7 @@ public abstract class AbstractMachineBlock extends AbstractFurnaceBlock
             CompoundNBT nbt = stack.getOrCreateTag();
             nbt.putInt("Energy", machine.getEnergyStored());
 //            EnergyUtils.ifPresent(stack, energy -> energy.receiveEnergy(machine.getEnergyStored(), false));
+            nbt.putByte("RedstoneMode", (byte) machine.getRedstoneMode().ordinal());
         }
         return stack;
     }
@@ -83,6 +84,7 @@ public abstract class AbstractMachineBlock extends AbstractFurnaceBlock
         {
             AbstractMachineTileEntity machine = (AbstractMachineTileEntity) tile;
             machine.setEnergyStoredExact(EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored());
+            machine.setRedstoneMode(RedstoneMode.byOrdinal(stack.getOrCreateTag().getByte("RedstoneMode"), RedstoneMode.IGNORED));
         }
     }
 }
