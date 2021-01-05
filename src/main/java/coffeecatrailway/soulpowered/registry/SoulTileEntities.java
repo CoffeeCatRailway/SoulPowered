@@ -33,9 +33,9 @@ public class SoulTileEntities
 
 //    public static final Map<Tier, RegistryEntry<TileEntityType<CoalGeneratorTileEntity>>> COAL_GENERATOR = registerMachineTileEntity("coal_generator", CoalGeneratorTileEntity::new, new Tier[]{Tier.SIMPLE, Tier.NORMAL}, SoulBlocks.SIMPLE_COAL_GENERATOR, SoulBlocks.NORMAL_COAL_GENERATOR);
 
-    public static final Map<Tier, RegistryEntry<TileEntityType<SoulBoxTileEntity>>> SOUL_BOX = registerMachineTileEntity("soul_box", SoulBoxTileEntity::new, SoulBlocks.SIMPLE_SOUL_BOX, SoulBlocks.SOULIUM_SOUL_BOX);
+    public static final Map<Tier, RegistryEntry<TileEntityType<SoulBoxTileEntity>>> SOUL_BOX = registerMachineTileEntity("soul_box", SoulBoxTileEntity::new, SoulBlocks.SIMPLE_SOUL_BOX, SoulBlocks.NORMAL_SOUL_BOX, SoulBlocks.SOULIUM_SOUL_BOX);
 
-    public static final Map<Tier, RegistryEntry<TileEntityType<AlloySmelterTileEntity>>> ALLOY_SMELTER = registerMachineTileEntity("alloy_smelter", AlloySmelterTileEntity::new, SoulBlocks.SIMPLE_ALLOY_SMELTER, SoulBlocks.SOULIUM_ALLOY_SMELTER);
+    public static final Map<Tier, RegistryEntry<TileEntityType<AlloySmelterTileEntity>>> ALLOY_SMELTER = registerMachineTileEntity("alloy_smelter", AlloySmelterTileEntity::new, SoulBlocks.SIMPLE_ALLOY_SMELTER, SoulBlocks.NORMAL_ALLOY_SMELTER, SoulBlocks.SOULIUM_ALLOY_SMELTER);
 
     private static <T extends TileEntity> Map<Tier, RegistryEntry<TileEntityType<T>>> registerMachineTileEntity(String id, NonNullBiFunction<TileEntityType<T>, Tier, T> factory, NonNullSupplier<? extends Block>... blocks)
     {

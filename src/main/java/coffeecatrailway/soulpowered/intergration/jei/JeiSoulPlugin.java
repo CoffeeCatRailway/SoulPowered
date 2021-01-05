@@ -52,16 +52,6 @@ public class JeiSoulPlugin implements IModPlugin
         registration.registerSubtypeInterpreter(SoulItems.SOULIUM_BATTERY.get(), interpreter);
 
         registration.registerSubtypeInterpreter(SoulItems.POWERED_SOULIUM_SOUL_AMULET.get(), interpreter);
-
-        registration.registerSubtypeInterpreter(SoulBlocks.SOUL_GENERATOR.get().asItem(), interpreter);
-
-        registration.registerSubtypeInterpreter(SoulBlocks.SIMPLE_SOUL_BOX.get().asItem(), interpreter);
-        registration.registerSubtypeInterpreter(SoulBlocks.NORMAL_SOUL_BOX.get().asItem(), interpreter);
-        registration.registerSubtypeInterpreter(SoulBlocks.SOULIUM_SOUL_BOX.get().asItem(), interpreter);
-
-        registration.registerSubtypeInterpreter(SoulBlocks.SIMPLE_ALLOY_SMELTER.get().asItem(), interpreter);
-        registration.registerSubtypeInterpreter(SoulBlocks.NORMAL_ALLOY_SMELTER.get().asItem(), interpreter);
-        registration.registerSubtypeInterpreter(SoulBlocks.SOULIUM_ALLOY_SMELTER.get().asItem(), interpreter);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package coffeecatrailway.soulpowered.common.tileentity;
+package coffeecatrailway.soulpowered.api.tileentity;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
