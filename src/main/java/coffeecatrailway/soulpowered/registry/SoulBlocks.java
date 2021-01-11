@@ -3,10 +3,7 @@ package coffeecatrailway.soulpowered.registry;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.Tier;
-import coffeecatrailway.soulpowered.common.block.AlloySmelterBlock;
-import coffeecatrailway.soulpowered.common.block.MachineFrameBlock;
-import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
-import coffeecatrailway.soulpowered.common.block.SoulGeneratorBlock;
+import coffeecatrailway.soulpowered.common.block.*;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -15,11 +12,13 @@ import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Direction;
@@ -29,8 +28,6 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.Tags;
 import org.apache.logging.log4j.Logger;
-
-import java.util.function.ToIntFunction;
 
 import static coffeecatrailway.soulpowered.SoulPoweredMod.REGISTRATE;
 
@@ -42,12 +39,16 @@ public class SoulBlocks
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Blocks");
 
-    // World Gen
+    /*
+     * World Gen
+     */
     public static final RegistryEntry<Block> COPPER_ORE = REGISTRATE.object("copper_ore").block(Block::new).initialProperties(Material.ROCK, Material.ROCK.getColor())
             .defaultLang().defaultLoot().defaultBlockstate().properties(prop -> prop.setRequiresTool().hardnessAndResistance(3f))
             .tag(SoulData.TagBlocks.ORES_COPPER).item().tag(SoulData.TagItems.ORES_COPPER).build().register();
 
-    // Building Blocks
+    /*
+     * Building Blocks
+     */
     public static final RegistryEntry<Block> SOULIUM_BLOCK = REGISTRATE.object("soulium_block").block(Block::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
             .properties(prop -> prop.setRequiresTool().hardnessAndResistance(5f, 6f).sound(SoundType.METAL)).defaultLang().defaultLoot().defaultBlockstate()
             .recipe((ctx, provider) -> provider.square(DataIngredient.items(SoulItems.SOULIUM_INGOT), ctx::getEntry, false))
@@ -58,25 +59,54 @@ public class SoulBlocks
             .recipe((ctx, provider) -> provider.square(DataIngredient.tag(SoulData.TagItems.INGOTS_COPPER), ctx::getEntry, false))
             .tag(SoulData.TagBlocks.STORAGE_BLOCKS_COPPER, BlockTags.BEACON_BASE_BLOCKS).item().tag(SoulData.TagItems.STORAGE_BLOCKS_COPPER).build().register();
 
-    // Machines
-    public static final RegistryEntry<MachineFrameBlock> SIMPLE_MACHINE_FRAME = registerMachineFrame("simple_machine_frame", "Simple Machine Frame",
+    /*
+     * Machine Frames
+     */
+    public static final RegistryEntry<MachineFrameBlock> SIMPLE_MACHINE_FRAME = registerMachineFrame("simple_machine_frame", "Simple Machine Frame", Tier.SIMPLE,
             (ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', ItemTags.LOGS).key('s', ItemTags.PLANKS)
                     .patternLine("isi").patternLine("s s").patternLine("isi").addCriterion("has_log", RegistrateRecipeProvider.hasItem(ItemTags.LOGS))
                     .addCriterion("has_planks", RegistrateRecipeProvider.hasItem(ItemTags.PLANKS)).build(provider), true, SoundType.WOOD);
 
-    public static final RegistryEntry<MachineFrameBlock> NORMAL_MACHINE_FRAME = registerMachineFrame("normal_machine_frame", "Machine Frame",
+    public static final RegistryEntry<MachineFrameBlock> NORMAL_MACHINE_FRAME = registerMachineFrame("normal_machine_frame", "Machine Frame", Tier.NORMAL,
             (ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', Tags.Items.INGOTS_IRON).key('s', Tags.Items.STONE)
                     .patternLine("isi").patternLine("s s").patternLine("isi").addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
                     .addCriterion("has_iron", RegistrateRecipeProvider.hasItem(Tags.Items.INGOTS_IRON)).build(provider), false, SoundType.STONE);
 
-    public static final RegistryEntry<MachineFrameBlock> SOULIUM_MACHINE_FRAME = registerMachineFrame("soulium_machine_frame", "Soulium Machine Frame",
+    public static final RegistryEntry<MachineFrameBlock> SOULIUM_MACHINE_FRAME = registerMachineFrame("soulium_machine_frame", "Soulium Machine Frame", Tier.SOULIUM,
             (ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', SoulItems.SOULIUM_INGOT.get()).key('s', SoulData.TagItems.SOUL_BLOCKS)
                     .patternLine("isi").patternLine("s s").patternLine("isi").addCriterion("has_soul_sand", RegistrateRecipeProvider.hasItem(SoulData.TagItems.SOUL_BLOCKS))
                     .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get())).build(provider), false, SoundType.METAL);
 
+    /*
+     * Machines
+     * Generators
+     */
+    public static final RegistryEntry<CoalGeneratorBlock> SIMPLE_COAL_GENERATOR = registerCoalGenerator("simple_coal_generator", "Simple Coal Generator", Tier.SIMPLE, (ctx, provider) ->
+            ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('p', ItemTags.PLANKS).key('m', SIMPLE_MACHINE_FRAME.get())
+                    .key('f', Blocks.FURNACE).key('b', SoulItems.SIMPLE_BATTERY.get()).patternLine("pfp").patternLine("pbp").patternLine("pmp")
+                    .addCriterion("has_planks", RegistrateRecipeProvider.hasItem(ItemTags.PLANKS))
+                    .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(SIMPLE_MACHINE_FRAME.get()))
+                    .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SIMPLE_BATTERY.get())).build(provider), SoundType.WOOD);
+
+    public static final RegistryEntry<CoalGeneratorBlock> NORMAL_COAL_GENERATOR = registerCoalGenerator("normal_coal_generator", "Normal Coal Generator", Tier.NORMAL, (ctx, provider) -> {
+        ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('s', Tags.Items.STONE).key('m', NORMAL_MACHINE_FRAME.get())
+                .key('f', Blocks.FURNACE).key('b', SoulItems.NORMAL_BATTERY.get()).patternLine("fsf").patternLine("sbs").patternLine("sms")
+                .addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
+                .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(NORMAL_MACHINE_FRAME.get()))
+                .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
+                .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.NORMAL_BATTERY.get())).build(provider);
+        ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('s', Tags.Items.STONE).key('m', NORMAL_MACHINE_FRAME.get())
+                .key('c', SIMPLE_COAL_GENERATOR.get()).key('b', SoulItems.NORMAL_BATTERY.get()).patternLine("csc").patternLine("sbs").patternLine("sms")
+                .addCriterion("has_stone", RegistrateRecipeProvider.hasItem(Tags.Items.STONE))
+                .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(NORMAL_MACHINE_FRAME.get()))
+                .addCriterion("has_simple_coal_generator", RegistrateRecipeProvider.hasItem(SIMPLE_COAL_GENERATOR.get()))
+                .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.NORMAL_BATTERY.get())).build(provider, SoulPoweredMod.getLocation("normal_coal_generator_from_simple_coal_generator"));
+    }, SoundType.STONE);
+
     public static final RegistryEntry<SoulGeneratorBlock> SOUL_GENERATOR = registerMachine(REGISTRATE.object("soul_generator").block(SoulGeneratorBlock::new)
-            .blockstate(sidedFurnaceModel(false)).defaultLang().defaultLoot().initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
-            .properties(prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(SoundType.METAL))
+            .blockstate(sidedFurnaceModel(false)).defaultLang().defaultLoot().initialProperties(Tier.SOULIUM.getMaterial(), Tier.SOULIUM.getMaterialColor())
+            .properties(prop -> Tier.SOULIUM.getProperties().apply(prop))
             .recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', SoulItems.SOULIUM_INGOT.get()).key('m', SOULIUM_MACHINE_FRAME.get())
                     .key('f', Blocks.FURNACE).key('b', SoulItems.SOULIUM_BATTERY.get()).patternLine(" f ").patternLine("ibi").patternLine("imi")
                     .addCriterion("has_soul_metal", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_INGOT.get()))
@@ -84,6 +114,7 @@ public class SoulBlocks
                     .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SOULIUM_BATTERY.get())).build(provider)).simpleItem(), "Soul Generator");
 
+    // Soul Boxes
     public static final RegistryEntry<SoulBoxBlock> SIMPLE_SOUL_BOX = registerSoulBox("simple_soul_box", "Simple Soul Box", Tier.SIMPLE, (ctx, provider) ->
             ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('p', ItemTags.PLANKS).key('f', SIMPLE_MACHINE_FRAME.get())
                     .key('c', SoulData.TagItems.INGOTS_COPPER).key('b', SoulItems.SIMPLE_BATTERY.get()).patternLine("pcp").patternLine("bbb").patternLine("pfp")
@@ -122,6 +153,7 @@ public class SoulBlocks
                 .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.NORMAL_BATTERY.get())).build(provider, SoulPoweredMod.getLocation("soulium_soul_box_from_normal_soul_box"));
     }, SoundType.METAL);
 
+    // Alloy Smelters
     public static final RegistryEntry<AlloySmelterBlock> SIMPLE_ALLOY_SMELTER = registerAlloySmelter("simple_alloy_smelter", "Simple Alloy Smelter", Tier.SIMPLE,
             (ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', ItemTags.PLANKS).key('m', SIMPLE_MACHINE_FRAME.get())
                     .key('f', Blocks.FURNACE).key('b', SoulItems.SIMPLE_BATTERY.get()).patternLine("fff").patternLine("ibi").patternLine("imi")
@@ -162,10 +194,13 @@ public class SoulBlocks
                         .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.NORMAL_BATTERY.get())).build(provider, SoulPoweredMod.getLocation("soulium_alloy_smelter_from_normal_alloy_smelter"));
             }, SoundType.METAL);
 
-    private static RegistryEntry<MachineFrameBlock> registerMachineFrame(String id, String name, NonNullBiConsumer<DataGenContext<Block, MachineFrameBlock>, RegistrateRecipeProvider> recipe, boolean hasEndTexure, SoundType soundType)
+    /*
+     * Helper Methods
+     */
+    private static RegistryEntry<MachineFrameBlock> registerMachineFrame(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, MachineFrameBlock>, RegistrateRecipeProvider> recipe, boolean hasEndTexure, SoundType soundType)
     {
-        return REGISTRATE.object(id).block(MachineFrameBlock::new).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY).lang(name).defaultLoot()
-                .properties(prop -> prop.setRequiresTool().hardnessAndResistance(2.5f).sound(soundType))
+        return REGISTRATE.object(id).block(MachineFrameBlock::new).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
+                .properties(prop -> tier.getProperties().apply(prop))
                 .blockstate((ctx, provider) -> {
                     BlockModelBuilder builder = provider.models().withExistingParent(ctx.getName(), SoulPoweredMod.getLocation("block/machine_frame_template"));
                     if (hasEndTexure)
@@ -179,11 +214,16 @@ public class SoulBlocks
                 }).recipe(recipe).simpleItem().register();
     }
 
+    private static RegistryEntry<CoalGeneratorBlock> registerCoalGenerator(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, CoalGeneratorBlock>, RegistrateRecipeProvider> recipe, SoundType soundType)
+    {
+        return registerMachine(REGISTRATE.object(id).block(prop -> new CoalGeneratorBlock(prop, tier)).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
+                .properties(prop -> tier.getProperties().apply(prop)).blockstate(sidedFurnaceModel(true)).recipe(recipe).simpleItem(), name);
+    }
+
     private static RegistryEntry<SoulBoxBlock> registerSoulBox(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, SoulBoxBlock>, RegistrateRecipeProvider> recipe, SoundType soundType)
     {
-        return registerMachine(REGISTRATE.object(id).block(prop -> new SoulBoxBlock(prop, tier)).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY).lang(name).defaultLoot()
-                .properties(prop -> prop.setRequiresTool().hardnessAndResistance(6f, 20f).sound(soundType))
-                .blockstate((ctx, provider) -> {
+        return registerMachine(REGISTRATE.object(id).block(prop -> new SoulBoxBlock(prop, tier)).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
+                .properties(prop -> tier.getProperties().apply(prop)).blockstate((ctx, provider) -> {
                     ModelFile modelOff = provider.models().withExistingParent(ctx.getName(), SoulPoweredMod.getLocation("block/soul_box_template"))
                             .texture("side", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_side"))
                             .texture("top", SoulPoweredMod.getLocation("block/" + ctx.getName() + "_top"));
@@ -200,15 +240,9 @@ public class SoulBlocks
 
     private static RegistryEntry<AlloySmelterBlock> registerAlloySmelter(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, AlloySmelterBlock>, RegistrateRecipeProvider> recipe, SoundType soundType)
     {
-        return registerMachine(REGISTRATE.object(id).block(prop -> new AlloySmelterBlock(prop, tier)).initialProperties(Material.IRON, MaterialColor.LIGHT_GRAY)
-                .properties(prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(soundType))
-                .blockstate(sidedFurnaceModel(true)).lang(name).defaultLoot()
+        return registerMachine(REGISTRATE.object(id).block(prop -> new AlloySmelterBlock(prop, tier)).initialProperties(tier.getMaterial(), tier.getMaterialColor())
+                .properties(prop -> tier.getProperties().apply(prop)).blockstate(sidedFurnaceModel(true)).lang(name).defaultLoot()
                 .recipe(recipe).simpleItem(), name);
-    }
-
-    private static ToIntFunction<BlockState> getLightValueLit(int lightValue)
-    {
-        return state -> state.get(BlockStateProperties.LIT) ? lightValue : 0;
     }
 
     private static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> sidedFurnaceModel(boolean hasTopTexture)

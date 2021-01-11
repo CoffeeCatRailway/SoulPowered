@@ -3,6 +3,7 @@ package coffeecatrailway.soulpowered.registry;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.tileentity.AlloySmelterTileEntity;
+import coffeecatrailway.soulpowered.common.tileentity.CoalGeneratorTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -31,7 +32,7 @@ public class SoulTileEntities
     public static final RegistryEntry<TileEntityType<SoulGeneratorTileEntity>> SOUL_GENERATOR = REGISTRATE.tileEntity("soul_generator", (NonNullFunction<TileEntityType<SoulGeneratorTileEntity>, SoulGeneratorTileEntity>) SoulGeneratorTileEntity::new)
             .validBlock(SoulBlocks.SOUL_GENERATOR).register();
 
-//    public static final Map<Tier, RegistryEntry<TileEntityType<CoalGeneratorTileEntity>>> COAL_GENERATOR = registerMachineTileEntity("coal_generator", CoalGeneratorTileEntity::new, new Tier[]{Tier.SIMPLE, Tier.NORMAL}, SoulBlocks.SIMPLE_COAL_GENERATOR, SoulBlocks.NORMAL_COAL_GENERATOR);
+    public static final Map<Tier, RegistryEntry<TileEntityType<CoalGeneratorTileEntity>>> COAL_GENERATOR = registerMachineTileEntity("coal_generator", CoalGeneratorTileEntity::new, new Tier[]{Tier.SIMPLE, Tier.NORMAL}, SoulBlocks.SIMPLE_COAL_GENERATOR, SoulBlocks.NORMAL_COAL_GENERATOR);
 
     public static final Map<Tier, RegistryEntry<TileEntityType<SoulBoxTileEntity>>> SOUL_BOX = registerMachineTileEntity("soul_box", SoulBoxTileEntity::new, SoulBlocks.SIMPLE_SOUL_BOX, SoulBlocks.NORMAL_SOUL_BOX, SoulBlocks.SOULIUM_SOUL_BOX);
 

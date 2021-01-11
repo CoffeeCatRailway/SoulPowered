@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pfp",
+    "pbp",
+    "pmp"
+  ],
+  "key": {
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "m": {
+      "item": "soulpowered:simple_machine_frame"
+    },
+    "f": {
+      "item": "minecraft:furnace"
+    },
+    "b": {
+      "item": "soulpowered:simple_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:simple_coal_generator"
+  }
+}

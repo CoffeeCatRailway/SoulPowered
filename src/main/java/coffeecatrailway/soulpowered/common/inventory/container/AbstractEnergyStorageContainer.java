@@ -23,10 +23,10 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
     protected final T tileEntity;
     protected final IIntArray fields;
 
-    public AbstractEnergyStorageContainer(ContainerType<?> type, int id, T tileEntity, IIntArray fields)
+    public AbstractEnergyStorageContainer(ContainerType<?> type, int id, T tile, IIntArray fields)
     {
         super(type, id);
-        this.tileEntity = tileEntity;
+        this.tileEntity = tile;
         this.fields = fields;
 
         this.trackIntArray(this.fields);

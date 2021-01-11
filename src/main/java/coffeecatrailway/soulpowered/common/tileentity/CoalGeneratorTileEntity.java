@@ -1,41 +1,44 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
-import coffeecatrailway.soulpowered.SoulData;
-import coffeecatrailway.soulpowered.api.item.ISoulFuel;
-import coffeecatrailway.soulpowered.common.inventory.container.SoulGeneratorContainer;
+import coffeecatrailway.soulpowered.api.Tier;
+import coffeecatrailway.soulpowered.common.inventory.container.CoalGeneratorContainer;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraftforge.common.ForgeHooks;
 
 import javax.annotation.Nullable;
 
 /**
  * @author CoffeeCatRailway
- * Created: 12/11/2020
- * Based on: https://github.com/SilentChaos512/Silents-Mechanisms/blob/1.16.x/src/main/java/net/silentchaos512/mechanisms/block/generator/coal/CoalGeneratorTileEntity.java
+ * Created: 6/01/2021
  */
-public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
+public class CoalGeneratorTileEntity extends AbstractGeneratorTileEntity
 {
-    public static final int MAX_ENERGY = 30_000;
-    public static final int MAX_SEND = 1500;
-    public static final int ENERGY_CREATED_PER_TICK = 60;
+    public static final int MAX_ENERGY = 20_000;
+    public static final int MAX_SEND = 1000;
+    public static final int ENERGY_CREATED_PER_TICK = 30;
 
-    public SoulGeneratorTileEntity()
+    private final Tier tier;
+
+    public CoalGeneratorTileEntity(Tier tier)
     {
-        this(SoulTileEntities.SOUL_GENERATOR.get());
+        this(SoulTileEntities.COAL_GENERATOR.get(tier).get(), tier);
     }
 
-    public SoulGeneratorTileEntity(TileEntityType<? extends SoulGeneratorTileEntity> type)
+    public CoalGeneratorTileEntity(TileEntityType<? extends CoalGeneratorTileEntity> type, Tier tier)
     {
-        super(type, 1, MAX_ENERGY, 0, MAX_SEND);
+        super(type, 1, (int) (MAX_ENERGY * tier.getEnergyCapacity()), 0, (int) (MAX_SEND * tier.getEnergyTransfer()));
+        this.tier = tier;
     }
 
     public static boolean isFuel(ItemStack stack)
     {
-        return stack.getItem().isIn(SoulData.TagItems.SOUL_GENERATOR_FUEL) && stack.getItem() instanceof ISoulFuel;
+        return AbstractFurnaceTileEntity.isFuel(stack);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
     protected void consumeFuel()
     {
         ItemStack fuel = this.getStackInSlot(0);
-        this.burnTime = ((ISoulFuel) fuel.getItem()).getBurnTime();
+        this.burnTime = ForgeHooks.getBurnTime(fuel);
         if (this.burnTime > 0)
         {
             this.totalBurnTime = this.burnTime;
@@ -67,7 +70,7 @@ public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
     @Override
     protected int getEnergyCreatedPerTick()
     {
-        return ENERGY_CREATED_PER_TICK;
+        return (int) (ENERGY_CREATED_PER_TICK * this.tier.getPowerGeneratedMultiplier());
     }
 
     @Override
@@ -91,6 +94,6 @@ public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
     @Override
     protected Container createMenu(int id, PlayerInventory inventory)
     {
-        return new SoulGeneratorContainer(id, inventory, this, this.fields);
+        return new CoalGeneratorContainer(id, inventory, this, this.fields, this.tier);
     }
 }

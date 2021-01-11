@@ -1,59 +1,39 @@
 package coffeecatrailway.soulpowered.common.inventory.container;
 
-import coffeecatrailway.soulpowered.api.Tier;
-import coffeecatrailway.soulpowered.common.tileentity.AlloySmelterTileEntity;
-import coffeecatrailway.soulpowered.registry.SoulContainers;
+import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.world.World;
 
 /**
  * @author CoffeeCatRailway
- * Created: 15/12/2020
+ * Created: 8/01/2021
  */
-public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloySmelterTileEntity>
+public abstract class AbstractGeneratorContainer<T extends AbstractMachineTileEntity> extends AbstractEnergyStorageContainer<T>
 {
-    public AlloySmelterContainer(ContainerType<? extends AlloySmelterContainer> type, int id, PlayerInventory inventory, Tier tier)
-    {
-        this(type, id, inventory, new AlloySmelterTileEntity(tier), new IntArray(AlloySmelterTileEntity.FIELDS_COUNT));
-    }
-
-    public AlloySmelterContainer(int id, PlayerInventory inventory, AlloySmelterTileEntity tile, IIntArray fields, Tier tier)
-    {
-        this(SoulContainers.ALLOY_SMELTER.get(tier).get(), id, inventory, tile, fields);
-    }
-
-    public AlloySmelterContainer(ContainerType<? extends AlloySmelterContainer> type, int id, PlayerInventory inventory, AlloySmelterTileEntity tile, IIntArray fields)
+    public AbstractGeneratorContainer(ContainerType<?> type, int id, T tile, IIntArray fields)
     {
         super(type, id, tile, fields);
-
-        this.addSlot(new Slot(this.tileEntity, 0, 59, 15));
-        this.addSlot(new Slot(this.tileEntity, 1, 80, 15));
-        this.addSlot(new Slot(this.tileEntity, 2, 101, 15));
-        this.addSlot(new FurnaceResultSlot(inventory.player, this.tileEntity, 3, 80, 51));
-        this.addPlayerSlots(inventory, 8, 84).forEach(this::addSlot);
     }
 
-    public int getProgressTime()
+    public int getBurnTime()
     {
         return this.fields.get(5);
     }
 
-    public int getTotalProgressTime()
+    public int getTotalBurnTime()
     {
         return this.fields.get(6);
     }
 
-    public boolean isCrafting()
+    public boolean isBurning()
     {
-        return this.getProgressTime() < this.getTotalProgressTime();
+        return getBurnTime() > 0;
     }
+
+    protected abstract boolean isFuel(ItemStack stack);
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity player, int index)
@@ -65,13 +45,13 @@ public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloyS
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            final int inventorySize = 4;
+            final int inventorySize = 1;
             final int playerInventoryEnd = inventorySize + 27;
             final int playerHotbarEnd = playerInventoryEnd + 9;
 
             if (index != 0)
             {
-                if (this.hasRecipe(itemstack1))
+                if (this.isFuel(itemstack1))
                 {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false))
                         return ItemStack.EMPTY;
@@ -96,11 +76,5 @@ public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloyS
         }
 
         return itemstack;
-    }
-
-    private boolean hasRecipe(ItemStack stack)
-    {
-        return true;
-//        return this.world.getRecipeManager().getRecipe(SoulRecipes.ALLOY_SMELTING_TYPE, new Inventory(stack), this.world).isPresent();
     }
 }

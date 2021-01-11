@@ -1,6 +1,7 @@
 package coffeecatrailway.soulpowered.common.block;
 
-import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
+import coffeecatrailway.soulpowered.api.Tier;
+import coffeecatrailway.soulpowered.common.tileentity.CoalGeneratorTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
@@ -16,20 +17,23 @@ import java.util.Random;
 
 /**
  * @author CoffeeCatRailway
- * Created: 9/11/2020
+ * Created: 6/01/2021
  */
-public class SoulGeneratorBlock extends AbstractMachineBlock
+public class CoalGeneratorBlock extends AbstractMachineBlock
 {
-    public SoulGeneratorBlock(Properties properties)
+    private final Tier tier;
+
+    public CoalGeneratorBlock(Properties properties, Tier tier)
     {
         super(properties);
+        this.tier = tier;
     }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(IBlockReader world)
     {
-        return new SoulGeneratorTileEntity();
+        return new CoalGeneratorTileEntity(this.tier);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class SoulGeneratorBlock extends AbstractMachineBlock
             double d1 = pos.getY();
             double d2 = (double) pos.getZ() + .5d;
             if (rand.nextDouble() < .1d)
-                world.playSound(d0, d1, d2, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1f, 1f, false);
+                world.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1f, 1f, false);
 
             Direction direction = state.get(FACING);
             Direction.Axis direction$axis = direction.getAxis();
@@ -50,7 +54,7 @@ public class SoulGeneratorBlock extends AbstractMachineBlock
             double d6 = rand.nextDouble() * 9d / 16d;
             double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * .52d : d4;
             world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
-            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
+            world.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
         }
     }
 }

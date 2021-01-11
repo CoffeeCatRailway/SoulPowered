@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "csc",
+    "sbs",
+    "sms"
+  ],
+  "key": {
+    "s": {
+      "tag": "forge:stone"
+    },
+    "m": {
+      "item": "soulpowered:normal_machine_frame"
+    },
+    "c": {
+      "item": "soulpowered:simple_coal_generator"
+    },
+    "b": {
+      "item": "soulpowered:normal_battery"
+    }
+  },
+  "result": {
+    "item": "soulpowered:normal_coal_generator"
+  }
+}

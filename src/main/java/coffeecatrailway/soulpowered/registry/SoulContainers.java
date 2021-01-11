@@ -3,9 +3,11 @@ package coffeecatrailway.soulpowered.registry;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.client.gui.screen.AlloySmelterScreen;
+import coffeecatrailway.soulpowered.client.gui.screen.CoalGeneratorScreen;
 import coffeecatrailway.soulpowered.client.gui.screen.SoulBoxScreen;
 import coffeecatrailway.soulpowered.client.gui.screen.SoulGeneratorScreen;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
+import coffeecatrailway.soulpowered.common.inventory.container.CoalGeneratorContainer;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulGeneratorContainer;
 import com.tterrag.registrate.builders.ContainerBuilder;
@@ -32,9 +34,9 @@ public class SoulContainers
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Containers");
 
-    public static final RegistryEntry<ContainerType<SoulGeneratorContainer>> SOUL_GENERATOR = REGISTRATE.container("soul_generator", SoulGeneratorContainer::new, () -> SoulGeneratorScreen::new).register();
+    public static final RegistryEntry<ContainerType<SoulGeneratorContainer>> SOUL_GENERATOR = REGISTRATE.container("soul_generator", (ContainerBuilder.ContainerFactory<SoulGeneratorContainer>) SoulGeneratorContainer::new, () -> SoulGeneratorScreen::new).register();
 
-//    public static final Map<Tier, RegistryEntry<ContainerType<CoalGeneratorContainer>>> COAL_GENERATOR = registerMachineContainer("coal_generator", CoalGeneratorContainer::new, () -> CoalGeneratorScreen::new, new Tier[]{Tier.SIMPLE, Tier.NORMAL});
+    public static final Map<Tier, RegistryEntry<ContainerType<CoalGeneratorContainer>>> COAL_GENERATOR = registerMachineContainer("coal_generator", CoalGeneratorContainer::new, () -> CoalGeneratorScreen::new, new Tier[]{Tier.SIMPLE, Tier.NORMAL});
 
     public static final Map<Tier, RegistryEntry<ContainerType<SoulBoxContainer>>> SOUL_BOX = registerMachineContainer("soul_box", SoulBoxContainer::new, () -> SoulBoxScreen::new);
 
