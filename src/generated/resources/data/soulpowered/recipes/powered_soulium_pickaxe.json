@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "soulpowered:soulium_pickaxe"
+  },
+  "addition": {
+    "item": "soulpowered:soulium_battery"
+  },
+  "result": {
+    "item": "soulpowered:powered_soulium_pickaxe"
+  }
+}

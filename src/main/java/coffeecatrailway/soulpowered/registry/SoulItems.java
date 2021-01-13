@@ -128,6 +128,11 @@ public class SoulItems
                     .addCriterion("has_sword", RegistrateRecipeProvider.hasItem(SOULIUM_SWORD.get()))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
 
+    public static final RegistryEntry<PoweredSouliumPickaxeItem> POWERED_SOULIUM_PICKAXE = registerPoweredItem(REGISTRATE.item("powered_soulium_pickaxe", PoweredSouliumPickaxeItem::new).defaultLang()
+            .model(poweredItemModel()).recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_PICKAXE.get()), Ingredient.fromItems(SOULIUM_BATTERY.get()), ctx.getEntry())
+                    .addCriterion("has_pickaxe", RegistrateRecipeProvider.hasItem(SOULIUM_PICKAXE.get()))
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
+
     // Misc
     public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel()
             .tag(SoulData.TagItems.SOUL_GENERATOR_FUEL).register();

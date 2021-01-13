@@ -72,6 +72,9 @@ public class SoulConfig
         public ForgeConfigSpec.IntValue poweredSouliumSwordEnergyCost;
         public ForgeConfigSpec.IntValue poweredSouliumSwordEffectEnergyAmount;
 
+        public ForgeConfigSpec.IntValue poweredSouliumPickaxeEnergyCost;
+        public ForgeConfigSpec.IntValue poweredSouliumPickaxeEffectEnergyAmount;
+
         public Server(ForgeConfigSpec.Builder builder)
         {
             builder.comment("Server Configurable Settings").push("particle");
@@ -101,6 +104,12 @@ public class SoulConfig
                     .defineInRange("energyCost", 1, 0, PoweredSouliumSwordItem.CAPACITY);
             this.poweredSouliumSwordEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.sword.effectEnergyAmount")
                     .defineInRange("effectEnergyAmount", PoweredSouliumSwordItem.CAPACITY / 4, 0, PoweredSouliumSwordItem.CAPACITY);
+
+            builder.pop().push("pickaxe");
+            this.poweredSouliumPickaxeEnergyCost = builder.comment("The amount of energy consumed when used").translation(CONFIG + "curios.soulShield.poweredSoulium.pickaxe.energyCost")
+                    .defineInRange("energyCost", 1, 0, PoweredSouliumPickaxeItem.CAPACITY);
+            this.poweredSouliumPickaxeEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.pickaxe.effectEnergyAmount")
+                    .defineInRange("effectEnergyAmount", PoweredSouliumPickaxeItem.CAPACITY / 4, 0, PoweredSouliumPickaxeItem.CAPACITY);
 
             builder.pop(3);
         }

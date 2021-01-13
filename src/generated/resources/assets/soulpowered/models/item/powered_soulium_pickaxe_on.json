@@ -1,0 +1,6 @@
+{
+  "parent": "soulpowered:item/powered_soulium_pickaxe",
+  "textures": {
+    "layer0": "soulpowered:item/powered_soulium_pickaxe_on"
+  }
+}
