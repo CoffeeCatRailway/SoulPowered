@@ -18,6 +18,7 @@ import net.minecraft.data.SmithingRecipeBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemTier;
 import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
@@ -90,6 +91,37 @@ public class SoulItems
                 provider.smelting(DataIngredient.items(SoulBlocks.COPPER_ORE), ctx::getEntry, .7f, 200);
                 provider.blasting(DataIngredient.items(SoulBlocks.COPPER_ORE), ctx::getEntry, .7f, 100);
             }).register();
+
+    // Weapons & Tools
+    public static final RegistryEntry<SwordItem> SOULIUM_SWORD = REGISTRATE.item("soulium_sword", prop -> new SwordItem(SoulItemTier.SOULIUM, 3, -2.4f, prop))
+            .defaultLang().model((ctx, provider) -> provider.handheld(ctx::getEntry)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+            .patternLine("i").patternLine("i").patternLine("s").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get()))
+                    .addCriterion("has_stick", RegistrateRecipeProvider.hasItem(Tags.Items.RODS_WOODEN)).build(provider)).register();
+
+    public static final RegistryEntry<AxeItem> SOULIUM_AXE = REGISTRATE.item("soulium_axe", prop -> new AxeItem(SoulItemTier.SOULIUM, 5f, -3f, prop))
+            .defaultLang().model((ctx, provider) -> provider.handheld(ctx::getEntry)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .patternLine("ii").patternLine("is").patternLine(" s").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get()))
+                    .addCriterion("has_stick", RegistrateRecipeProvider.hasItem(Tags.Items.RODS_WOODEN)).build(provider)).register();
+
+    public static final RegistryEntry<PickaxeItem> SOULIUM_PICKAXE = REGISTRATE.item("soulium_pickaxe", prop -> new PickaxeItem(SoulItemTier.SOULIUM, 1, -2.8f, prop))
+            .defaultLang().model((ctx, provider) -> provider.handheld(ctx::getEntry)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .patternLine("iii").patternLine(" s ").patternLine(" s ").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get()))
+                    .addCriterion("has_stick", RegistrateRecipeProvider.hasItem(Tags.Items.RODS_WOODEN)).build(provider)).register();
+
+    public static final RegistryEntry<ShovelItem> SOULIUM_SHOVEL = REGISTRATE.item("soulium_shovel", prop -> new ShovelItem(SoulItemTier.SOULIUM, 1.5f, -3f, prop))
+            .defaultLang().model((ctx, provider) -> provider.handheld(ctx::getEntry)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .patternLine("i").patternLine("s").patternLine("s").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get()))
+                    .addCriterion("has_stick", RegistrateRecipeProvider.hasItem(Tags.Items.RODS_WOODEN)).build(provider)).register();
+
+    public static final RegistryEntry<HoeItem> SOULIUM_HOE = REGISTRATE.item("soulium_hoe", prop -> new HoeItem(SoulItemTier.SOULIUM, -3, 0f, prop))
+            .defaultLang().model((ctx, provider) -> provider.handheld(ctx::getEntry)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
+                    .patternLine("ii").patternLine(" s").patternLine(" s").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
+                    .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get()))
+                    .addCriterion("has_stick", RegistrateRecipeProvider.hasItem(Tags.Items.RODS_WOODEN)).build(provider)).register();
 
     // Misc
     public static final RegistryEntry<SoulBottleItem> SOUL_BOTTLE = REGISTRATE.item("soul_bottle", SoulBottleItem::new).defaultLang().defaultModel()
