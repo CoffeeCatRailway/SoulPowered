@@ -1,0 +1,6 @@
+{
+  "parent": "soulpowered:item/powered_soulium_shovel",
+  "textures": {
+    "layer0": "soulpowered:item/powered_soulium_shovel_on"
+  }
+}

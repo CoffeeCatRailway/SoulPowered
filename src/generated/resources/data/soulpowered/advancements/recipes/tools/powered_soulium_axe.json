@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:powered_soulium_axe"
+    ]
+  },
+  "criteria": {
+    "has_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_axe"
+          }
+        ]
+      }
+    },
+    "has_battery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_battery"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:powered_soulium_axe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_axe",
+      "has_battery",
+      "has_the_recipe"
+    ]
+  ]
+}

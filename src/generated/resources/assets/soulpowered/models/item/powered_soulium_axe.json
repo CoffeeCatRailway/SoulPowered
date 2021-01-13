@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "soulpowered:item/powered_soulium_axe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "soulpowered:powered": 0.0
+      },
+      "model": "soulpowered:item/powered_soulium_axe_off"
+    },
+    {
+      "predicate": {
+        "soulpowered:powered": 1.0
+      },
+      "model": "soulpowered:item/powered_soulium_axe_on"
+    }
+  ]
+}

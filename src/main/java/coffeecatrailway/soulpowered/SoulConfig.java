@@ -72,8 +72,17 @@ public class SoulConfig
         public ForgeConfigSpec.IntValue poweredSouliumSwordEnergyCost;
         public ForgeConfigSpec.IntValue poweredSouliumSwordEffectEnergyAmount;
 
+        public ForgeConfigSpec.IntValue poweredSouliumAxeEnergyCost;
+        public ForgeConfigSpec.IntValue poweredSouliumAxeEffectEnergyAmount;
+
         public ForgeConfigSpec.IntValue poweredSouliumPickaxeEnergyCost;
         public ForgeConfigSpec.IntValue poweredSouliumPickaxeEffectEnergyAmount;
+
+        public ForgeConfigSpec.IntValue poweredSouliumShovelEnergyCost;
+        public ForgeConfigSpec.IntValue poweredSouliumShovelEffectEnergyAmount;
+
+        public ForgeConfigSpec.IntValue poweredSouliumHoeEnergyCost;
+        public ForgeConfigSpec.IntValue poweredSouliumHoeEffectEnergyAmount;
 
         public Server(ForgeConfigSpec.Builder builder)
         {
@@ -105,11 +114,29 @@ public class SoulConfig
             this.poweredSouliumSwordEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.sword.effectEnergyAmount")
                     .defineInRange("effectEnergyAmount", PoweredSouliumSwordItem.CAPACITY / 4, 0, PoweredSouliumSwordItem.CAPACITY);
 
+            builder.pop().push("axe");
+            this.poweredSouliumAxeEnergyCost = builder.comment("The amount of energy consumed when used").translation(CONFIG + "curios.soulShield.poweredSoulium.axe.energyCost")
+                    .defineInRange("energyCost", 1, 0, PoweredSouliumAxeItem.CAPACITY);
+            this.poweredSouliumAxeEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.axe.effectEnergyAmount")
+                    .defineInRange("effectEnergyAmount", PoweredSouliumAxeItem.CAPACITY / 4, 0, PoweredSouliumAxeItem.CAPACITY);
+
             builder.pop().push("pickaxe");
             this.poweredSouliumPickaxeEnergyCost = builder.comment("The amount of energy consumed when used").translation(CONFIG + "curios.soulShield.poweredSoulium.pickaxe.energyCost")
                     .defineInRange("energyCost", 1, 0, PoweredSouliumPickaxeItem.CAPACITY);
             this.poweredSouliumPickaxeEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.pickaxe.effectEnergyAmount")
                     .defineInRange("effectEnergyAmount", PoweredSouliumPickaxeItem.CAPACITY / 4, 0, PoweredSouliumPickaxeItem.CAPACITY);
+
+            builder.pop().push("shovel");
+            this.poweredSouliumShovelEnergyCost = builder.comment("The amount of energy consumed when used").translation(CONFIG + "curios.soulShield.poweredSoulium.shovel.energyCost")
+                    .defineInRange("energyCost", 1, 0, PoweredSouliumShovelItem.CAPACITY);
+            this.poweredSouliumShovelEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.shovel.effectEnergyAmount")
+                    .defineInRange("effectEnergyAmount", PoweredSouliumShovelItem.CAPACITY / 4, 0, PoweredSouliumShovelItem.CAPACITY);
+
+            builder.pop().push("hoe");
+            this.poweredSouliumHoeEnergyCost = builder.comment("The amount of energy consumed when used").translation(CONFIG + "curios.soulShield.poweredSoulium.hoe.energyCost")
+                    .defineInRange("energyCost", 1, 0, PoweredSouliumHoeItem.CAPACITY);
+            this.poweredSouliumHoeEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.hoe.effectEnergyAmount")
+                    .defineInRange("effectEnergyAmount", PoweredSouliumHoeItem.CAPACITY / 4, 0, PoweredSouliumHoeItem.CAPACITY);
 
             builder.pop(3);
         }

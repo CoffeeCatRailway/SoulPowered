@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:powered_soulium_hoe"
+    ]
+  },
+  "criteria": {
+    "has_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_hoe"
+          }
+        ]
+      }
+    },
+    "has_battery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_battery"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:powered_soulium_hoe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hoe",
+      "has_battery",
+      "has_the_recipe"
+    ]
+  ]
+}

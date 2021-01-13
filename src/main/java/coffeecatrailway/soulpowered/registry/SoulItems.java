@@ -128,9 +128,24 @@ public class SoulItems
                     .addCriterion("has_sword", RegistrateRecipeProvider.hasItem(SOULIUM_SWORD.get()))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
 
+    public static final RegistryEntry<PoweredSouliumAxeItem> POWERED_SOULIUM_AXE = registerPoweredItem(REGISTRATE.item("powered_soulium_axe", PoweredSouliumAxeItem::new).defaultLang()
+            .model(poweredItemModel()).recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_AXE.get()), Ingredient.fromItems(SOULIUM_BATTERY.get()), ctx.getEntry())
+                    .addCriterion("has_axe", RegistrateRecipeProvider.hasItem(SOULIUM_AXE.get()))
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
+
     public static final RegistryEntry<PoweredSouliumPickaxeItem> POWERED_SOULIUM_PICKAXE = registerPoweredItem(REGISTRATE.item("powered_soulium_pickaxe", PoweredSouliumPickaxeItem::new).defaultLang()
             .model(poweredItemModel()).recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_PICKAXE.get()), Ingredient.fromItems(SOULIUM_BATTERY.get()), ctx.getEntry())
                     .addCriterion("has_pickaxe", RegistrateRecipeProvider.hasItem(SOULIUM_PICKAXE.get()))
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
+
+    public static final RegistryEntry<PoweredSouliumShovelItem> POWERED_SOULIUM_SHOVEL = registerPoweredItem(REGISTRATE.item("powered_soulium_shovel", PoweredSouliumShovelItem::new).defaultLang()
+            .model(poweredItemModel()).recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_SHOVEL.get()), Ingredient.fromItems(SOULIUM_BATTERY.get()), ctx.getEntry())
+                    .addCriterion("has_shovel", RegistrateRecipeProvider.hasItem(SOULIUM_SHOVEL.get()))
+                    .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
+
+    public static final RegistryEntry<PoweredSouliumHoeItem> POWERED_SOULIUM_HOE = registerPoweredItem(REGISTRATE.item("powered_soulium_hoe", PoweredSouliumHoeItem::new).defaultLang()
+            .model(poweredItemModel()).recipe((ctx, provider) -> SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(SOULIUM_HOE.get()), Ingredient.fromItems(SOULIUM_BATTERY.get()), ctx.getEntry())
+                    .addCriterion("has_hoe", RegistrateRecipeProvider.hasItem(SOULIUM_HOE.get()))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SOULIUM_BATTERY.get())).build(provider, ctx.getId())), true).register();
 
     // Misc
