@@ -1,12 +1,13 @@
 package coffeecatrailway.soulpowered;
 
+import coffeecatrailway.soulpowered.common.item.*;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 /**
  * @author CoffeeCatRailway
  * Created: 21/10/2020
  */
-public class SoulPoweredConfig
+public class SoulConfig
 {
     private static final String CONFIG = "config." + SoulPoweredMod.MOD_ID + ".";
 
@@ -67,6 +68,10 @@ public class SoulPoweredConfig
 
         public ForgeConfigSpec.DoubleValue soulShieldBounceOffset;
 
+        public ForgeConfigSpec.DoubleValue poweredSouliumSwordSoulChance;
+        public ForgeConfigSpec.IntValue poweredSouliumSwordEnergyCost;
+        public ForgeConfigSpec.IntValue poweredSouliumSwordEffectEnergyAmount;
+
         public Server(ForgeConfigSpec.Builder builder)
         {
             builder.comment("Server Configurable Settings").push("particle");
@@ -89,7 +94,15 @@ public class SoulPoweredConfig
             this.soulShieldBounceOffset = builder.comment("How close a projectile appears to bounce off a Soul Shield").translation(CONFIG + "curios.soulShield.shieldBounceOffset")
                     .defineInRange("shieldBounceOffset", .5d, 0d, 1d);
 
-            builder.pop(2);
+            builder.pop(2).push("toolsAndWeapons").push("poweredSoulium").push("sword");
+            this.poweredSouliumSwordSoulChance = builder.comment("The chance that the player attacking will gain soul(s)").translation(CONFIG + "toolsAndWeapons.poweredSoulium.sword.soulChance")
+                    .defineInRange("soulChance", .25d, 0d, 1d);
+            this.poweredSouliumSwordEnergyCost = builder.comment("The amount of energy consumed when used", "Note: Doubled for special use and block breaking").translation(CONFIG + "toolsAndWeapons.poweredSoulium.sword.energyCost")
+                    .defineInRange("energyCost", 1, 0, PoweredSouliumSwordItem.CAPACITY);
+            this.poweredSouliumSwordEffectEnergyAmount = builder.comment("The amount of energy needed for special properties").translation(CONFIG + "toolsAndWeapons.poweredSoulium.sword.effectEnergyAmount")
+                    .defineInRange("effectEnergyAmount", PoweredSouliumSwordItem.CAPACITY / 4, 0, PoweredSouliumSwordItem.CAPACITY);
+
+            builder.pop(3);
         }
     }
 }

@@ -2,7 +2,6 @@ package coffeecatrailway.soulpowered.common.item;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.item.IEnergyItem;
-import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -71,7 +70,7 @@ public class SoulAmuletPoweredItem extends SoulAmuletItem implements IEnergyItem
     @Override
     public boolean hasEffect(ItemStack stack)
     {
-        return EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0;
+        return IEnergyItem.super.hasEnergy(stack, 0);
     }
 
     @Override

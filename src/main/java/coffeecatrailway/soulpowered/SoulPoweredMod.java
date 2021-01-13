@@ -12,6 +12,7 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
@@ -35,15 +36,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
+
 @Mod(SoulPoweredMod.MOD_ID)
 public class SoulPoweredMod
 {
     public static final String MOD_ID = "soulpowered";
     private static final Logger LOGGER = getLogger("");
 
-    public static SoulPoweredConfig.Client CLIENT_CONFIG;
-    public static SoulPoweredConfig.Common COMMON_CONFIG;
-    public static SoulPoweredConfig.Server SERVER_CONFIG;
+    public static SoulConfig.Client CLIENT_CONFIG;
+    public static SoulConfig.Common COMMON_CONFIG;
+    public static SoulConfig.Server SERVER_CONFIG;
 
     public static Registrate REGISTRATE;
 
@@ -58,6 +63,9 @@ public class SoulPoweredMod
     public static final String KEY_CATEGORY = "key." + MOD_ID + ".category";
     public static final KeyBinding ACTIVATE_CURIO = new KeyBinding("key." + MOD_ID + ".activate_curio", GLFW.GLFW_KEY_H, KEY_CATEGORY);
 
+    public static final ResourceLocation POWERED_ITEM_PROPERTY = getLocation("powered");
+    public static final Set<Supplier<Item>> POWERED_ITEM_PROPERTY_SET = new HashSet<>();
+
     public SoulPoweredMod()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -66,15 +74,15 @@ public class SoulPoweredMod
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(CuriosIntegration::onInterModComms);
 
-        final Pair<SoulPoweredConfig.Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Client::new);
+        final Pair<SoulConfig.Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(SoulConfig.Client::new);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, client.getRight());
         CLIENT_CONFIG = client.getLeft();
 
-        final Pair<SoulPoweredConfig.Common, ForgeConfigSpec> common = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Common::new);
+        final Pair<SoulConfig.Common, ForgeConfigSpec> common = new ForgeConfigSpec.Builder().configure(SoulConfig.Common::new);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, common.getRight());
         COMMON_CONFIG = common.getLeft();
 
-        final Pair<SoulPoweredConfig.Server, ForgeConfigSpec> server = new ForgeConfigSpec.Builder().configure(SoulPoweredConfig.Server::new);
+        final Pair<SoulConfig.Server, ForgeConfigSpec> server = new ForgeConfigSpec.Builder().configure(SoulConfig.Server::new);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, server.getRight());
         SERVER_CONFIG = server.getLeft();
         LOGGER.info("Register configs");
@@ -100,8 +108,8 @@ public class SoulPoweredMod
 
     private void onClientSetup(FMLClientSetupEvent event)
     {
-        ItemModelsProperties.registerProperty(SoulItems.POWERED_SOULIUM_SOUL_AMULET.get(), getLocation("powered"), (stack, world, entity) ->
-                EnergyUtils.isPresent(stack) && EnergyUtils.get(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f);
+        POWERED_ITEM_PROPERTY_SET.stream().map(Supplier::get).forEach(item -> ItemModelsProperties.registerProperty(item, POWERED_ITEM_PROPERTY, (stack, world, entity) ->
+                EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f));
         SoulHUDOverlayHandler.init();
         ClientRegistry.registerKeyBinding(ACTIVATE_CURIO);
     }

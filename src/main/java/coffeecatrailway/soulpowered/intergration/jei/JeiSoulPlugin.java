@@ -5,7 +5,6 @@ import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.gui.screen.AlloySmelterScreen;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
-import coffeecatrailway.soulpowered.registry.SoulItems;
 import coffeecatrailway.soulpowered.registry.SoulRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -13,13 +12,17 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 public class JeiSoulPlugin implements IModPlugin
 {
     private static final ResourceLocation UID = SoulPoweredMod.getLocation("plugin/main");
+    public static final Set<Supplier<Item>> POWERED_ITEM_SET = new HashSet<>();
 
     static final ResourceLocation ALLOY_SMELTER_ID = SoulPoweredMod.getLocation("category/alloy_smelter");
 
@@ -47,11 +51,7 @@ public class JeiSoulPlugin implements IModPlugin
                 return ISubtypeInterpreter.NONE;
             return String.valueOf(EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored());
         };
-        registration.registerSubtypeInterpreter(SoulItems.SIMPLE_BATTERY.get(), interpreter);
-        registration.registerSubtypeInterpreter(SoulItems.NORMAL_BATTERY.get(), interpreter);
-        registration.registerSubtypeInterpreter(SoulItems.SOULIUM_BATTERY.get(), interpreter);
-
-        registration.registerSubtypeInterpreter(SoulItems.POWERED_SOULIUM_SOUL_AMULET.get(), interpreter);
+        POWERED_ITEM_SET.stream().map(Supplier::get).forEach(item -> registration.registerSubtypeInterpreter(item, interpreter));
     }
 
     @Override

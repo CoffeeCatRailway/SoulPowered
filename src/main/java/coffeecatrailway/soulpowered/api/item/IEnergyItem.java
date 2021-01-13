@@ -102,6 +102,16 @@ public interface IEnergyItem extends IItemProvider, IForgeItem
         return 0;
     }
 
+    default boolean hasEnergy(ItemStack stack, int amount)
+    {
+        return EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > amount;
+    }
+
+    default boolean hasEnergy(ItemStack stack)
+    {
+        return this.hasEnergy(stack, 0);
+    }
+
     int getMaxEnergy();
 
     int getMaxReceive();
