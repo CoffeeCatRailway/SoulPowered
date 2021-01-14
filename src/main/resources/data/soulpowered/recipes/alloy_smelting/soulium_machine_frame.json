@@ -1,6 +1,6 @@
 {
   "type": "soulpowered:alloy_smelting",
-  "processTime": 200,
+  "processTime": 300,
   "result": {
     "item": "soulpowered:soulium_machine_frame",
     "count": 1
@@ -8,9 +8,9 @@
   "ingredients": [
     {
       "value": {
-        "tag": "forge:ingots/iron"
+        "item": "soulpowered:soul_bottle"
       },
-      "count": 2
+      "count": 1
     },
     {
       "value": [
