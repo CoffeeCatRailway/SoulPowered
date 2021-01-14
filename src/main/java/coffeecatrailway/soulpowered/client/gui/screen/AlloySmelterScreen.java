@@ -59,17 +59,12 @@ public class AlloySmelterScreen extends AbstractMachineScreen<AlloySmelterContai
         // Progress remaining
         if (this.container.isCrafting())
         {
-            int height = getProgressBarIconHeight();
-            blit(matrixStack, xPos + 65, yPos + 31 + 20 - height, 176, 20 - height, 46, height + 1);
+            int height = (int) (20f * ((float) this.container.getProgressTime() / (float) this.container.getTotalProgressTime()));
+            if (height > 0)
+                blit(matrixStack, xPos + 65, yPos + 31, 176, 0, 46, height);
         }
 
         // Energy meter
         EnergyUtils.renderThinEnergyBar(matrixStack, xPos + 153, yPos + 67, this.container.getEnergyBarHeight());
-    }
-
-    private int getProgressBarIconHeight()
-    {
-        if (this.container.getTotalProgressTime() == 0 || this.container.getProgressTime() == 0) return 0;
-        return this.container.getProgressTime() * 20 / this.container.getTotalProgressTime();
     }
 }

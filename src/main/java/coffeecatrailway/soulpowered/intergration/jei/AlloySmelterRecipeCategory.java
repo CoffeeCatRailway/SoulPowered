@@ -39,7 +39,7 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory<AlloySmelterR
         this.icon = guiHelper.createDrawableIngredient(new ItemStack(SoulBlocks.SOULIUM_ALLOY_SMELTER.get()));
 
         this.progress = guiHelper.drawableBuilder(AlloySmelterScreen.TEXTURE, 176, 0, 46, 20)
-                .buildAnimated(200, IDrawableAnimated.StartDirection.TOP, true);
+                .buildAnimated(200, IDrawableAnimated.StartDirection.TOP, false);
 
         this.localizedName = SoulBlocks.SOULIUM_ALLOY_SMELTER.get().getTranslatedName().getString();
     }
