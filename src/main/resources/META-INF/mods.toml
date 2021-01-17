@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[35,)"
 license="https://www.gnu.org/licenses/gpl-3.0.en.html"
-issueTrackerURL="https://github.com/CoffeeCatRailway/GITHUB REPO/issues"
+issueTrackerURL="https://github.com/CoffeeCatRailway/SoulPowered/issues"
 
 [[mods]]
 modId="${modId}"
@@ -32,3 +32,9 @@ mandatory=false
 versionRange="[7,]"
 ordering="NONE"
 side="CLIENT"
+[[dependencies.soulpowered]]
+modId="curios"
+mandatory=true
+versionRange="[1.16.4,]"
+ordering="NONE"
+side="BOTH"
