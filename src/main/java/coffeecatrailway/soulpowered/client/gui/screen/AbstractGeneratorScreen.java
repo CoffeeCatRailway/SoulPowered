@@ -30,10 +30,7 @@ public abstract class AbstractGeneratorScreen<C extends AbstractGeneratorContain
     protected void renderHoveredTooltip(MatrixStack matrixStack, int x, int y)
     {
         if (isPointInRegion(153, 17, 13, 51, x, y))
-        {
-            ITextComponent text = SoulData.Lang.energyWithMax(this.container.getEnergyStored(), this.container.getTileEntity().getMaxEnergyStored());
-            renderTooltip(matrixStack, text, x, y);
-        }
+            renderTooltip(matrixStack, SoulData.Lang.energyWithMax(this.container.getEnergyStored(), this.container.getTileEntity().getMaxEnergyStored()), x, y);
         super.renderHoveredTooltip(matrixStack, x, y);
     }
 
@@ -54,7 +51,7 @@ public abstract class AbstractGeneratorScreen<C extends AbstractGeneratorContain
         }
 
         // Energy meter
-        EnergyUtils.renderThinEnergyBar(matrixStack, xPos + 153, yPos + 67, this.container.getEnergyBarHeight());
+        EnergyUtils.renderThinEnergyBar(matrixStack, xPos + 153, yPos + 67, this.container.getEnergyStored(), this.container.getMaxEnergyStored());
     }
 
     private int getFlameIconHeight()

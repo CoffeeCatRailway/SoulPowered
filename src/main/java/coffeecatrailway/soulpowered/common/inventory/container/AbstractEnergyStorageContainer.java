@@ -8,7 +8,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IIntArray;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,13 +70,6 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
         int upper = this.fields.get(3) & 0xFFFF;
         int lower = this.fields.get(2) & 0xFFFF;
         return (upper << 16) + lower;
-    }
-
-    public int getEnergyBarHeight()
-    {
-        int max = this.getMaxEnergyStored();
-        int energyClamped = MathHelper.clamp(this.getEnergyStored(), 0, max);
-        return max > 0 ? 52 * energyClamped / max : 0;
     }
 
     public RedstoneMode getRedstoneMode()

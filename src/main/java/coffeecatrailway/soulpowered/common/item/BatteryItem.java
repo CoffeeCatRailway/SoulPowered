@@ -49,18 +49,18 @@ public class BatteryItem extends Item implements IEnergyItem
     @Override
     public int getMaxEnergy()
     {
-        return (int) (CAPACITY * this.tier.getEnergyCapacity());
+        return this.tier.calculateEnergyCapacity(CAPACITY);
     }
 
     @Override
     public int getMaxReceive()
     {
-        return (int) (TRANSFER * this.tier.getEnergyTransfer());
+        return this.tier.calculateEnergyTransfer(TRANSFER);
     }
 
     @Override
     public int getMaxExtract()
     {
-        return (int) (TRANSFER * this.tier.getEnergyTransfer());
+        return this.tier.calculateEnergyTransfer(TRANSFER);
     }
 }

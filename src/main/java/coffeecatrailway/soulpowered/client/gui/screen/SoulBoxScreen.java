@@ -57,6 +57,6 @@ public class SoulBoxScreen extends AbstractMachineScreen<SoulBoxContainer>
         int yPos = (this.height - this.ySize) / 2;
 
         // Energy meter
-        EnergyUtils.renderWideEnergyBar(matrixStack, xPos + 74, yPos + 67, this.container.getEnergyBarHeight());
+        EnergyUtils.renderWideEnergyBar(matrixStack, xPos + 74, yPos + 67, this.container.getEnergyStored(), this.container.getMaxEnergyStored());
     }
 }

@@ -26,36 +26,36 @@ public enum Tier
 
     String id;
 
-    float processTime;
+    float processTimeMultiplier;
 
     float powerConsumeMultiplier;
     float powerGeneratedMultiplier;
 
-    float energyCapacity;
-    float energyTransfer;
+    float energyCapacityMultiplier;
+    float energyTransferMultiplier;
 
     NonNullFunction<AbstractBlock.Properties, AbstractBlock.Properties> properties;
     Material material;
     MaterialColor materialColor;
 
-    Tier(String id, float processTime, float powerMultiplier, float powerGeneratedMultiplier, float energyCapacity, float energyTransfer,
+    Tier(String id, float processTimeMultiplier, float powerMultiplier, float powerGeneratedMultiplier, float energyCapacityMultiplier, float energyTransferMultiplier,
          NonNullFunction<AbstractBlock.Properties, AbstractBlock.Properties> properties, Material material)
     {
-        this(id, processTime, powerMultiplier, powerGeneratedMultiplier, energyCapacity, energyTransfer, properties, material, material.getColor());
+        this(id, processTimeMultiplier, powerMultiplier, powerGeneratedMultiplier, energyCapacityMultiplier, energyTransferMultiplier, properties, material, material.getColor());
     }
 
-    Tier(String id, float processTime, float powerMultiplier, float powerGeneratedMultiplier, float energyCapacity, float energyTransfer,
+    Tier(String id, float processTimeMultiplier, float powerMultiplier, float powerGeneratedMultiplier, float energyCapacityMultiplier, float energyTransferMultiplier,
          NonNullFunction<AbstractBlock.Properties, AbstractBlock.Properties> properties, Material material, MaterialColor materialColor)
     {
         this.id = id;
 
-        this.processTime = processTime;
+        this.processTimeMultiplier = processTimeMultiplier;
 
         this.powerConsumeMultiplier = powerMultiplier;
         this.powerGeneratedMultiplier = powerGeneratedMultiplier;
 
-        this.energyCapacity = energyCapacity;
-        this.energyTransfer = energyTransfer;
+        this.energyCapacityMultiplier = energyCapacityMultiplier;
+        this.energyTransferMultiplier = energyTransferMultiplier;
 
         this.properties = properties;
         this.material = material;
@@ -67,29 +67,29 @@ public enum Tier
         return this.id;
     }
 
-    public float getProcessTime()
+    public int calculateProcessTime(float defaultTime)
     {
-        return this.processTime;
+        return (int) (defaultTime * this.processTimeMultiplier);
     }
 
-    public float getPowerConsumeMultiplier()
+    public int calculatePowerConsumption(float defaultConsumedPower)
     {
-        return this.powerConsumeMultiplier;
+        return (int) (defaultConsumedPower * this.powerConsumeMultiplier);
     }
 
-    public float getPowerGeneratedMultiplier()
+    public int calculatePowerGenerated(float defaultGeneratedPower)
     {
-        return this.powerGeneratedMultiplier;
+        return (int) (defaultGeneratedPower * this.powerGeneratedMultiplier);
     }
 
-    public float getEnergyCapacity()
+    public int calculateEnergyCapacity(float defaultCapacity)
     {
-        return this.energyCapacity;
+        return (int) (defaultCapacity * this.energyCapacityMultiplier);
     }
 
-    public float getEnergyTransfer()
+    public int calculateEnergyTransfer(float defaultTransfer)
     {
-        return this.energyTransfer;
+        return (int) (defaultTransfer * this.energyTransferMultiplier);
     }
 
     public NonNullFunction<AbstractBlock.Properties, AbstractBlock.Properties> getProperties()

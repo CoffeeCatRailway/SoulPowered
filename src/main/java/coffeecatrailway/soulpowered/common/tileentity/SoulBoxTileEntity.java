@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
 public class SoulBoxTileEntity extends AbstractMachineTileEntity
 {
     public static final int MAX_ENERGY = 600_000;
-    public static final Function<Tier, Integer> MAX_TRANSFER = tier -> (int) (1000 * tier.getEnergyTransfer());
+    public static final Function<Tier, Integer> MAX_TRANSFER = tier -> tier.calculateEnergyTransfer(1000);
 
     public static final int INVENTORY_SIZE = 2;
     private static final int[] SLOTS = IntStream.range(0, INVENTORY_SIZE).toArray();
@@ -39,7 +39,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
 
     public SoulBoxTileEntity(TileEntityType<? extends SoulBoxTileEntity> type, Tier tier)
     {
-        super(type, INVENTORY_SIZE, (int) (MAX_ENERGY * tier.getEnergyCapacity()), MAX_TRANSFER.apply(tier), MAX_TRANSFER.apply(tier));
+        super(type, INVENTORY_SIZE, (int) tier.calculateEnergyCapacity(MAX_ENERGY), MAX_TRANSFER.apply(tier), MAX_TRANSFER.apply(tier));
         this.tier = tier;
     }
 

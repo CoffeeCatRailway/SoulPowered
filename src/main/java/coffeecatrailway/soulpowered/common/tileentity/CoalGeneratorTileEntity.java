@@ -32,7 +32,7 @@ public class CoalGeneratorTileEntity extends AbstractGeneratorTileEntity
 
     public CoalGeneratorTileEntity(TileEntityType<? extends CoalGeneratorTileEntity> type, Tier tier)
     {
-        super(type, 1, (int) (MAX_ENERGY * tier.getEnergyCapacity()), 0, (int) (MAX_SEND * tier.getEnergyTransfer()));
+        super(type, 1, tier.calculateEnergyCapacity(MAX_ENERGY), 0, tier.calculateEnergyTransfer(MAX_SEND));
         this.tier = tier;
     }
 
@@ -70,7 +70,7 @@ public class CoalGeneratorTileEntity extends AbstractGeneratorTileEntity
     @Override
     protected int getEnergyCreatedPerTick()
     {
-        return (int) (ENERGY_CREATED_PER_TICK * this.tier.getPowerGeneratedMultiplier());
+        return this.tier.calculatePowerGenerated(ENERGY_CREATED_PER_TICK);
     }
 
     @Override

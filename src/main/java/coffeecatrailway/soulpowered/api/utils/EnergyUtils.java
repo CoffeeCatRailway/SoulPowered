@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -77,12 +78,31 @@ public final class EnergyUtils
     }
 
     @OnlyIn(Dist.CLIENT)
+    public static int getEnergyBarHeight(int energy, int maxEnergy)
+    {
+        int energyClamped = MathHelper.clamp(energy, 0, maxEnergy);
+        return maxEnergy > 0 ? 52 * energyClamped / maxEnergy : 0;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void renderThinEnergyBar(MatrixStack matrixStack, int x, int y, int energy, int maxEnergy)
+    {
+        renderThinEnergyBar(matrixStack, x, y, getEnergyBarHeight(energy, maxEnergy));
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public static void renderThinEnergyBar(MatrixStack matrixStack, int x, int y, int energyBarHeight)
     {
         Minecraft.getInstance().getTextureManager().bindTexture(ENERGY_BAR_TEXTURE);
         AbstractGui.blit(matrixStack, x, y - 50, 0, 0, 14, 52, 84, 52);
         if (energyBarHeight > 0)
             AbstractGui.blit(matrixStack, x , y + 2 - energyBarHeight, 14, 52 - energyBarHeight, 14, energyBarHeight, 84, 52);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void renderWideEnergyBar(MatrixStack matrixStack, int x, int y, int energy, int maxEnergy)
+    {
+        renderWideEnergyBar(matrixStack, x, y, getEnergyBarHeight(energy, maxEnergy));
     }
 
     @OnlyIn(Dist.CLIENT)

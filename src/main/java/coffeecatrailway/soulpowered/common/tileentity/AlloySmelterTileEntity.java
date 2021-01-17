@@ -40,14 +40,14 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
 
     public AlloySmelterTileEntity(TileEntityType<?> type, Tier tier)
     {
-        super(type, INVENTORY_SIZE, (int) (MAX_ENERGY * tier.getEnergyCapacity()), (int) (MAX_RECEIVE * tier.getEnergyTransfer()), 0);
+        super(type, INVENTORY_SIZE, tier.calculateEnergyCapacity(MAX_ENERGY), tier.calculateEnergyTransfer(MAX_RECEIVE), 0);
         this.tier = tier;
     }
 
     @Override
     protected int getEnergyConsumedPerTick()
     {
-        return (int) (ENERGY_CONSUMPTION * this.tier.getPowerConsumeMultiplier());
+        return this.tier.calculatePowerConsumption(ENERGY_CONSUMPTION);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     @Override
     protected int getProcessTime(AlloySmelterRecipe recipe)
     {
-        return (int) (recipe.getProcessTime() * this.tier.getProcessTime());
+        return this.tier.calculateProcessTime(recipe.getProcessTime());
     }
 
     @Override

@@ -65,6 +65,6 @@ public class AlloySmelterScreen extends AbstractMachineScreen<AlloySmelterContai
         }
 
         // Energy meter
-        EnergyUtils.renderThinEnergyBar(matrixStack, xPos + 153, yPos + 67, this.container.getEnergyBarHeight());
+        EnergyUtils.renderThinEnergyBar(matrixStack, xPos + 153, yPos + 67, this.container.getEnergyStored(), this.container.getMaxEnergyStored());
     }
 }
