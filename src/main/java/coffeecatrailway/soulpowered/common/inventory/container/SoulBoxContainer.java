@@ -1,17 +1,24 @@
 package coffeecatrailway.soulpowered.common.inventory.container;
 
+import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
+import coffeecatrailway.soulpowered.client.SoulPoweredAtlases;
 import coffeecatrailway.soulpowered.common.tileentity.AbstractMachineTileEntity;
 import coffeecatrailway.soulpowered.common.tileentity.SoulBoxTileEntity;
 import coffeecatrailway.soulpowered.registry.SoulContainers;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nullable;
 
 /**
  * @author CoffeeCatRailway
@@ -33,8 +40,24 @@ public class SoulBoxContainer extends AbstractEnergyStorageContainer<SoulBoxTile
     {
         super(type, id, tileEntity, fields);
 
-        this.addSlot(new Slot(this.tileEntity, 0, 44, 34));
-        this.addSlot(new Slot(this.tileEntity, 1, 116, 34));
+        this.addSlot(new Slot(this.tileEntity, 0, 44, 34)
+        {
+            @Nullable
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getBackground()
+            {
+                return Pair.of(SoulPoweredAtlases.EMPTY_SLOT_MINUS_MATERIAL.getAtlasLocation(), SoulPoweredAtlases.EMPTY_SLOT_MINUS_MATERIAL.getTextureLocation());
+            }
+        });
+        this.addSlot(new Slot(this.tileEntity, 1, 116, 34)
+        {
+            @Nullable
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getBackground()
+            {
+                return Pair.of(SoulPoweredAtlases.EMPTY_SLOT_PLUS_MATERIAL.getAtlasLocation(), SoulPoweredAtlases.EMPTY_SLOT_PLUS_MATERIAL.getTextureLocation());
+            }
+        });
 
         this.addPlayerSlots(playerInventory, 8, 84).forEach(this::addSlot);
     }
