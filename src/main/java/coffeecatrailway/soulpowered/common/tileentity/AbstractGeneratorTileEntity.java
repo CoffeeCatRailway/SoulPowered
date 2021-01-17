@@ -121,6 +121,12 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
     }
 
     @Override
+    protected boolean canRun()
+    {
+        return super.canRun() && this.getEnergyStored() + this.getEnergyCreatedPerTick() <= this.getMaxEnergyStored();
+    }
+
+    @Override
     public void read(BlockState state, CompoundNBT nbt)
     {
         super.read(state, nbt);
