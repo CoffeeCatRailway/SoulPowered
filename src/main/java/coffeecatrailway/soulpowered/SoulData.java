@@ -19,6 +19,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.Tags;
@@ -42,6 +43,10 @@ public class SoulData
         //        private static final String LANG_FLUID_WITH_MAX = "misc.soulpowered.fluid_with_max";
         private static final String LANG_REDSTONE_MODE = "misc.soulpowered.redstone_mode";
 
+        public static final String JEI_CATEGORY_COAL_GENERATOR = "gui.soulpowered.jei.category.coal_generator";
+        public static final String JEI_CATEGORY_SOUL_GENERATOR = "gui.soulpowered.jei.category.soul_generator";
+        public static final String JEI_ITEM_BURN_TIME = "gui.soulpowered.jei.item_burn_time";
+
         @Override
         public void accept(RegistrateLangProvider provider)
         {
@@ -63,6 +68,10 @@ public class SoulData
             provider.add(LANG_ENERGY_WITH_MAX, "%s / %s SE");
 //            provider.add(LANG_FLUID_WITH_MAX, "%s / %s mB");
             provider.add(LANG_REDSTONE_MODE, "Redstone Mode: %s");
+
+            provider.add(JEI_CATEGORY_COAL_GENERATOR, "Coal Generator");
+            provider.add(JEI_CATEGORY_SOUL_GENERATOR, "Soul Generator");
+            provider.add(JEI_ITEM_BURN_TIME, "%s BT");
         }
 
         public static IFormattableTextComponent energy(int amount)
@@ -83,6 +92,11 @@ public class SoulData
         public static IFormattableTextComponent redstoneMode(RedstoneMode mode)
         {
             return new TranslationTextComponent(LANG_REDSTONE_MODE, mode.name());
+        }
+
+        public static ITextComponent itemBurnTime(int burnTime)
+        {
+            return new TranslationTextComponent(JEI_ITEM_BURN_TIME, burnTime);
         }
     }
 
