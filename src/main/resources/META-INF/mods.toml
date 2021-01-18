@@ -7,8 +7,8 @@ issueTrackerURL="https://github.com/CoffeeCatRailway/SoulPowered/issues"
 modId="${modId}"
 version="${version}"
 displayName="${name}"
-# logoFile="logo.png"
 credits="${author},SilentChaos512"
+logoFile="logo.png"
 authors="${author}"
 description='''
 
