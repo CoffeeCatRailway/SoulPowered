@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "soulpowered:block/charred_simple_coal_generator_top",
+    "up": "soulpowered:block/charred_simple_coal_generator_top",
+    "north": "soulpowered:block/charred_simple_coal_generator_front_on",
+    "south": "soulpowered:block/charred_simple_coal_generator_side",
+    "east": "soulpowered:block/charred_simple_coal_generator_side",
+    "west": "soulpowered:block/charred_simple_coal_generator_side",
+    "particle": "soulpowered:block/charred_simple_coal_generator_side"
+  }
+}

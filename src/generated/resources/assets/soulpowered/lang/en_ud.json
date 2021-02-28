@@ -1,4 +1,7 @@
 {
+  "block.soulpowered.charred_simple_alloy_smelter": "\u0279\u01DD\u0287\u05DF\u01DD\u026FS \u028Eo\u05DF\u05DF\u2C6F \u01DD\u05DFd\u026F\u0131S p\u01DD\u0279\u0279\u0250\u0265\u0186",
+  "block.soulpowered.charred_simple_coal_generator": "\u0279o\u0287\u0250\u0279\u01DDu\u01DD\u2141 \u05DF\u0250o\u0186 \u01DD\u05DFd\u026F\u0131S p\u01DD\u0279\u0279\u0250\u0265\u0186",
+  "block.soulpowered.charred_simple_soul_box": "xo\u15FA \u05DFnoS \u01DD\u05DFd\u026F\u0131S p\u01DD\u0279\u0279\u0250\u0265\u0186",
   "block.soulpowered.copper_block": "\u029E\u0254o\u05DF\u15FA \u0279\u01DDddo\u0186",
   "block.soulpowered.copper_ore": "\u01DD\u0279O \u0279\u01DDddo\u0186",
   "block.soulpowered.normal_alloy_smelter": "\u0279\u01DD\u0287\u05DF\u01DD\u026FS \u028Eo\u05DF\u05DF\u2C6F",
@@ -18,6 +21,9 @@
   "commands.soulpowered.souls.modify.add": "%1$s o\u0287 )s(\u05DFnos %2$s \u01DD\u028C\u0250\u2141",
   "commands.soulpowered.souls.modify.remove": "%1$s o\u0287 )s(\u05DFnos %2$s p\u01DD\u028Co\u026F\u01DD\u1D1A",
   "commands.soulpowered.souls.modify.set": ")s(\u05DFnos %2$s s\u0250\u0265 \u028Dou %1$s",
+  "container.soulpowered.charred_simple_alloy_smelter": "\u0279\u01DD\u0287\u05DF\u01DD\u026FS \u028Eo\u05DF\u05DF\u2C6F \u01DD\u05DFd\u026F\u0131S p\u01DD\u0279\u0279\u0250\u0265\u0186",
+  "container.soulpowered.charred_simple_coal_generator": "\u0279o\u0287\u0250\u0279\u01DDu\u01DD\u2141 \u05DF\u0250o\u0186 \u01DD\u05DFd\u026F\u0131S p\u01DD\u0279\u0279\u0250\u0265\u0186",
+  "container.soulpowered.charred_simple_soul_box": "xo\u15FA \u05DFnoS \u01DD\u05DFd\u026F\u0131S p\u01DD\u0279\u0279\u0250\u0265\u0186",
   "container.soulpowered.normal_alloy_smelter": "\u0279\u01DD\u0287\u05DF\u01DD\u026FS \u028Eo\u05DF\u05DF\u2C6F",
   "container.soulpowered.normal_coal_generator": "\u0279o\u0287\u0250\u0279\u01DDu\u01DD\u2141 \u05DF\u0250o\u0186 \u05DF\u0250\u026F\u0279oN",
   "container.soulpowered.normal_soul_box": "xo\u15FA \u05DFnoS",

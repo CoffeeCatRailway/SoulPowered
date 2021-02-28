@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "soulpowered:simple_alloy_smelter"
+  },
+  "result": "soulpowered:charred_simple_alloy_smelter",
+  "experience": 0.7,
+  "cookingtime": 100
+}

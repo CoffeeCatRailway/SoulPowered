@@ -1,4 +1,7 @@
 {
+  "block.soulpowered.charred_simple_alloy_smelter": "Charred Simple Alloy Smelter",
+  "block.soulpowered.charred_simple_coal_generator": "Charred Simple Coal Generator",
+  "block.soulpowered.charred_simple_soul_box": "Charred Simple Soul Box",
   "block.soulpowered.copper_block": "Copper Block",
   "block.soulpowered.copper_ore": "Copper Ore",
   "block.soulpowered.normal_alloy_smelter": "Alloy Smelter",
@@ -18,6 +21,9 @@
   "commands.soulpowered.souls.modify.add": "Gave %2$s soul(s) to %1$s",
   "commands.soulpowered.souls.modify.remove": "Removed %2$s soul(s) to %1$s",
   "commands.soulpowered.souls.modify.set": "%1$s now has %2$s soul(s)",
+  "container.soulpowered.charred_simple_alloy_smelter": "Charred Simple Alloy Smelter",
+  "container.soulpowered.charred_simple_coal_generator": "Charred Simple Coal Generator",
+  "container.soulpowered.charred_simple_soul_box": "Charred Simple Soul Box",
   "container.soulpowered.normal_alloy_smelter": "Alloy Smelter",
   "container.soulpowered.normal_coal_generator": "Normal Coal Generator",
   "container.soulpowered.normal_soul_box": "Soul Box",

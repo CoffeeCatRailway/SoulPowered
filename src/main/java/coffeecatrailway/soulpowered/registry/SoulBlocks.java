@@ -12,10 +12,8 @@ import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.data.ShapedRecipeBuilder;
@@ -89,6 +87,9 @@ public class SoulBlocks
                     .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SIMPLE_BATTERY.get())).build(provider), SoundType.WOOD);
 
+    public static final RegistryEntry<CoalGeneratorBlock> CHARRED_SIMPLE_COAL_GENERATOR = registerCoalGenerator("charred_simple_coal_generator", "Charred Simple Coal Generator", Tier.SIMPLE,
+            (ctx, provider) -> provider.blasting(DataIngredient.items(SIMPLE_COAL_GENERATOR.get()), ctx::getEntry, .7f), SoundType.WOOD);
+
     public static final RegistryEntry<CoalGeneratorBlock> NORMAL_COAL_GENERATOR = registerCoalGenerator("normal_coal_generator", "Normal Coal Generator", Tier.NORMAL, (ctx, provider) -> {
         ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('s', Tags.Items.STONE).key('m', NORMAL_MACHINE_FRAME.get())
                 .key('f', Blocks.FURNACE).key('b', SoulItems.NORMAL_BATTERY.get()).patternLine("fsf").patternLine("sbs").patternLine("sms")
@@ -122,6 +123,9 @@ public class SoulBlocks
                     .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(SIMPLE_MACHINE_FRAME.get()))
                     .addCriterion("has_copper_ingot", RegistrateRecipeProvider.hasItem(SoulData.TagItems.INGOTS_COPPER))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SIMPLE_BATTERY.get())).build(provider), SoundType.WOOD);
+
+    public static final RegistryEntry<SoulBoxBlock> CHARRED_SIMPLE_SOUL_BOX = registerSoulBox("charred_simple_soul_box", "Charred Simple Soul Box", Tier.SIMPLE,
+            (ctx, provider) -> provider.blasting(DataIngredient.items(SIMPLE_SOUL_BOX.get()), ctx::getEntry, .7f), SoundType.WOOD);
 
     public static final RegistryEntry<SoulBoxBlock> NORMAL_SOUL_BOX = registerSoulBox("normal_soul_box", "Soul Box", Tier.NORMAL, (ctx, provider) -> {
         ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', Tags.Items.INGOTS_IRON).key('f', NORMAL_MACHINE_FRAME.get())
@@ -161,6 +165,9 @@ public class SoulBlocks
                     .addCriterion("has_machine_frame", RegistrateRecipeProvider.hasItem(SIMPLE_MACHINE_FRAME.get()))
                     .addCriterion("has_furnace", RegistrateRecipeProvider.hasItem(Blocks.FURNACE))
                     .addCriterion("has_battery", RegistrateRecipeProvider.hasItem(SoulItems.SIMPLE_BATTERY.get())).build(provider), SoundType.WOOD);
+
+    public static final RegistryEntry<AlloySmelterBlock> CHARRED_SIMPLE_ALLOY_SMELTER = registerAlloySmelter("charred_simple_alloy_smelter", "Charred Simple Alloy Smelter", Tier.SIMPLE,
+            (ctx, provider) -> provider.blasting(DataIngredient.items(SIMPLE_ALLOY_SMELTER.get()), ctx::getEntry, .7f), SoundType.WOOD);
 
     public static final RegistryEntry<AlloySmelterBlock> NORMAL_ALLOY_SMELTER = registerAlloySmelter("normal_alloy_smelter", "Alloy Smelter", Tier.NORMAL,
             (ctx, provider) -> {
