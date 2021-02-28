@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:fire",
+    "minecraft:wall_torch",
+    "minecraft:soul_wall_torch",
+    "minecraft:redstone_wall_torch",
+    "minecraft:magma_block",
+    "minecraft:torch",
+    "minecraft:soul_torch",
+    "minecraft:redstone_torch"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:charred_simple_soul_box_from_simple_soul_box_blasting"
+    ]
+  },
+  "criteria": {
+    "has_simple_soul_box": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:simple_soul_box"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:charred_simple_soul_box_from_simple_soul_box_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_simple_soul_box",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "soulpowered:charred_simple_machine_frame_from_simple_machine_frame_blasting"
+    ]
+  },
+  "criteria": {
+    "has_simple_machine_frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:simple_machine_frame"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulpowered:charred_simple_machine_frame_from_simple_machine_frame_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_simple_machine_frame",
+      "has_the_recipe"
+    ]
+  ]
+}

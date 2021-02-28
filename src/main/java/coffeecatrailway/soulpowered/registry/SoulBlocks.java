@@ -60,10 +60,13 @@ public class SoulBlocks
     /*
      * Machine Frames
      */
-    public static final RegistryEntry<MachineFrameBlock> SIMPLE_MACHINE_FRAME = registerMachineFrame("simple_machine_frame", "Simple Machine Frame", Tier.SIMPLE,
+    public static final RegistryEntry<CharredMachineFrameBlock> SIMPLE_MACHINE_FRAME = registerMachineFrame(CharredMachineFrameBlock::new, "simple_machine_frame", "Simple Machine Frame", Tier.SIMPLE,
             (ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', ItemTags.LOGS).key('s', ItemTags.PLANKS)
                     .patternLine("isi").patternLine("s s").patternLine("isi").addCriterion("has_log", RegistrateRecipeProvider.hasItem(ItemTags.LOGS))
                     .addCriterion("has_planks", RegistrateRecipeProvider.hasItem(ItemTags.PLANKS)).build(provider), true, SoundType.WOOD);
+
+    public static final RegistryEntry<MachineFrameBlock> CHARRED_SIMPLE_MACHINE_FRAME = registerMachineFrame("charred_simple_machine_frame", "Charred Simple Machine Frame", Tier.SIMPLE,
+            (ctx, provider) -> provider.blasting(DataIngredient.items(SIMPLE_MACHINE_FRAME.get()), ctx::getEntry, .7f), true, SoundType.WOOD);
 
     public static final RegistryEntry<MachineFrameBlock> NORMAL_MACHINE_FRAME = registerMachineFrame("normal_machine_frame", "Machine Frame", Tier.NORMAL,
             (ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry()).key('i', Tags.Items.INGOTS_IRON).key('s', Tags.Items.STONE)
@@ -206,7 +209,12 @@ public class SoulBlocks
      */
     private static RegistryEntry<MachineFrameBlock> registerMachineFrame(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, MachineFrameBlock>, RegistrateRecipeProvider> recipe, boolean hasEndTexure, SoundType soundType)
     {
-        return REGISTRATE.object(id).block(MachineFrameBlock::new).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
+        return registerMachineFrame(MachineFrameBlock::new, id, name, tier, recipe, hasEndTexure, soundType);
+    }
+
+    private static <B extends MachineFrameBlock> RegistryEntry<B> registerMachineFrame(NonNullFunction<AbstractBlock.Properties, B> factory, String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, B>, RegistrateRecipeProvider> recipe, boolean hasEndTexure, SoundType soundType)
+    {
+        return REGISTRATE.object(id).block(factory).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
                 .properties(prop -> tier.getProperties().apply(prop))
                 .blockstate((ctx, provider) -> {
                     BlockModelBuilder builder = provider.models().withExistingParent(ctx.getName(), SoulPoweredMod.getLocation("block/machine_frame_template"));

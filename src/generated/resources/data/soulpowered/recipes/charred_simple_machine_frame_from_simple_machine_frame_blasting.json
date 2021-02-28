@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "soulpowered:simple_machine_frame"
+  },
+  "result": "soulpowered:charred_simple_machine_frame",
+  "experience": 0.7,
+  "cookingtime": 100
+}
