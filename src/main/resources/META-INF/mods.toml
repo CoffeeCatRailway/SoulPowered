@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[36,)"
 license="https://www.gnu.org/licenses/gpl-3.0.en.html"
 issueTrackerURL="https://github.com/CoffeeCatRailway/SoulPowered/issues"
 
@@ -7,23 +7,23 @@ issueTrackerURL="https://github.com/CoffeeCatRailway/SoulPowered/issues"
 modId="${modId}"
 version="${version}"
 displayName="${name}"
-credits="${author},SilentChaos512"
 logoFile="logo.png"
+credits="SilentChaos512"
 authors="${author}"
 description='''
-
+A simple tech mod with a hint of magic!
 '''
 
 [[dependencies.soulpowered]]
 modId="forge"
 mandatory=true
-versionRange="[35,)"
+versionRange="[36,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.soulpowered]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.16.4]"
+versionRange="[1.16.4,1.16.5]"
 ordering="NONE"
 side="BOTH"
 [[dependencies.soulpowered]]
@@ -35,6 +35,6 @@ side="CLIENT"
 [[dependencies.soulpowered]]
 modId="curios"
 mandatory=true
-versionRange="[1.16.4,]"
+versionRange="[1.16.5,]"
 ordering="NONE"
 side="BOTH"
