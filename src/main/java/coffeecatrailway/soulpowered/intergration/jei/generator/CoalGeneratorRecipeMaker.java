@@ -8,7 +8,10 @@ import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author CoffeeCatRailway

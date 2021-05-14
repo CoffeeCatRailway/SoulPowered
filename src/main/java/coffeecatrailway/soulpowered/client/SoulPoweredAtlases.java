@@ -1,7 +1,6 @@
 package coffeecatrailway.soulpowered.client;
 
 import coffeecatrailway.soulpowered.SoulPoweredMod;
-import coffeecatrailway.soulpowered.common.inventory.container.SoulBoxContainer;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.inventory.container.PlayerContainer;

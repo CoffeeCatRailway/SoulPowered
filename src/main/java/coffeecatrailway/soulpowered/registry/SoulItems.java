@@ -90,7 +90,7 @@ public class SoulItems
     // Weapons & Tools
     public static final RegistryEntry<SwordItem> SOULIUM_SWORD = REGISTRATE.item("soulium_sword", prop -> new SwordItem(SoulItemTier.SOULIUM, 3, -2.4f, prop))
             .defaultLang().model((ctx, provider) -> provider.handheld(ctx::getEntry)).recipe((ctx, provider) -> ShapedRecipeBuilder.shapedRecipe(ctx.getEntry())
-            .patternLine("i").patternLine("i").patternLine("s").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
+                    .patternLine("i").patternLine("i").patternLine("s").key('i', SOULIUM_INGOT.get()).key('s', Tags.Items.RODS_WOODEN)
                     .addCriterion("has_ingot", RegistrateRecipeProvider.hasItem(SOULIUM_INGOT.get()))
                     .addCriterion("has_stick", RegistrateRecipeProvider.hasItem(Tags.Items.RODS_WOODEN)).build(provider)).register();
 

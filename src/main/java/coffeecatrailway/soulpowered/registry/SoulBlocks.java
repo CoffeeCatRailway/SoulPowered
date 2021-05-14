@@ -12,6 +12,7 @@ import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -207,7 +208,12 @@ public class SoulBlocks
 
     private static RegistryEntry<CoalGeneratorBlock> registerCoalGenerator(String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, CoalGeneratorBlock>, RegistrateRecipeProvider> recipe, SoundType soundType)
     {
-        return registerMachine(REGISTRATE.object(id).block(prop -> new CoalGeneratorBlock(prop, tier)).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
+        return registerCoalGenerator(CoalGeneratorBlock::new, id, name, tier, recipe, soundType);
+    }
+
+    private static <B extends CoalGeneratorBlock> RegistryEntry<B> registerCoalGenerator(NonNullBiFunction<AbstractBlock.Properties, Tier, B> factory, String id, String name, Tier tier, NonNullBiConsumer<DataGenContext<Block, B>, RegistrateRecipeProvider> recipe, SoundType soundType)
+    {
+        return registerMachine(REGISTRATE.object(id).block(prop -> factory.apply(prop, tier)).initialProperties(tier.getMaterial(), tier.getMaterialColor()).lang(name).defaultLoot()
                 .properties(prop -> tier.getProperties().apply(prop)).blockstate(sidedFurnaceModel(true)).recipe(recipe).simpleItem(), name);
     }
 

@@ -16,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -67,7 +66,7 @@ public abstract class AbstractGeneratorRecipeCategory<R extends AbstractGenerato
         flame.draw(matrixStack, 3, 37);
         Minecraft.getInstance().fontRenderer.func_243248_b(matrixStack, recipe.getBurnTime(), 24f, 13f, -8355712);
 
-        EnergyUtils.renderThinEnergyBar(matrixStack, 76, 52, recipe.getRfPerTick(this.getTier()), this.maxEnergy); // TODO: Add tiered energy tile configs
+        EnergyUtils.renderThinEnergyBar(matrixStack, 76, 52, recipe.getRfPerTick(this.getTier()), this.maxEnergy);
     }
 
     @Override
