@@ -15,7 +15,7 @@ public class SoulParticleType extends ParticleType<SoulParticleData>
     }
 
     @Override
-    public Codec<SoulParticleData> func_230522_e_()
+    public Codec<SoulParticleData> codec()
     {
         return SoulParticleData.CODEC;
     }

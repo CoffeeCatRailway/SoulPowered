@@ -20,8 +20,8 @@ public class SoulPoweredAtlases
 {
     private static final Set<RenderMaterial> MATERIALS = new HashSet<>();
 
-    public static final RenderMaterial EMPTY_SLOT_PLUS_MATERIAL = register(PlayerContainer.LOCATION_BLOCKS_TEXTURE, SoulPoweredMod.getLocation("item/empty_power_slot_plus"));
-    public static final RenderMaterial EMPTY_SLOT_MINUS_MATERIAL = register(PlayerContainer.LOCATION_BLOCKS_TEXTURE, SoulPoweredMod.getLocation("item/empty_power_slot_minus"));
+    public static final RenderMaterial EMPTY_SLOT_PLUS_MATERIAL = register(PlayerContainer.BLOCK_ATLAS, SoulPoweredMod.getLocation("item/empty_power_slot_plus"));
+    public static final RenderMaterial EMPTY_SLOT_MINUS_MATERIAL = register(PlayerContainer.BLOCK_ATLAS, SoulPoweredMod.getLocation("item/empty_power_slot_minus"));
 
     private static RenderMaterial register(ResourceLocation atlasLocation, ResourceLocation textureLocation)
     {
@@ -36,8 +36,8 @@ public class SoulPoweredAtlases
         AtlasTexture texture = event.getMap();
         for (RenderMaterial material : MATERIALS)
         {
-            if (texture.getTextureLocation().equals(material.getAtlasLocation()))
-                event.addSprite(material.getTextureLocation());
+            if (texture.location().equals(material.atlasLocation()))
+                event.addSprite(material.atlasLocation());
         }
     }
 }

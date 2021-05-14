@@ -27,22 +27,22 @@ public class BatteryItem extends Item implements IEnergyItem
 
     public BatteryItem(Properties properties, Tier tier)
     {
-        super(properties.maxStackSize(1).rarity(Rarity.UNCOMMON));
+        super(properties.stacksTo(1).rarity(Rarity.UNCOMMON));
         this.tier = tier;
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items)
     {
-        super.fillItemGroup(group, items);
-        if (this.isInGroup(group))
+        super.fillItemCategory(group, items);
+        if (this.allowdedIn(group))
             this.addItemVarients(items);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
     {
-        super.addInformation(stack, world, tooltip, flag);
+        super.appendHoverText(stack, world, tooltip, flag);
         IEnergyItem.super.addInformation(stack, world, tooltip, flag);
     }
 

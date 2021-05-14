@@ -29,23 +29,23 @@ public class SoulParticle extends SimpleAnimatedParticle
     public SoulParticle(ClientWorld world, double x, double y, double z, IAnimatedSprite sprite, PlayerEntity player, boolean avoid)
     {
         super(world, x + offset(world), y + offset(world), z + offset(world), sprite, -5e-4f);
-        this.motionX = 0d;
-        this.motionY = 0d;
-        this.motionZ = 0d;
-        this.particleScale *= .75f;
-        this.maxAge = 30 + this.rand.nextInt(12);
-        this.setColorFade(0xf2dec9);
-        this.selectSpriteWithAge(sprite);
+        this.xd = 0d;
+        this.yd = 0d;
+        this.zd = 0d;
+        this.quadSize *= .75f;
+        this.age = 30 + this.random.nextInt(12);
+        this.setFadeColor(0xf2dec9);
+        this.setSpriteFromAge(sprite);
         this.player = player;
         this.avoid = avoid;
     }
 
     public static void spawnParticles(World world, PlayerEntity player, Vector3d pos, int count, boolean avoid) {
-        if (world.isRemote()) {
+        if (world.isClientSide()) {
             LOGGER.warn("World {} was not server side!", world);
             return;
         }
-        ((ServerWorld) world).spawnParticle(SoulParticleData.create(player, avoid), pos.x, pos.y, pos.z, count, 0d, 0d, 0d, 1f);
+        ((ServerWorld) world).sendParticles(SoulParticleData.create(player, avoid), pos.x, pos.y, pos.z, count, 0d, 0d, 0d, 1f);
     }
 
     @Override
@@ -53,29 +53,29 @@ public class SoulParticle extends SimpleAnimatedParticle
         super.tick();
         if (this.player != null) {
             float motionSpeed = SoulPoweredMod.SERVER_CONFIG.soulParticleSpeed.get().floatValue();
-            Vector3d pos = new Vector3d(this.posX, this.posY, this.posZ);
-            Vector3d playerPos = this.player.getPositionVec().add(0f, 1f, 0f);
-            Vector3d motion = pos.subtract(playerPos).normalize().mul(motionSpeed, motionSpeed, motionSpeed).inverse();
+            Vector3d pos = new Vector3d(this.x, this.y, this.z);
+            Vector3d playerPos = this.player.position().add(0f, 1f, 0f);
+            Vector3d motion = pos.subtract(playerPos).normalize().multiply(motionSpeed, motionSpeed, motionSpeed).reverse();
 
             if (this.avoid)
-                motion = motion.inverse();
+                motion = motion.reverse();
 
-            this.motionX = motion.x;
-            this.motionY = motion.y;
-            this.motionZ = motion.z;
+            this.xd = motion.x;
+            this.yd = motion.y;
+            this.zd = motion.z;
 
-            if (pos.squareDistanceTo(playerPos) <= SoulPoweredMod.SERVER_CONFIG.soulParticleExpireDistance.get() * SoulPoweredMod.SERVER_CONFIG.soulParticleExpireDistance.get())
-                this.setExpired();
+            if (pos.distanceToSqr(playerPos) <= SoulPoweredMod.SERVER_CONFIG.soulParticleExpireDistance.get() * SoulPoweredMod.SERVER_CONFIG.soulParticleExpireDistance.get())
+                this.remove();
         }
     }
 
     public void move(double x, double y, double z) {
-        this.setBoundingBox(this.getBoundingBox().offset(x, y, z));
-        this.resetPositionToBB();
+        this.setBoundingBox(this.getBoundingBox().move(x, y, z));
+        this.setLocationFromBoundingbox();
     }
 
     private static double offset(World world) {
-        return -.5d + world.rand.nextDouble() * (.5d - -.5d);
+        return -.5d + world.random.nextDouble();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -88,7 +88,7 @@ public class SoulParticle extends SimpleAnimatedParticle
         }
 
         @Override
-        public Particle makeParticle(SoulParticleData type, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SoulParticleData type, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new SoulParticle(world, x, y, z, this.sprite, type.getPlayer(), type.doesAvoid());
         }
     }

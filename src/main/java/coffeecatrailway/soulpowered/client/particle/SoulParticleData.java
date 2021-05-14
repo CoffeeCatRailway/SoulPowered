@@ -24,19 +24,19 @@ public class SoulParticleData implements IParticleData
     public static final IParticleData.IDeserializer<SoulParticleData> DESERIALIZER = new IDeserializer<SoulParticleData>()
     {
         @Override
-        public SoulParticleData deserialize(ParticleType<SoulParticleData> type, StringReader reader) throws CommandSyntaxException
+        public SoulParticleData fromCommand(ParticleType<SoulParticleData> type, StringReader reader) throws CommandSyntaxException
         {
             reader.expect(' ');
-            ServerPlayerEntity player = Minecraft.getInstance().getIntegratedServer().getPlayerList().getPlayerByUsername(reader.readString());
+            ServerPlayerEntity player = Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayerByName(reader.readString());
             reader.expect(' ');
             boolean avoid = reader.readBoolean();
             return new SoulParticleData(player, avoid);
         }
 
         @Override
-        public SoulParticleData read(ParticleType<SoulParticleData> type, PacketBuffer buffer)
+        public SoulParticleData fromNetwork(ParticleType<SoulParticleData> type, PacketBuffer buffer)
         {
-            return new SoulParticleData((PlayerEntity) Minecraft.getInstance().world.getEntityByID(buffer.readVarInt()), buffer.readBoolean());
+            return new SoulParticleData((PlayerEntity) Minecraft.getInstance().level.getEntity(buffer.readVarInt()), buffer.readBoolean());
         }
     };
     public static final Codec<SoulParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -52,7 +52,7 @@ public class SoulParticleData implements IParticleData
     public final boolean avoid;
 
     public SoulParticleData(String playerName, boolean avoid) {
-        this(Minecraft.getInstance().getIntegratedServer().getPlayerList().getPlayerByUsername(playerName), avoid);
+        this(Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayerByName(playerName), avoid);
     }
 
     public SoulParticleData(PlayerEntity player, boolean avoid) {
@@ -79,17 +79,17 @@ public class SoulParticleData implements IParticleData
     }
 
     @Override
-    public void write(PacketBuffer buffer)
+    public void writeToNetwork(PacketBuffer buffer)
     {
         if (this.player == null)
             buffer.writeVarInt(-1);
         else
-            buffer.writeVarInt(this.player.getEntityId());
+            buffer.writeVarInt(this.player.getId());
         buffer.writeBoolean(this.avoid);
     }
 
     @Override
-    public String getParameters()
+    public String writeToString()
     {
         return Registry.PARTICLE_TYPE.getKey(this.getType()) + " " + (this.player == null ? "NULL_PLAYER" : this.player.getName()) + " " + this.avoid;
     }

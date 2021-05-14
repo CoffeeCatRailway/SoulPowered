@@ -32,10 +32,10 @@ public class PoweredSouliumAxeItem extends PoweredModifierToolItem
 
     public PoweredSouliumAxeItem(Properties properties)
     {
-        super(5f, -3f, SoulItemTier.POWERED_SOULIUM, AxeItem.EFFECTIVE_ON_BLOCKS, properties.maxStackSize(1).defaultMaxDamage(0), ToolType.AXE);
+        super(5f, -3f, SoulItemTier.POWERED_SOULIUM, AxeItem.OTHER_DIGGABLE_BLOCKS, properties.stacksTo(1).durability(0), ToolType.AXE);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3f, AttributeModifier.Operation.ADDITION));
         this.unpoweredAttributeModifiers = builder.build();
     }
 
@@ -43,27 +43,27 @@ public class PoweredSouliumAxeItem extends PoweredModifierToolItem
     public float getDestroySpeed(ItemStack stack, BlockState state)
     {
         Material material = state.getMaterial();
-        float speed = AxeItem.EFFECTIVE_ON_MATERIALS.contains(material) ? this.efficiency : super.getDestroySpeed(stack, state);
-        return speed / (this.hasEffect(stack) ? 1f : 2f);
+        float speed = AxeItem.OTHER_DIGGABLE_BLOCKS.contains(material) ? this.speed : super.getDestroySpeed(stack, state);
+        return speed / (this.isFoil(stack) ? 1f : 2f);
     }
 
     @Override
     protected ActionResultType modifyAtPosition(ItemUseContext context, BlockPos blockpos)
     {
-        World world = context.getWorld();
+        World world = context.getLevel();
         BlockState blockstate = world.getBlockState(blockpos);
-        BlockState modifiedState = blockstate.getToolModifiedState(world, blockpos, context.getPlayer(), context.getItem(), ToolType.AXE);
+        BlockState modifiedState = blockstate.getToolModifiedState(world, blockpos, context.getPlayer(), context.getItemInHand(), ToolType.AXE);
         if (modifiedState != null)
         {
             PlayerEntity player = context.getPlayer();
-            world.playSound(player, blockpos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1f, 1f);
-            if (!world.isRemote)
+            world.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundCategory.BLOCKS, 1f, 1f);
+            if (!world.isClientSide())
             {
-                world.setBlockState(blockpos, modifiedState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
-                this.consumeEnergy(context.getItem(), true);
+                world.setBlock(blockpos, modifiedState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+                this.consumeEnergy(context.getItemInHand(), true);
             }
 
-            return ActionResultType.func_233537_a_(world.isRemote);
+            return ActionResultType.sidedSuccess(world.isClientSide());
         }
         return ActionResultType.PASS;
     }
@@ -75,7 +75,7 @@ public class PoweredSouliumAxeItem extends PoweredModifierToolItem
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
+    public boolean isFoil(ItemStack stack)
     {
         return super.hasEnergy(stack, SoulPoweredMod.SERVER_CONFIG.poweredSouliumAxeEffectEnergyAmount.get());
     }

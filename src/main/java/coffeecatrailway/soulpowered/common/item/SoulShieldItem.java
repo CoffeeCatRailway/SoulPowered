@@ -65,7 +65,7 @@ public class SoulShieldItem extends Item implements ISoulCurios
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> info, ITooltipFlag flag)
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> info, ITooltipFlag flag)
     {
         info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_shield.description"));
 
@@ -89,7 +89,7 @@ public class SoulShieldItem extends Item implements ISoulCurios
             float durationInTicks = nbt.getFloat("DurationInTicks");
             float cooldownInTicks = nbt.getFloat("CooldownInTicks");
 
-            if (this.isActive(stack) && !player.getCooldownTracker().hasCooldown(this) && !player.world.isRemote)
+            if (this.isActive(stack) && !player.getCooldowns().isOnCooldown(this) && !player.level.isClientSide())
                     this.onCurioActivate(durationInTicks, cooldownInTicks, stack, player);
 
             if (this.isActive(stack))
@@ -102,12 +102,12 @@ public class SoulShieldItem extends Item implements ISoulCurios
         SoulsCapability.ifPresent(player, handler -> {
             if (handler.getSouls() >= SoulPoweredMod.SERVER_CONFIG.soulShieldSoulsUse.get() || player.isCreative())
             {
-                World world = player.world;
+                World world = player.level;
                 SoulShieldEntity shieldEntity = new SoulShieldEntity(world, player, stack, durationInTicks);
                 ServerWorld serverWorld = (ServerWorld) world;
-                if (serverWorld.addEntity(shieldEntity))
+                if (serverWorld.addFreshEntity(shieldEntity))
                 {
-                    Random rand = serverWorld.rand;
+                    Random rand = serverWorld.random;
                     float xs = rand.nextFloat() * .5f - .25f;
                     float ys = rand.nextFloat() * .5f - .15f;
                     float zs = rand.nextFloat() * .5f - .25f;
@@ -116,11 +116,11 @@ public class SoulShieldItem extends Item implements ISoulCurios
                     float g = getDustColor().getGreen() / 255f;
                     float b = getDustColor().getBlue() / 255f;
                     float a = getDustColor().getAlpha() / 255f;
-                    serverWorld.spawnParticle(new RedstoneParticleData(r, g, b, a), shieldEntity.getPosX(), shieldEntity.getPosY() + .5f, shieldEntity.getPosZ(), 10, xs, ys, zs, 1);
+                    serverWorld.sendParticles(new RedstoneParticleData(r, g, b, a), shieldEntity.getX(), shieldEntity.getY() + .5f, shieldEntity.getZ(), 10, xs, ys, zs, 1);
 
                     handler.removeSouls(SoulPoweredMod.SERVER_CONFIG.soulShieldSoulsUse.get(), false);
                     if (!player.isCreative())
-                        player.getCooldownTracker().setCooldown(this, (int) (cooldownInTicks + durationInTicks));
+                        player.getCooldowns().addCooldown(this, (int) (cooldownInTicks + durationInTicks));
                 }
             }
         });

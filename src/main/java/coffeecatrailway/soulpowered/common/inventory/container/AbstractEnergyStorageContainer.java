@@ -28,7 +28,7 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
         this.tileEntity = tile;
         this.fields = fields;
 
-        this.trackIntArray(this.fields);
+        this.addDataSlots(this.fields);
     }
 
     protected Collection<Slot> addPlayerSlots(PlayerInventory playerInventory, int startX, int startY)
@@ -43,12 +43,12 @@ public class AbstractEnergyStorageContainer<T extends AbstractMachineTileEntity>
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity player)
+    public boolean stillValid(PlayerEntity player)
     {
         return true;
     }
 
-    public T getTileEntity()
+    public T getBlockEntity()
     {
         return this.tileEntity;
     }

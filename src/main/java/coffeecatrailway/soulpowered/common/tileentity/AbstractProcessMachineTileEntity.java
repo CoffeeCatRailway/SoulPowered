@@ -74,7 +74,7 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
         }
 
         @Override
-        public int size()
+        public int getCount()
         {
             return FIELDS_COUNT;
         }
@@ -90,13 +90,13 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
     @Override
     protected BlockState getActiveState()
     {
-        return super.getActiveState().with(AbstractFurnaceBlock.LIT, true);
+        return super.getActiveState().setValue(AbstractFurnaceBlock.LIT, true);
     }
 
     @Override
     protected BlockState getInactiveState()
     {
-        return super.getInactiveState().with(AbstractFurnaceBlock.LIT, false);
+        return super.getInactiveState().setValue(AbstractFurnaceBlock.LIT, false);
     }
 
     protected abstract int[] outputSlots();
@@ -163,7 +163,7 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
     {
         for (int i : this.outputSlots())
         {
-            ItemStack output = this.getStackInSlot(i);
+            ItemStack output = this.getItem(i);
             if (this.canStacksStack(stack, output))
                 return true;
         }
@@ -179,11 +179,11 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
     {
         for (int i : this.outputSlots())
         {
-            ItemStack output = this.getStackInSlot(i);
+            ItemStack output = this.getItem(i);
             if (this.canStacksStack(stack, output))
             {
                 if (output.isEmpty())
-                    this.setInventorySlotContents(i, stack);
+                    this.setItem(i, stack);
                 else
                     output.grow(stack.getCount());
                 return;
@@ -193,7 +193,7 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
 
     protected void consumeIngredients(R recipe)
     {
-        this.decrStackSize(0, 1);
+        this.removeItem(0, 1);
     }
 
     @Override
@@ -203,17 +203,17 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundNBT nbt)
     {
-        super.read(state, nbt);
+        super.load(state, nbt);
         this.progress = nbt.getInt("Progress");
         this.processTime = nbt.getInt("ProcessTime");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt)
+    public CompoundNBT save(CompoundNBT nbt)
     {
-        super.write(nbt);
+        super.save(nbt);
         nbt.putInt("Progress", (int) this.progress);
         nbt.putInt("ProcessTime", this.processTime);
         return nbt;
@@ -223,7 +223,7 @@ public abstract class AbstractProcessMachineTileEntity<R extends IRecipe<?>> ext
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
     {
         super.onDataPacket(net, packet);
-        CompoundNBT nbt = packet.getNbtCompound();
+        CompoundNBT nbt = packet.getTag();
         this.progress = nbt.getInt("Progress");
         this.processTime = nbt.getInt("ProcessTime");
     }

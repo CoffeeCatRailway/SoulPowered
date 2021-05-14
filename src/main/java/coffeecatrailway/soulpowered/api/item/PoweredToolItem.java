@@ -35,26 +35,26 @@ public abstract class PoweredToolItem extends ToolItem implements IVanishable, I
 
     public PoweredToolItem(float attackDamage, float attackSpeed, IItemTier tier, Set<Block> effectiveBlocks, Properties properties, ToolType toolType)
     {
-        super(attackDamage, attackSpeed, tier, effectiveBlocks, properties.addToolType(toolType, tier.getHarvestLevel()));
+        super(attackDamage, attackSpeed, tier, effectiveBlocks, properties.addToolType(toolType, tier.getLevel()));
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state)
     {
-        return super.getDestroySpeed(stack, state) / (this.hasEffect(stack) ? 1f : 2f);
+        return super.getDestroySpeed(stack, state) / (this.isFoil(stack) ? 1f : 2f);
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
         this.consumeEnergy(stack, false);
         return true;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entityLiving)
+    public boolean mineBlock(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        this.consumeEnergy(stack, state.getBlockHardness(world, pos) != 0f);
+        this.consumeEnergy(stack, state.getDestroySpeed(world, pos) != 0f);
         return true;
     }
 
@@ -70,21 +70,21 @@ public abstract class PoweredToolItem extends ToolItem implements IVanishable, I
     {
         if (stack.isEmpty() || slot != EquipmentSlotType.MAINHAND)
             return super.getAttributeModifiers(slot, stack);
-        return this.hasEffect(stack) ? super.getAttributeModifiers(slot) : this.unpoweredAttributeModifiers;
+        return this.isFoil(stack) ? super.getAttributeModifiers(slot, stack) : this.unpoweredAttributeModifiers;
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items)
     {
-        super.fillItemGroup(group, items);
-        if (this.isInGroup(group))
+        super.fillItemCategory(group, items);
+        if (this.allowdedIn(group))
             this.addItemVarients(items);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
     {
-        super.addInformation(stack, world, tooltip, flag);
+        super.appendHoverText(stack, world, tooltip, flag);
         IEnergyItem.super.addInformation(stack, world, tooltip, flag);
     }
 }

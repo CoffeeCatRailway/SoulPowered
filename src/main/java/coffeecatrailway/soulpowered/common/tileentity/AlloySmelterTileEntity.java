@@ -66,8 +66,8 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     @Override
     protected AlloySmelterRecipe getRecipe()
     {
-        if (this.world == null) return null;
-        return this.world.getRecipeManager().getRecipe(SoulRecipes.ALLOY_SMELTING_TYPE, this, this.world).orElse(null);
+        if (this.level == null) return null;
+        return this.level.getRecipeManager().getRecipeFor(SoulRecipes.ALLOY_SMELTING_TYPE, this, this.level).orElse(null);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     @Override
     protected Collection<ItemStack> getProcessedResults(AlloySmelterRecipe recipe)
     {
-        return Collections.singleton(recipe.getCraftingResult(this));
+        return recipe.getRemainingItems(this);
     }
 
     @Override
@@ -95,13 +95,13 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction)
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction)
     {
         return index < INVENTORY_SIZE - 1;
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction)
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction)
     {
         return index == INVENTORY_SIZE - 1;
     }

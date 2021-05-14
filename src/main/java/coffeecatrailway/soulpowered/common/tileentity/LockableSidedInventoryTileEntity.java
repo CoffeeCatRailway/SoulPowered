@@ -38,7 +38,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public int getSizeInventory()
+    public int getContainerSize()
     {
         return this.items.size();
     }
@@ -53,7 +53,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public ItemStack getStackInSlot(int index)
+    public ItemStack getItem(int index)
     {
         if (index < 0 || index >= this.items.size())
             return ItemStack.EMPTY;
@@ -61,49 +61,49 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count)
+    public ItemStack removeItem(int index, int count)
     {
-        return ItemStackHelper.getAndSplit(this.items, index, count);
+        return ItemStackHelper.removeItem(this.items, index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index)
+    public ItemStack removeItemNoUpdate(int index)
     {
-        return ItemStackHelper.getAndRemove(this.items, index);
+        return ItemStackHelper.takeItem(this.items, index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
+    public void setItem(int index, ItemStack stack)
     {
         this.items.set(index, stack);
-        if (stack.getCount() > getInventoryStackLimit())
-            stack.setCount(getInventoryStackLimit());
+        if (stack.getCount() > this.getMaxStackSize())
+            stack.setCount(this.getMaxStackSize());
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player)
+    public boolean stillValid(PlayerEntity player)
     {
-        return this.world != null && this.world.getTileEntity(this.pos) == this && player.getPosition().distanceSq(this.pos) <= 64;
+        return this.level != null && this.level.getBlockEntity(this.getBlockPos()) == this && player.distanceToSqr((double)this.worldPosition.getX() + .5d, (double)this.worldPosition.getY() + .5d, (double)this.worldPosition.getZ() + .5d) <= 64d;
     }
 
     @Override
-    public void clear()
+    public void clearContent()
     {
         this.items.clear();
     }
 
     @Override
-    public void read(BlockState stateIn, CompoundNBT nbt)
+    public void load(BlockState state, CompoundNBT nbt)
     {
-        super.read(stateIn, nbt);
-        this.items = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
+        super.load(state, nbt);
+        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(nbt, this.items);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt)
+    public CompoundNBT save(CompoundNBT nbt)
     {
-        super.write(nbt);
+        super.save(nbt);
         ItemStackHelper.saveAllItems(nbt, this.items);
         return nbt;
     }
@@ -113,21 +113,21 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     {
         CompoundNBT tags = getUpdateTag();
         ItemStackHelper.saveAllItems(tags, this.items);
-        return new SUpdateTileEntityPacket(this.pos, 1, tags);
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 1, tags);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
     {
         super.onDataPacket(net, packet);
-        ItemStackHelper.loadAllItems(packet.getNbtCompound(), this.items);
+        ItemStackHelper.loadAllItems(packet.getTag(), this.items);
     }
 
     @Nullable
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        if (!this.removed && side != null && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (!this.remove && side != null && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
             if (side == Direction.UP)
                 return this.handlers[0].cast();
@@ -139,9 +139,9 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public void remove()
+    public void setRemoved()
     {
-        super.remove();
+        super.setRemoved();
         for (LazyOptional<? extends IItemHandler> handler : this.handlers)
             handler.invalidate();
     }

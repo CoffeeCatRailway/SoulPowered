@@ -33,7 +33,7 @@ public class SoulShieldEntity extends Entity
     private static final Logger LOGGER = SoulPoweredMod.getLogger("SoulShieldEntity");
     private static final Vector3d VEC_TWO = new Vector3d(2d, 2d, 2d);
 
-    private static final DataParameter<ItemStack> SHIELD_STACK = EntityDataManager.createKey(SoulShieldEntity.class, DataSerializers.ITEMSTACK);
+    private static final DataParameter<ItemStack> SHIELD_STACK = EntityDataManager.defineId(SoulShieldEntity.class, DataSerializers.ITEM_STACK);
 
     @OnlyIn(Dist.CLIENT)
     public float deadAngle = 0f;
@@ -50,7 +50,8 @@ public class SoulShieldEntity extends Entity
     public SoulShieldEntity(World world, PlayerEntity player, ItemStack stack, float durationInTicks)
     {
         super(SoulEntities.SOUL_SHIELD.get(), world);
-        this.setPositionAndRotation(player.getPositionVec().x, player.getPositionVec().y, player.getPositionVec().z, player.rotationYaw, player.rotationPitch);
+        this.setPos(player.position().x, player.position().y, player.position().z);
+        this.setRot(player.yRot, player.xRot);
         this.setShieldStack(stack.copy());
         this.setDuration(durationInTicks);
     }
@@ -59,8 +60,8 @@ public class SoulShieldEntity extends Entity
     public void tick()
     {
         super.tick();
-        if (!this.world.isRemote)
-            if (this.ticksExisted >= this.getDuration())
+        if (!this.level.isClientSide())
+            if (this.tickCount >= this.getDuration())
                 this.remove();
 
 
@@ -70,30 +71,30 @@ public class SoulShieldEntity extends Entity
             double shieldBounceOffset = SoulPoweredMod.SERVER_CONFIG.soulShieldBounceOffset.get();
             double range = shieldStack.getOrCreateTag().getFloat("Range") + shieldBounceOffset;
 
-            this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(range - shieldBounceOffset))
+            this.level.getEntities(this, this.getBoundingBox().inflate(range - shieldBounceOffset))
                     .stream().filter(entity -> entity instanceof ProjectileEntity).forEach(projectile -> {
-                if (projectile.getPositionVec().squareDistanceTo(this.getPositionVec()) <= range * range)
+                if (projectile.position().distanceToSqr(this.position()) <= range * range)
                 {
-                    Vector3d n = projectile.getPositionVec().subtract(this.getPositionVec()).normalize();
-                    Vector3d d = projectile.getMotion().normalize();
-                    double dot = d.dotProduct(n);
-                    projectile.setMotion(d.subtract(VEC_TWO.mul(dot, dot, dot).mul(n)).mul(d.length(), d.length(), d.length()));
+                    Vector3d n = projectile.position().subtract(this.position()).normalize();
+                    Vector3d d = projectile.getDeltaMovement().normalize();
+                    double dot = d.dot(n);
+                    projectile.setDeltaMovement(d.subtract(VEC_TWO.multiply(dot, dot, dot).multiply(n)).multiply(d.length(), d.length(), d.length()));
                 }
             });
         }
     }
 
     @Override
-    protected void registerData()
+    protected void defineSynchedData()
     {
-        this.getDataManager().register(SHIELD_STACK, ItemStack.EMPTY);
+        this.getEntityData().define(SHIELD_STACK, ItemStack.EMPTY);
     }
 
     @Override
-    protected void readAdditional(CompoundNBT nbt)
+    protected void readAdditionalSaveData(CompoundNBT nbt)
     {
         if (nbt.contains("ShieldStack", Constants.NBT.TAG_COMPOUND))
-            this.setShieldStack(ItemStack.read(nbt.getCompound("ShieldStack")));
+            this.setShieldStack(ItemStack.of(nbt.getCompound("ShieldStack")));
 
         ItemStack shieldStack = this.getShieldStack();
         CompoundNBT stackNbt = shieldStack.getOrCreateTag();
@@ -102,7 +103,7 @@ public class SoulShieldEntity extends Entity
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT nbt)
+    protected void addAdditionalSaveData(CompoundNBT nbt)
     {
         ItemStack shieldStack = this.getShieldStack();
         CompoundNBT stackNbt = shieldStack.getOrCreateTag();
@@ -110,16 +111,16 @@ public class SoulShieldEntity extends Entity
             stackNbt.putFloat("DurationInTicks", this.getDuration());
 
         if (!nbt.contains("ShieldStack", Constants.NBT.TAG_COMPOUND))
-            nbt.put("ShieldStack", shieldStack.write(new CompoundNBT()));
+            nbt.put("ShieldStack", shieldStack.save(new CompoundNBT()));
     }
 
     public ItemStack getShieldStack()
     {
-        ItemStack shieldStack = this.getDataManager().get(SHIELD_STACK);
+        ItemStack shieldStack = this.getEntityData().get(SHIELD_STACK);
         if (shieldStack.getItem() != this.soulShieldSupplier.get())
         {
-            if (this.world != null)
-                LOGGER.warn("SoulShieldEntity {} doesn't have a shield stack?!", this.getUniqueID());
+            if (this.level != null)
+                LOGGER.warn("SoulShieldEntity {} doesn't have a shield stack?!", this.getUUID());
             return this.setShieldStack(new ItemStack(this.soulShieldSupplier.get()));
         } else
             return shieldStack;
@@ -128,13 +129,13 @@ public class SoulShieldEntity extends Entity
     public ItemStack setShieldStack(ItemStack stack)
     {
         ItemStack newStack = stack.copy();
-        this.getDataManager().set(SHIELD_STACK, newStack);
+        this.getEntityData().set(SHIELD_STACK, newStack);
         return newStack;
     }
 
     public float getDuration()
     {
-        ItemStack shieldStack = this.getDataManager().get(SHIELD_STACK);
+        ItemStack shieldStack = this.getEntityData().get(SHIELD_STACK);
         CompoundNBT stackNbt = shieldStack.getOrCreateTag();
         if (stackNbt.contains("DurationInTicks", Constants.NBT.TAG_ANY_NUMERIC))
             return stackNbt.getFloat("DurationInTicks");
@@ -143,12 +144,12 @@ public class SoulShieldEntity extends Entity
 
     public void setDuration(float duration)
     {
-        ItemStack shieldStack = this.getDataManager().get(SHIELD_STACK);
+        ItemStack shieldStack = this.getEntityData().get(SHIELD_STACK);
         shieldStack.getOrCreateTag().putFloat("DurationInTicks", duration);
     }
 
     @Override
-    public IPacket<?> createSpawnPacket()
+    public IPacket<?> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

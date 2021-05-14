@@ -5,6 +5,7 @@ import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
+import coffeecatrailway.soulpowered.common.command.SoulsCommand;
 import coffeecatrailway.soulpowered.common.item.PoweredSouliumSwordItem;
 import coffeecatrailway.soulpowered.common.item.SoulAmuletItem;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
@@ -33,6 +34,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -42,6 +44,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -54,6 +57,20 @@ import top.theillusivec4.curios.api.CuriosApi;
 public class CommonEvents
 {
     private static final Logger LOGGER = SoulPoweredMod.getLogger("Common Events");
+
+    public static void init(final FMLCommonSetupEvent event)
+    {
+        event.enqueueWork(SoulWorldGen.StructurePieces::loadStructureTypes);
+        SoulsCapability.register();
+        SoulMessageHandler.init();
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event)
+    {
+        SoulsCommand.register(event.getDispatcher());
+        LOGGER.debug("Registered command(s)");
+    }
 
     @SubscribeEvent
     public static void onAttachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event)
@@ -69,7 +86,7 @@ public class CommonEvents
         if (player instanceof ServerPlayerEntity)
         {
             SoulsCapability.ifPresent(player, handler ->
-                    SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(player.getEntityId(), handler.getSouls())));
+                    SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(player.getId(), handler.getSouls())));
             LOGGER.debug("Capability - Player logged in, syncing souls");
         }
     }
@@ -92,7 +109,7 @@ public class CommonEvents
         PlayerEntity player = event.getPlayer();
 
         if (player instanceof ServerPlayerEntity)
-            SoulsCapability.ifPresent(target, handler -> SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(target.getEntityId(), handler.getSouls())));
+            SoulsCapability.ifPresent(target, handler -> SoulMessageHandler.PLAY.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncSoulsTotalMessage(target.getId(), handler.getSouls())));
     }
 
     @SubscribeEvent
@@ -100,18 +117,18 @@ public class CommonEvents
     {
         PlayerEntity player = event.player;
         SoulsCapability.ifPresent(player, handler -> {
-            if (handler.getSouls() == 20 && !player.world.isRemote())
-                SoulParticle.spawnParticles(player.world, player, player.getPositionVec().add(0d, 2d, 0d), 1, true);
+            if (handler.getSouls() == 20 && !player.level.isClientSide())
+                SoulParticle.spawnParticles(player.level, player, player.position().add(0d, 2d, 0d), 1, true);
         });
     }
 
     @SubscribeEvent
     public static void onEntityDie(LivingDeathEvent event)
     {
-        if (event.getSource().getTrueSource() instanceof PlayerEntity)
+        if (event.getSource().getEntity() instanceof PlayerEntity)
         {
-            PlayerEntity player = (PlayerEntity) event.getSource().getTrueSource();
-            World world = player.world;
+            PlayerEntity player = (PlayerEntity) event.getSource().getEntity();
+            World world = player.level;
 
             if (!CuriosIntegration.hasCurio(player))
                 return;
@@ -129,13 +146,13 @@ public class CommonEvents
                     LivingEntity entityKilled = event.getEntityLiving();
                     CompoundNBT nbt = charm.getOrCreateTag();
 
-                    if (player.getPosition().withinDistance(entityKilled.getPosition(), nbt.getFloat("Range") + .5f) && world.rand.nextFloat() < nbt.getFloat("SoulGatheringChance"))
+                    if (player.position().closerThan(entityKilled.position(), nbt.getFloat("Range") + .5f) && world.random.nextFloat() < nbt.getFloat("SoulGatheringChance"))
                     {
                         PoweredSouliumSwordItem.gainSouls(player, entityKilled, world, () -> {
                             if (isPowered)
                                 energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
                             else if (player instanceof ServerPlayerEntity)
-                                charm.attemptDamageItem(1, world.rand, (ServerPlayerEntity) player);
+                                charm.hurt(1, world.random, (ServerPlayerEntity) player);
                         });
                     }
                 }
@@ -160,7 +177,7 @@ public class CommonEvents
             {
                 if (handler.removeSouls(2, false) && !player.isCreative())
                 {
-                    player.addItemStackToInventory(new ItemStack(SoulItems.SOUL_BOTTLE.get()));
+                    player.addItem(new ItemStack(SoulItems.SOUL_BOTTLE.get()));
                     stack.shrink(1);
                 }
             }
@@ -193,16 +210,16 @@ public class CommonEvents
     public static void onWorldLoad(final WorldEvent.Load event)
     {
         IWorld world = event.getWorld();
-        if (world.isRemote())
+        if (world.isClientSide())
             return;
 
         ServerWorld serverWorld = (ServerWorld) world;
-        if ((serverWorld.getChunkProvider().getChunkGenerator() instanceof FlatChunkGenerator && serverWorld.getDimensionKey().equals(World.OVERWORLD)) || !serverWorld.getDimensionKey().equals(World.THE_NETHER))
+        if ((serverWorld.getChunkSource().getGenerator() instanceof FlatChunkGenerator && serverWorld.dimension().equals(World.OVERWORLD)) || !serverWorld.dimension().equals(World.NETHER))
             return;
 
-        if (!serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_.containsKey(SoulWorldGen.SOUL_CASTLE.get()))
-            serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
-                    .putAll(serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_)
-                    .put(SoulWorldGen.SOUL_CASTLE.get(), DimensionStructuresSettings.field_236191_b_.get(SoulWorldGen.SOUL_CASTLE.get())).build();
+        if (!serverWorld.getChunkSource().getGenerator().getSettings().structureConfig.containsKey(SoulWorldGen.SOUL_CASTLE.get()))
+            serverWorld.getChunkSource().getGenerator().getSettings().structureConfig = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
+                    .putAll(serverWorld.getChunkSource().getGenerator().getSettings().structureConfig)
+                    .put(SoulWorldGen.SOUL_CASTLE.get(), DimensionStructuresSettings.DEFAULTS.get(SoulWorldGen.SOUL_CASTLE.get())).build();
     }
 }

@@ -46,9 +46,9 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
     private void consumeIngredients(IInventory inventory, Ingredient ingredient, int count)
     {
         int amountLeft = count;
-        for (int i = 0; i < inventory.getSizeInventory(); i++)
+        for (int i = 0; i < inventory.getContainerSize(); i++)
         {
-            ItemStack stack = inventory.getStackInSlot(i);
+            ItemStack stack = inventory.getItem(i);
             if (!stack.isEmpty() && ingredient.test(stack))
             {
                 int remove = Math.min(amountLeft, stack.getCount());
@@ -59,7 +59,7 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
                     ItemStack replace = ItemStack.EMPTY;
                     if (copy.hasContainerItem())
                         replace = copy.getContainerItem();
-                    inventory.setInventorySlotContents(i, replace);
+                    inventory.setItem(i, replace);
                 }
 
                 amountLeft -= remove;
@@ -101,28 +101,28 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
     protected int foundItems(IInventory inventory, Ingredient ingredient)
     {
         int found = 0;
-        for (int i = 0; i < inventory.getSizeInventory(); i++)
+        for (int i = 0; i < inventory.getContainerSize(); i++)
         {
-            ItemStack stack = inventory.getStackInSlot(i);
+            ItemStack stack = inventory.getItem(i);
             found += (!stack.isEmpty() && ingredient.test(stack)) ? stack.getCount() : 0;
         }
         return found;
     }
 
     @Override
-    public ItemStack getCraftingResult(AbstractProcessMachineTileEntity<?> inventory)
+    public ItemStack assemble(AbstractProcessMachineTileEntity<?> inventory)
     {
         return this.result.copy();
     }
 
     @Override
-    public boolean canFit(int width, int height)
+    public boolean canCraftInDimensions(int width, int height)
     {
         return true;
     }
 
     @Override
-    public ItemStack getRecipeOutput()
+    public ItemStack getResultItem()
     {
         return this.result;
     }
@@ -148,15 +148,15 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<AlloySmelterRecipe>
     {
         @Override
-        public AlloySmelterRecipe read(ResourceLocation recipeId, JsonObject json)
+        public AlloySmelterRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             AlloySmelterRecipe recipe = new AlloySmelterRecipe(recipeId);
-            recipe.processTime = JSONUtils.getInt(json, "processTime");
-            recipe.result = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
+            recipe.processTime = JSONUtils.getAsInt(json, "processTime");
+            recipe.result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
 
-            JSONUtils.getJsonArray(json, "ingredients").forEach(element -> {
+            JSONUtils.getAsJsonArray(json, "ingredients").forEach(element -> {
                 Ingredient ingredient = deserializeIngredient(element);
-                int count = JSONUtils.getInt(element.getAsJsonObject(), "count", 1);
+                int count = JSONUtils.getAsInt(element.getAsJsonObject(), "count", 1);
                 recipe.ingredients.put(ingredient, count);
             });
 
@@ -166,22 +166,22 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
         private static Ingredient deserializeIngredient(JsonElement element)
         {
             if (element.isJsonObject())
-                return Ingredient.deserialize(element.getAsJsonObject().get("value"));
-            return Ingredient.deserialize(element);
+                return Ingredient.fromJson(element.getAsJsonObject().get("value"));
+            return Ingredient.fromJson(element);
         }
 
         @Nullable
         @Override
-        public AlloySmelterRecipe read(ResourceLocation recipeId, PacketBuffer buffer)
+        public AlloySmelterRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer)
         {
             AlloySmelterRecipe recipe = new AlloySmelterRecipe(recipeId);
             recipe.processTime = buffer.readVarInt();
-            recipe.result = buffer.readItemStack();
+            recipe.result = buffer.readItem();
 
             int ingredientCount = buffer.readByte();
             for (int i = 0; i < ingredientCount; i++)
             {
-                Ingredient ingredient = Ingredient.read(buffer);
+                Ingredient ingredient = Ingredient.fromNetwork(buffer);
                 int count = buffer.readByte();
                 recipe.ingredients.put(ingredient, count);
             }
@@ -190,14 +190,14 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
         }
 
         @Override
-        public void write(PacketBuffer buffer, AlloySmelterRecipe recipe)
+        public void toNetwork(PacketBuffer buffer, AlloySmelterRecipe recipe)
         {
             buffer.writeVarInt(recipe.processTime);
-            buffer.writeItemStack(recipe.result);
+            buffer.writeItem(recipe.result);
 
             buffer.writeByte(recipe.ingredients.size());
             recipe.ingredients.forEach((ingredient, count) -> {
-                ingredient.write(buffer);
+                ingredient.toNetwork(buffer);
                 buffer.writeByte(count);
             });
         }

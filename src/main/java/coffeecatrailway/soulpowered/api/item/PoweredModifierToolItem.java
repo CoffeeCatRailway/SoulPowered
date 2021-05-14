@@ -23,19 +23,19 @@ public abstract class PoweredModifierToolItem extends PoweredToolItem
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context)
+    public ActionResultType useOn(ItemUseContext context)
     {
-        if (this.hasEffect(context.getItem()))
+        if (this.isFoil(context.getItemInHand()))
         {
-            Direction face = context.getFace();
+            Direction face = context.getClickedFace();
             Set<BlockPos> positions = Sets.newHashSet();
-            BlockPos.getAllInBoxMutable(this.getOffsetToFaceDirection(face, -1, -1, context.getPos()), this.getOffsetToFaceDirection(face, 1, 1, context.getPos())).forEach(pos ->
-                    positions.add(pos.toImmutable()));
+            BlockPos.betweenClosedStream(this.getOffsetToFaceDirection(face, -1, -1, context.getClickedPos()), this.getOffsetToFaceDirection(face, 1, 1, context.getClickedPos())).forEach(pos ->
+                    positions.add(pos.immutable()));
 
             positions.forEach(blockpos -> this.modifyAtPosition(context, blockpos));
-            return ActionResultType.func_233537_a_(context.getWorld().isRemote);
+            return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
         }
-        return this.hasEnergy(context.getItem()) ? this.modifyAtPosition(context, context.getPos()) : ActionResultType.PASS;
+        return this.hasEnergy(context.getItemInHand()) ? this.modifyAtPosition(context, context.getClickedPos()) : ActionResultType.PASS;
     }
 
     protected abstract ActionResultType modifyAtPosition(ItemUseContext context, BlockPos pos);
@@ -46,14 +46,14 @@ public abstract class PoweredModifierToolItem extends PoweredToolItem
         {
             case DOWN:
             case UP:
-                return pos.add(new BlockPos(x, 0, y));
+                return pos.offset(new BlockPos(x, 0, y));
             default:
             case NORTH:
             case SOUTH:
-                return pos.add(new BlockPos(x, y, 0));
+                return pos.offset(new BlockPos(x, y, 0));
             case WEST:
             case EAST:
-                return pos.add(new BlockPos(0, y, x));
+                return pos.offset(new BlockPos(0, y, x));
         }
     }
 }

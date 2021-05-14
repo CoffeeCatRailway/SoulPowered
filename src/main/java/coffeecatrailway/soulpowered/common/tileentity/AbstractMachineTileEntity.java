@@ -73,7 +73,7 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
         }
 
         @Override
-        public int size()
+        public int getCount()
         {
             return FIELDS_COUNT;
         }
@@ -110,14 +110,14 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
     @Override
     public void tick()
     {
-        if (this.world == null || this.world.isRemote) return;
+        if (this.level == null || this.level.isClientSide()) return;
         if (this.maxExtract > 0 && this.canRun())
-            EnergyUtils.trySendToNeighbors(this.world, this.pos, this, this.maxExtract);
+            EnergyUtils.trySendToNeighbors(this.level, this.getBlockPos(), this, this.maxExtract);
     }
 
     protected boolean canRun()
     {
-        return this.world != null && this.redstoneMode.shouldRun(this.world.isBlockPowered(this.pos)) && this.getEnergyStored() <= this.getMaxEnergyStored();
+        return this.level != null && this.redstoneMode.shouldRun(this.level.hasNeighborSignal(this.getBlockPos())) && this.getEnergyStored() <= this.getMaxEnergyStored();
     }
 
     protected BlockState getActiveState()
@@ -132,28 +132,28 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
 
     protected void sendUpdate(BlockState newState, boolean force)
     {
-        if (this.world == null) return;
-        BlockState oldState = this.world.getBlockState(this.pos);
+        if (this.level == null) return;
+        BlockState oldState = this.level.getBlockState(this.getBlockPos());
         if (oldState != newState || force)
         {
-            this.world.setBlockState(this.pos, newState, Constants.BlockFlags.DEFAULT);
-            this.world.notifyBlockUpdate(this.pos, oldState, newState, Constants.BlockFlags.DEFAULT);
+            this.level.setBlock(this.getBlockPos(), newState, Constants.BlockFlags.DEFAULT);
+            this.level.sendBlockUpdated(this.getBlockPos(), oldState, newState, Constants.BlockFlags.DEFAULT);
         }
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundNBT nbt)
     {
-        super.read(state, nbt);
+        super.load(state, nbt);
         SyncVariable.Helper.readSyncVars(this, nbt);
         this.readEnergy(nbt);
         this.redstoneMode = RedstoneMode.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt)
+    public CompoundNBT save(CompoundNBT nbt)
     {
-        super.write(nbt);
+        super.save(nbt);
         SyncVariable.Helper.writeSyncVars(this, nbt, SyncVariable.Type.WRITE);
         this.writeEnergy(nbt);
         nbt.putByte("RedstoneMode", (byte) this.redstoneMode.ordinal());
@@ -164,7 +164,7 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
     {
         super.onDataPacket(net, packet);
-        CompoundNBT nbt = packet.getNbtCompound();
+        CompoundNBT nbt = packet.getTag();
         SyncVariable.Helper.readSyncVars(this, nbt);
         this.readEnergy(nbt);
         this.redstoneMode = RedstoneMode.byOrdinal(nbt.getByte("RedstoneMode"), RedstoneMode.IGNORED);
@@ -183,15 +183,15 @@ public abstract class AbstractMachineTileEntity extends LockableSidedInventoryTi
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        if (!this.removed && cap == CapabilityEnergy.ENERGY)
+        if (!this.remove && cap == CapabilityEnergy.ENERGY)
             return this.getEnergy(side).cast();
         return super.getCapability(cap, side);
     }
 
     @Override
-    public void remove()
+    public void setRemoved()
     {
-        super.remove();
+        super.setRemoved();
         this.energy.invalidate();
     }
 

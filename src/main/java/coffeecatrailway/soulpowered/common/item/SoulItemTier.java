@@ -14,10 +14,10 @@ import java.util.function.Supplier;
 public enum SoulItemTier implements IItemTier
 {
     SOULIUM(3, 1251, 7f, 2.75f, 10, () -> {
-        return Ingredient.fromItems(SoulItems.SOULIUM_INGOT.get());
+        return Ingredient.of(SoulItems.SOULIUM_INGOT.get());
     }),
     POWERED_SOULIUM(4, 1561, 8.5f, 3.5f, 12, () -> {
-        return Ingredient.fromItems(SoulItems.SOULIUM_INGOT.get());
+        return Ingredient.of(SoulItems.SOULIUM_INGOT.get());
     });
 
     int harvestLevel;
@@ -37,33 +37,33 @@ public enum SoulItemTier implements IItemTier
         this.repairMaterial = new LazyValue<>(repairMaterial);
     }
 
-    public int getMaxUses()
+    public int getUses()
     {
         return this.maxUses;
     }
 
-    public float getEfficiency()
+    public float getSpeed()
     {
         return this.efficiency;
     }
 
-    public float getAttackDamage()
+    public float getAttackDamageBonus()
     {
         return this.attackDamage;
     }
 
-    public int getHarvestLevel()
+    public int getLevel()
     {
         return this.harvestLevel;
     }
 
-    public int getEnchantability()
+    public int getEnchantmentValue()
     {
         return this.enchantability;
     }
 
-    public Ingredient getRepairMaterial()
+    public Ingredient getRepairIngredient()
     {
-        return this.repairMaterial.getValue();
+        return this.repairMaterial.get();
     }
 }

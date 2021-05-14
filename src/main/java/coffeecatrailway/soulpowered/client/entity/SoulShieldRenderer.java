@@ -22,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -115,7 +114,7 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
 
     public IVertexBuilder getVertexBuilder(SoulShieldEntity shieldEntity, IRenderTypeBuffer typeBuffer)
     {
-        return typeBuffer.getBuffer(RenderType.getEntityTranslucent(this.getEntityTexture(shieldEntity)));
+        return typeBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(shieldEntity)));
     }
 
     public List<PosUv> getPosUvs(float range)
@@ -135,44 +134,44 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
     @SubscribeEvent
     public void renderWorldLast(RenderWorldLastEvent event)
     {
-        World world = Minecraft.getInstance().world;
+        World world = Minecraft.getInstance().level;
         MatrixStack matrix = event.getMatrixStack();
-        IRenderTypeBuffer.Impl typeBuffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        IRenderTypeBuffer.Impl typeBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
         if (world == null)
             return;
 
         IVertexBuilder buffer = null;
-        Vector3d view = Minecraft.getInstance().getRenderManager().info.getProjectedView();
+        Vector3f view = Minecraft.getInstance().getEntityRenderDispatcher().camera.getLookVector();
 
-        matrix.push();
-        matrix.translate(-view.x, -view.y, -view.z);
+        matrix.pushPose();
+        matrix.translate(-view.x(), -view.y(), -view.z());
         for (SoulShieldEntity shieldEntity : TO_RENDER)
         {
             ItemStack stack = shieldEntity.getShieldStack();
-            int packedLight = WorldRenderer.getCombinedLight(world, new BlockPos(shieldEntity.getPositionVec()));
+            int packedLight = WorldRenderer.getLightColor(world, new BlockPos(shieldEntity.position()));
             if (!stack.isEmpty())
             {
                 if (buffer == null)
                     buffer = this.getVertexBuilder(shieldEntity, typeBuffer);
 
-                matrix.push();
-                matrix.translate(shieldEntity.lastTickPosX + (shieldEntity.getPosX() - shieldEntity.lastTickPosX) * event.getPartialTicks(), shieldEntity.lastTickPosY + (shieldEntity.getPosY() - shieldEntity.lastTickPosY) * event.getPartialTicks(), shieldEntity.lastTickPosZ + (shieldEntity.getPosZ() - shieldEntity.lastTickPosZ) * event.getPartialTicks());
+                matrix.pushPose();
+                matrix.translate(shieldEntity.xOld + (shieldEntity.position().x - shieldEntity.xOld) * event.getPartialTicks(), shieldEntity.yOld + (shieldEntity.position().y - shieldEntity.yOld) * event.getPartialTicks(), shieldEntity.zOld + (shieldEntity.position().z - shieldEntity.zOld) * event.getPartialTicks());
 
                 this.render(stack, packedLight, buffer, matrix);
 
-                matrix.pop();
+                matrix.popPose();
             }
         }
-        matrix.pop();
+        matrix.popPose();
         RenderSystem.disableCull();
-        typeBuffer.finish();
+        typeBuffer.endBatch();
         RenderSystem.enableCull();
         TO_RENDER.clear();
     }
 
     public void render(ItemStack stack, int packedLight, IVertexBuilder buffer, MatrixStack matrix)
     {
-        Matrix4f matrixLast = matrix.getLast().getMatrix();
+        Matrix4f matrixLast = matrix.last().pose();
         float range = stack.getOrCreateTag().getFloat("Range");
 
         List<PosUv> posUvs = this.getPosUvs(range);
@@ -186,14 +185,14 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
                 int b = color.getBlue();
                 int a = color.getAlpha();
 
-                buffer.pos(matrixLast, posUvs.get(i).pos.getX(), posUvs.get(i).pos.getY(), posUvs.get(i).pos.getZ()).color(r, g, b, a).tex(posUvs.get(i).u, posUvs.get(i).v)
-                        .overlay(OverlayTexture.NO_OVERLAY).lightmap(packedLight).normal(0f, 1f, 0f).endVertex();
-                buffer.pos(matrixLast, posUvs.get(i + 1).pos.getX(), posUvs.get(i + 1).pos.getY(), posUvs.get(i + 1).pos.getZ()).color(r, g, b, a).tex(posUvs.get(i + 1).u, posUvs.get(i + 1).v)
-                        .overlay(OverlayTexture.NO_OVERLAY).lightmap(packedLight).normal(0f, 1f, 0f).endVertex();
-                buffer.pos(matrixLast, posUvs.get(i + 2).pos.getX(), posUvs.get(i + 2).pos.getY(), posUvs.get(i + 2).pos.getZ()).color(r, g, b, a).tex(posUvs.get(i + 2).u, posUvs.get(i + 2).v)
-                        .overlay(OverlayTexture.NO_OVERLAY).lightmap(packedLight).normal(0f, 1f, 0f).endVertex();
-                buffer.pos(matrixLast, posUvs.get(i + 3).pos.getX(), posUvs.get(i + 3).pos.getY(), posUvs.get(i + 3).pos.getZ()).color(r, g, b, a).tex(posUvs.get(i + 3).u, posUvs.get(i + 3).v)
-                        .overlay(OverlayTexture.NO_OVERLAY).lightmap(packedLight).normal(0f, 1f, 0f).endVertex();
+                buffer.vertex(matrixLast, posUvs.get(i).pos.x(), posUvs.get(i).pos.y(), posUvs.get(i).pos.z()).color(r, g, b, a).uv(posUvs.get(i).u, posUvs.get(i).v)
+                        .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex();
+                buffer.vertex(matrixLast, posUvs.get(i + 1).pos.x(), posUvs.get(i + 1).pos.y(), posUvs.get(i + 1).pos.z()).color(r, g, b, a).uv(posUvs.get(i + 1).u, posUvs.get(i + 1).v)
+                        .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex();
+                buffer.vertex(matrixLast, posUvs.get(i + 2).pos.x(), posUvs.get(i + 2).pos.y(), posUvs.get(i + 2).pos.z()).color(r, g, b, a).uv(posUvs.get(i + 2).u, posUvs.get(i + 2).v)
+                        .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex();
+                buffer.vertex(matrixLast, posUvs.get(i + 3).pos.x(), posUvs.get(i + 3).pos.y(), posUvs.get(i + 3).pos.z()).color(r, g, b, a).uv(posUvs.get(i + 3).u, posUvs.get(i + 3).v)
+                        .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex();
             }
         }
     }
@@ -205,25 +204,25 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
         ItemStack stack = shieldEntity.getShieldStack();
         if (!stack.isEmpty())
         {
-            matrix.push();
+            matrix.pushPose();
 
             matrix.scale(.75f, .75f, .75f);
-            matrix.rotate(Vector3f.YP.rotationDegrees(180f - shieldEntity.rotationYaw));
+            matrix.mulPose(Vector3f.YP.rotationDegrees(180f - shieldEntity.yRot));
 
             boolean hasEnded = this.isEnding(shieldEntity);
             if (hasEnded)
                 shieldEntity.deadAngle = MathHelper.lerp(0.05f, shieldEntity.deadAngle, -90f);
-            matrix.rotate(Vector3f.XP.rotationDegrees(shieldEntity.deadAngle));
+            matrix.mulPose(Vector3f.XP.rotationDegrees(shieldEntity.deadAngle));
 
             if (!hasEnded)
-                shieldEntity.yOffset = (float) Math.sin((shieldEntity.ticksExisted + partialTicks) / 4.5f) / 48f;
+                shieldEntity.yOffset = (float) Math.sin((shieldEntity.tickCount + partialTicks) / 4.5f) / 48f;
             else
                 shieldEntity.yOffset = MathHelper.lerp(0.025f, shieldEntity.yOffset, -.25f);
             matrix.translate(0f, .75f + shieldEntity.yOffset, 0f);
 
-            Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.FIXED, packedLight, OverlayTexture.NO_OVERLAY, matrix, typeBuffer);
+            Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemCameraTransforms.TransformType.FIXED, packedLight, OverlayTexture.NO_OVERLAY, matrix, typeBuffer);
 
-            matrix.pop();
+            matrix.popPose();
         }
         TO_RENDER.add(shieldEntity);
     }
@@ -233,14 +232,14 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
     {
         if (super.shouldRender(shieldEntity, camera, camX, camY, camZ))
             return true;
-        AxisAlignedBB box = shieldEntity.getRenderBoundingBox();
+        AxisAlignedBB box = shieldEntity.getBoundingBox();
         float range = shieldEntity.getShieldStack().getOrCreateTag().getFloat("Range");
-        return camera.isBoundingBoxInFrustum(box.grow(range, this.doesExpandUp ? range : 0f, range));
+        return camera.isVisible(box.expandTowards(range, this.doesExpandUp ? range : 0f, range));
     }
 
     private boolean isEnding(SoulShieldEntity shieldEntity)
     {
-        return shieldEntity.ticksExisted >= shieldEntity.getDuration() - SoulPoweredMod.CLIENT_CONFIG.soulShieldEndDuration.get().floatValue();
+        return shieldEntity.tickCount >= shieldEntity.getDuration() - SoulPoweredMod.CLIENT_CONFIG.soulShieldEndDuration.get().floatValue();
     }
 
     public static Vector2f rotatePoint(Vector2f point, Vector2f origin, float angle)
@@ -254,7 +253,7 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
     }
 
     @Override
-    public ResourceLocation getEntityTexture(SoulShieldEntity entity)
+    public ResourceLocation getTextureLocation(SoulShieldEntity entity)
     {
         return SHIELD_TEXTURE;
     }

@@ -24,10 +24,10 @@ public class PoweredSouliumPickaxeItem extends PoweredToolItem
 
     public PoweredSouliumPickaxeItem(Properties properties)
     {
-        super(1, -2.8f, SoulItemTier.POWERED_SOULIUM, PickaxeItem.EFFECTIVE_ON, properties.maxStackSize(1).defaultMaxDamage(0), ToolType.PICKAXE);
+        super(1, -2.8f, SoulItemTier.POWERED_SOULIUM, PickaxeItem.DIGGABLES, properties.stacksTo(1).durability(0), ToolType.PICKAXE);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -2.8f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.8f, AttributeModifier.Operation.ADDITION));
         this.unpoweredAttributeModifiers = builder.build();
     }
 
@@ -36,12 +36,12 @@ public class PoweredSouliumPickaxeItem extends PoweredToolItem
     {
         if (this.hasEnergy(stack))
         {
-            int i = this.getTier().getHarvestLevel();
+            int i = this.getTier().getLevel();
             if (state.getHarvestTool() == net.minecraftforge.common.ToolType.PICKAXE) {
                 return i >= state.getHarvestLevel();
             }
             Material material = state.getMaterial();
-            return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
+            return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;
         }
         return false;
     }
@@ -50,8 +50,8 @@ public class PoweredSouliumPickaxeItem extends PoweredToolItem
     public float getDestroySpeed(ItemStack stack, BlockState state)
     {
         Material material = state.getMaterial();
-        float speed = material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
-        return speed / (this.hasEffect(stack) ? 1f : 2f);
+        float speed = material != Material.METAL && material != Material.HEAVY_METAL && material != Material.STONE ? super.getDestroySpeed(stack, state) : this.speed;
+        return speed / (this.isFoil(stack) ? 1f : 2f);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class PoweredSouliumPickaxeItem extends PoweredToolItem
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
+    public boolean isFoil(ItemStack stack)
     {
         return super.hasEnergy(stack, SoulPoweredMod.SERVER_CONFIG.poweredSouliumPickaxeEffectEnergyAmount.get());
     }

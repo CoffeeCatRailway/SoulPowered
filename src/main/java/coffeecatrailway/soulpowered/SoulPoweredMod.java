@@ -1,35 +1,33 @@
 package coffeecatrailway.soulpowered;
 
-import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
-import coffeecatrailway.soulpowered.client.gui.SoulHUDOverlayHandler;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.command.SoulsCommand;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.registry.*;
-import com.tterrag.registrate.Registrate;
-import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -50,12 +48,11 @@ public class SoulPoweredMod
     public static SoulConfig.Common COMMON_CONFIG;
     public static SoulConfig.Server SERVER_CONFIG;
 
-    public static Registrate REGISTRATE;
-
-    public static final ItemGroup GROUP_ALL = new ItemGroup(SoulPoweredMod.MOD_ID)
+    public static final ItemGroup GROUP = new ItemGroup(SoulPoweredMod.MOD_ID)
     {
         @Override
-        public ItemStack createIcon()
+        @OnlyIn(Dist.CLIENT)
+        public ItemStack makeIcon()
         {
             return new ItemStack(SoulItems.SOULIUM_SOUL_AMULET.get());
         }
@@ -63,16 +60,14 @@ public class SoulPoweredMod
     public static final String KEY_CATEGORY = "key." + MOD_ID + ".category";
     public static final KeyBinding ACTIVATE_CURIO = new KeyBinding("key." + MOD_ID + ".activate_curio", GLFW.GLFW_KEY_H, KEY_CATEGORY);
 
-    public static final ResourceLocation POWERED_ITEM_PROPERTY = getLocation("powered");
-    public static final Set<Supplier<Item>> POWERED_ITEM_PROPERTY_SET = new HashSet<>();
-
     public SoulPoweredMod()
     {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::onClientSetup);
-        modEventBus.addListener(this::onParticleFactoryRegister);
-        modEventBus.addListener(this::onCommonSetup);
-        modEventBus.addListener(CuriosIntegration::onInterModComms);
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(ClientEvents::init);
+        bus.addListener(this::onParticleFactoryRegister);
+        bus.addListener(CommonEvents::init);
+        bus.addListener(CuriosIntegration::onInterModComms);
+        bus.addListener(this::onGatherData);
 
         final Pair<SoulConfig.Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(SoulConfig.Client::new);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, client.getRight());
@@ -89,13 +84,6 @@ public class SoulPoweredMod
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        REGISTRATE = Registrate.create(MOD_ID).itemGroup(() -> GROUP_ALL, "Soul Powered")
-                .addDataGenerator(ProviderType.ITEM_TAGS, new SoulData.TagItems())
-                .addDataGenerator(ProviderType.BLOCK_TAGS, new SoulData.TagBlocks())
-                .addDataGenerator(ProviderType.LANG, new SoulData.Lang())
-                .addDataGenerator(ProviderType.LOOT, new SoulData.LootTables());
-
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         SoulBlocks.load();
         SoulItems.load();
         SoulTileEntities.load();
@@ -106,31 +94,24 @@ public class SoulPoweredMod
         SoulRecipes.load(bus);
     }
 
-    private void onClientSetup(FMLClientSetupEvent event)
-    {
-        POWERED_ITEM_PROPERTY_SET.stream().map(Supplier::get).forEach(item -> ItemModelsProperties.registerProperty(item, POWERED_ITEM_PROPERTY, (stack, world, entity) ->
-                EnergyUtils.getIfPresent(stack).orElse(EnergyUtils.EMPTY).getEnergyStored() > 0 ? 1f : 0f));
-        SoulHUDOverlayHandler.init();
-        ClientRegistry.registerKeyBinding(ACTIVATE_CURIO);
-    }
-
     private void onParticleFactoryRegister(ParticleFactoryRegisterEvent event)
     {
-        Minecraft.getInstance().particles.registerFactory(OtherRegistries.SOUL_PARTICLE.get(), SoulParticle.Factory::new);
+        Minecraft.getInstance().particleEngine.register(OtherRegistries.SOUL_PARTICLE.get(), SoulParticle.Factory::new);
     }
 
-    private void onCommonSetup(FMLCommonSetupEvent event)
+    private void onGatherData(GatherDataEvent event)
     {
-        event.enqueueWork(SoulWorldGen.StructurePieces::loadStructureTypes);
-        SoulsCapability.register();
-        SoulMessageHandler.init();
-    }
+        DataGenerator generator = event.getGenerator();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+        HNCBlockTags blockTags = new HNCBlockTags(generator, existingFileHelper);
 
-    @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event)
-    {
-        SoulsCommand.register(event.getDispatcher());
-        LOGGER.debug("Registered command(s)");
+        generator.addProvider(new HNCLanguage(generator));
+        generator.addProvider(new HNCItemTags(generator, blockTags, existingFileHelper));
+        generator.addProvider(blockTags);
+        generator.addProvider(new HNCLootTables(generator));
+        generator.addProvider(new HNCRecipeGen(generator));
+        generator.addProvider(new HNCItemModels(generator));
+        generator.addProvider(new HNCBlockStates(generator, existingFileHelper));
     }
 
     public static ResourceLocation getLocation(String path)

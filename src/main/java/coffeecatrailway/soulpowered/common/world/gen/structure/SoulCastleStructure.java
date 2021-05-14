@@ -48,48 +48,48 @@ public class SoulCastleStructure<T extends NoFeatureConfig> extends Structure<T>
         }
 
         @Override
-        public void func_230364_a_(DynamicRegistries registries, ChunkGenerator generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, T config)
+        public void generatePieces(DynamicRegistries registries, ChunkGenerator generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, T config)
         {
             ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
-            int x = chunkpos.getXStart() + this.rand.nextInt(16);
-            int z = chunkpos.getZStart() + this.rand.nextInt(16);
+            int x = chunkpos.getMinBlockX() + this.random.nextInt(16);
+            int z = chunkpos.getMinBlockZ() + this.random.nextInt(16);
             int seaLevel = generator.getSeaLevel();
-            int y = seaLevel + this.rand.nextInt(generator.getMaxBuildHeight() - 2 - seaLevel);
-            IBlockReader iblockreader = generator.func_230348_a_(x, z);
+            int y = seaLevel + this.random.nextInt(generator.getGenDepth() - 2 - seaLevel);
+            IBlockReader iblockreader = generator.getBaseColumn(x, z);
 
             for (BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable(x, y, z); y > seaLevel; --y)
             {
                 BlockState blockstate = iblockreader.getBlockState(blockpos$mutable);
                 blockpos$mutable.move(Direction.DOWN);
                 BlockState blockstate1 = iblockreader.getBlockState(blockpos$mutable);
-                if (blockstate.isAir() && (blockstate1.isIn(Blocks.SOUL_SAND) || blockstate1.isSolidSide(iblockreader, blockpos$mutable, Direction.UP)))
+                if (blockstate.isAir() && (blockstate1.is(Blocks.SOUL_SAND) || blockstate1.isFaceSturdy(iblockreader, blockpos$mutable, Direction.UP)))
                     break;
             }
 
             if (y > seaLevel)
             {
-                SoulCastlePieces.buildStructure(manager, new BlockPos(x, y, z), Rotation.values()[this.rand.nextInt(Rotation.values().length)], this.components, this.rand);
-                this.recalculateStructureSize();
+                SoulCastlePieces.buildStructure(manager, new BlockPos(x, y, z), Rotation.values()[this.random.nextInt(Rotation.values().length)], this.pieces, this.random);
+                this.calculateBoundingBox();
             }
         }
 
         @Override
-        public void func_230366_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
+        public void placeInChunk(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
         {
-            super.func_230366_a_(world, manager, generator, random, boundingBox, chunkPos);
-            int minY = this.bounds.minY;
+            super.placeInChunk(world, manager, generator, random, boundingBox, chunkPos);
+            int minY = this.boundingBox.y0;
 
-            for (int x = boundingBox.minX; x <= boundingBox.maxX; x++)
+            for (int x = boundingBox.x0; x <= boundingBox.x1; x++)
             {
-                for (int z = boundingBox.minZ; z <= boundingBox.maxZ; z++)
+                for (int z = boundingBox.z0; z <= boundingBox.z1; z++)
                 {
                     BlockPos blockpos = new BlockPos(x, minY, z);
-                    if (!world.isAirBlock(blockpos) && this.bounds.isVecInside(blockpos))
+                    if (!world.isEmptyBlock(blockpos) && this.boundingBox.isInside(blockpos))
                     {
                         boolean isAirBelow = false;
-                        for (StructurePiece structurepiece : this.components)
+                        for (StructurePiece structurepiece : this.pieces)
                         {
-                            if (structurepiece.getBoundingBox().isVecInside(blockpos))
+                            if (structurepiece.getBoundingBox().isInside(blockpos))
                             {
                                 isAirBelow = true;
                                 break;
@@ -101,9 +101,9 @@ public class SoulCastleStructure<T extends NoFeatureConfig> extends Structure<T>
                             for (int lowY = minY - 1; lowY > 1; lowY--)
                             {
                                 BlockPos pos = new BlockPos(x, lowY, z);
-                                if (!world.isAirBlock(pos) && !world.getBlockState(pos).getMaterial().isLiquid())
+                                if (!world.isEmptyBlock(pos) && !world.getBlockState(pos).getMaterial().isLiquid())
                                     break;
-                                world.setBlockState(pos, world.getBiome(pos).getGenerationSettings().getSurfaceBuilderConfig().getUnder(), Constants.BlockFlags.BLOCK_UPDATE);
+                                world.setBlock(pos, world.getBiome(pos).getGenerationSettings().getSurfaceBuilderConfig().getUnderMaterial(), Constants.BlockFlags.BLOCK_UPDATE);
                             }
                         }
                     }

@@ -40,7 +40,7 @@ public final class EnergyUtils
         for (Direction side : Direction.values())
         {
             if (energyHandler.getEnergyStored() == 0) return;
-            TileEntity tileEntity = world.getTileEntity(pos.offset(side));
+            TileEntity tileEntity = world.getBlockEntity(pos.relative(side));
             if (tileEntity != null)
             {
                 IEnergyStorage energy = energyHandler.getEnergy(side).orElse(new EnergyStorage(0));
@@ -93,7 +93,7 @@ public final class EnergyUtils
     @OnlyIn(Dist.CLIENT)
     public static void renderThinEnergyBar(MatrixStack matrixStack, int x, int y, int energyBarHeight)
     {
-        Minecraft.getInstance().getTextureManager().bindTexture(ENERGY_BAR_TEXTURE);
+        Minecraft.getInstance().getTextureManager().getTexture(ENERGY_BAR_TEXTURE);
         AbstractGui.blit(matrixStack, x, y - 50, 0, 0, 14, 52, 84, 52);
         if (energyBarHeight > 0)
             AbstractGui.blit(matrixStack, x , y + 2 - energyBarHeight, 14, 52 - energyBarHeight, 14, energyBarHeight, 84, 52);
@@ -108,7 +108,7 @@ public final class EnergyUtils
     @OnlyIn(Dist.CLIENT)
     public static void renderWideEnergyBar(MatrixStack matrixStack, int x, int y, int energyBarHeight)
     {
-        Minecraft.getInstance().getTextureManager().bindTexture(ENERGY_BAR_TEXTURE);
+        Minecraft.getInstance().getTextureManager().getTexture(ENERGY_BAR_TEXTURE);
         AbstractGui.blit(matrixStack, x, y - 50, 28, 0, 28, 52, 84, 52);
         if (energyBarHeight > 0)
             AbstractGui.blit(matrixStack, x, y + 2 - energyBarHeight, 56, 52 - energyBarHeight, 28, energyBarHeight, 84, 52);

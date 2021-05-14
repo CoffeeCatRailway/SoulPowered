@@ -71,15 +71,15 @@ public class SoulCastlePieces
 
         private void loadTemplate(TemplateManager manager)
         {
-            Template template = manager.getTemplateDefaulted(this.pieceLocation);
-            PlacementSettings settings = new PlacementSettings().setRotation(this.rotation).setMirror(Mirror.NONE).setCenterOffset(CENTER).addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK);
+            Template template = manager.get(this.pieceLocation);
+            PlacementSettings settings = new PlacementSettings().setRotation(this.rotation).setMirror(Mirror.NONE).setRotationPivot(CENTER).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR);
             this.setup(template, this.templatePosition, settings);
         }
 
         @Override
-        protected void readAdditional(CompoundNBT nbt)
+        protected void addAdditionalSaveData(CompoundNBT nbt)
         {
-            super.readAdditional(nbt);
+            super.addAdditionalSaveData(nbt);
             nbt.putString("Template", this.pieceLocation.toString());
             nbt.putString("Rotation", this.rotation.name());
         }
@@ -89,18 +89,18 @@ public class SoulCastlePieces
         {
             if ("Chest".equals(name))
             {
-                world.setBlockState(pos, Blocks.CHEST.getDefaultState(), Constants.BlockFlags.DEFAULT);
-                TileEntity tileentity = world.getTileEntity(pos);
+                world.setBlock(pos, Blocks.CHEST.defaultBlockState(), Constants.BlockFlags.DEFAULT);
+                TileEntity tileentity = world.getBlockEntity(pos);
                 if (tileentity instanceof ChestTileEntity)
                     ((ChestTileEntity) tileentity).setLootTable(OtherRegistries.CHESTS_SOUL_CASTLE, random.nextLong());
             }
         }
 
         @Override
-        public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox boundingBox, ChunkPos chunkpos, BlockPos pos)
+        public boolean postProcess(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox boundingBox, ChunkPos chunkpos, BlockPos pos)
         {
-            boundingBox.expandTo(this.template.getMutableBoundingBox(this.placeSettings, this.templatePosition));
-            return super.func_230383_a_(world, manager, generator, random, boundingBox, chunkpos, pos);
+            boundingBox.expand(this.template.getBoundingBox(this.placeSettings, this.templatePosition));
+            return super.postProcess(world, manager, generator, random, boundingBox, chunkpos, pos);
         }
     }
 }

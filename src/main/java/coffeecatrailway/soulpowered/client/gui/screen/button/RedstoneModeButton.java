@@ -46,8 +46,8 @@ public class RedstoneModeButton extends Button
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindTexture(REDSTONE_MODE);
-        GlStateManager.disableDepthTest();
+        minecraft.getTextureManager().getTexture(REDSTONE_MODE);
+        GlStateManager._disableDepthTest();
 
         blit(matrixStack, this.x, this.y, this.width, this.height, 0, 0, 26, 26, 48, 48);
         int offsetX = 6;
@@ -65,6 +65,6 @@ public class RedstoneModeButton extends Button
                 break;
         }
 
-        GlStateManager.enableDepthTest();
+        GlStateManager._enableDepthTest();
     }
 }

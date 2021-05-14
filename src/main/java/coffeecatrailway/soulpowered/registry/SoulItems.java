@@ -1,5 +1,6 @@
 package coffeecatrailway.soulpowered.registry;
 
+import coffeecatrailway.soulpowered.ClientEvents;
 import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.SoulPoweredMod;
 import coffeecatrailway.soulpowered.api.Tier;
@@ -228,7 +229,7 @@ public class SoulItems
     private static <T extends Item> ItemBuilder<T, Registrate> registerPoweredItem(ItemBuilder<T, Registrate> item, boolean hasModelProperty)
     {
         if (hasModelProperty)
-            SoulPoweredMod.POWERED_ITEM_PROPERTY_SET.add(() -> item.get().get());
+            ClientEvents.POWERED_ITEM_PROPERTY_SET.add(() -> item.get().get());
         JeiSoulPlugin.POWERED_ITEM_SET.add(() -> item.get().get());
         return item;
     }
@@ -243,8 +244,8 @@ public class SoulItems
             ModelFile on = provider.withExistingParent(ctx.getName() + "_on", SoulPoweredMod.getLocation("item/" + ctx.getName()))
                     .texture("layer0", SoulPoweredMod.getLocation("item/" + ctx.getName() + "_on"));
 
-            model.override().predicate(SoulPoweredMod.POWERED_ITEM_PROPERTY, 0f).model(off).end()
-                    .override().predicate(SoulPoweredMod.POWERED_ITEM_PROPERTY, 1f).model(on).end();
+            model.override().predicate(ClientEvents.POWERED_ITEM_PROPERTY, 0f).model(off).end()
+                    .override().predicate(ClientEvents.POWERED_ITEM_PROPERTY, 1f).model(on).end();
         };
     }
 

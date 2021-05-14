@@ -69,7 +69,7 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
         }
 
         @Override
-        public int size()
+        public int getCount()
         {
             return FIELDS_COUNT;
         }
@@ -89,13 +89,13 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
     @Override
     protected BlockState getActiveState()
     {
-        return super.getActiveState().with(AbstractFurnaceBlock.LIT, true);
+        return super.getActiveState().setValue(AbstractFurnaceBlock.LIT, true);
     }
 
     @Override
     protected BlockState getInactiveState()
     {
-        return super.getInactiveState().with(AbstractFurnaceBlock.LIT, false);
+        return super.getInactiveState().setValue(AbstractFurnaceBlock.LIT, false);
     }
 
     @Override
@@ -127,26 +127,26 @@ public abstract class AbstractGeneratorTileEntity extends AbstractMachineTileEnt
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt)
+    public void load(BlockState state, CompoundNBT nbt)
     {
-        super.read(state, nbt);
+        super.load(state, nbt);
         this.burnTime = nbt.getInt("BurnTime");
         this.totalBurnTime = nbt.getInt("TotalBurnTime");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt)
+    public CompoundNBT save(CompoundNBT nbt)
     {
         nbt.putInt("BurnTime", this.burnTime);
         nbt.putInt("TotalBurnTime", this.totalBurnTime);
-        return super.write(nbt);
+        return super.save(nbt);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
     {
         super.onDataPacket(net, packet);
-        CompoundNBT nbt = packet.getNbtCompound();
+        CompoundNBT nbt = packet.getTag();
         this.burnTime = nbt.getInt("BurnTime");
         this.totalBurnTime = nbt.getInt("TotalBurnTime");
     }

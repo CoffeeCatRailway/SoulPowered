@@ -43,17 +43,17 @@ public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
 
     public PoweredSouliumSwordItem(Properties properties)
     {
-        super(SoulItemTier.POWERED_SOULIUM, 3, -2.4f, properties.maxStackSize(1).defaultMaxDamage(0));
+        super(SoulItemTier.POWERED_SOULIUM, 3, -2.4f, properties.stacksTo(1).durability(0));
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage() / 2f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.4f, AttributeModifier.Operation.ADDITION));
         this.unpoweredAttributeModifiers = builder.build();
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state)
     {
-        return super.getDestroySpeed(stack, state) / (this.hasEffect(stack) ? 1f : 2f);
+        return super.getDestroySpeed(stack, state) / (this.isFoil(stack) ? 1f : 2f);
     }
 
     public static void gainSouls(PlayerEntity player, LivingEntity hurt, World world, Runnable onGain)
@@ -61,31 +61,31 @@ public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
         SoulsCapability.ifPresent(player, playerHandler -> {
             int soulCount = 1;
             if (hurt instanceof PlayerEntity && SoulsCapability.isPresent(hurt))
-                soulCount = world.rand.nextInt(Math.max(1, SoulsCapability.get(hurt).orElse(SoulsCapability.EMPTY).getSouls()) / 2) + 1;
+                soulCount = world.random.nextInt(Math.max(1, SoulsCapability.get(hurt).orElse(SoulsCapability.EMPTY).getSouls()) / 2) + 1;
 
             playerHandler.addSouls(soulCount, false);
-            if (!world.isRemote)
+            if (!world.isClientSide())
             {
-                SoulParticle.spawnParticles(world, player, hurt.getPositionVec().add(0d, 1d, 0d), soulCount + world.getRandom().nextInt(3) + 1, false);
+                SoulParticle.spawnParticles(world, player, hurt.position().add(0d, 1d, 0d), soulCount + world.getRandom().nextInt(3) + 1, false);
                 onGain.run();
-                LOGGER.debug("Player {} killed/attacked living entity, souls given {}", player.getUniqueID().toString(), soulCount);
+                LOGGER.debug("Player {} killed/attacked living entity, souls given {}", player.getStringUUID(), soulCount);
             }
         });
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
         EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get(), false));
-        if (attacker instanceof PlayerEntity && this.hasEffect(stack) && MathHelper.nextDouble(attacker.world.getRandom(), 0d, 1d) < SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordSoulChance.get())
-            gainSouls((PlayerEntity) attacker, target, attacker.world, () -> EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false)));
+        if (attacker instanceof PlayerEntity && this.isFoil(stack) && MathHelper.nextDouble(attacker.level.getRandom(), 0d, 1d) < SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordSoulChance.get())
+            gainSouls((PlayerEntity) attacker, target, attacker.level, () -> EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false)));
         return true;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entityLiving)
+    public boolean mineBlock(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        if (state.getBlockHardness(world, pos) != 0f)
+        if (state.getDestroySpeed(world, pos) != 0f)
             EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false));
         return true;
     }
@@ -95,26 +95,26 @@ public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
     {
         if (stack.isEmpty() || slot != EquipmentSlotType.MAINHAND)
             return super.getAttributeModifiers(slot, stack);
-        return this.hasEffect(stack) ? super.getAttributeModifiers(slot) : this.unpoweredAttributeModifiers;
+        return this.isFoil(stack) ? super.getAttributeModifiers(slot, stack) : this.unpoweredAttributeModifiers;
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items)
     {
-        super.fillItemGroup(group, items);
-        if (this.isInGroup(group))
+        super.fillItemCategory(group, items);
+        if (this.allowdedIn(group))
             this.addItemVarients(items);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
     {
-        super.addInformation(stack, world, tooltip, flag);
+        super.appendHoverText(stack, world, tooltip, flag);
         IEnergyItem.super.addInformation(stack, world, tooltip, flag);
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
+    public boolean isFoil(ItemStack stack)
     {
         return IEnergyItem.super.hasEnergy(stack, SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEffectEnergyAmount.get());
     }

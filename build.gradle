@@ -3,12 +3,11 @@ import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
 
@@ -17,6 +16,7 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
@@ -28,7 +28,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'snapshot', version: project.mcpMappings.toString()
+    mappings channel: 'official', version: '1.16.5'
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -92,7 +92,7 @@ repositories {
     maven { // JustEnoughItems
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { // Top, Registrate
+    maven { // Top
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
     }
@@ -120,10 +120,6 @@ dependencies {
     compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${project.hwylaVersion}:api")
     runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${project.hwylaVersion}")
 
-    def registrate = "com.tterrag.registrate:Registrate:MC${project.registrateVersion}"
-    implementation fg.deobf(registrate)
-    shade registrate
-
     runtimeOnly fg.deobf("com.github.Ocelot5836:Sonar:${project.sonar}")
     compileOnly "com.github.Ocelot5836:Sonar:${project.sonar}:api"
     shade "com.github.Ocelot5836:Sonar:${project.sonar}"
@@ -131,7 +127,6 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'coffeecatrailway.repack.registrate'
     relocate 'io.github.ocelot', 'io.github.ocelot.lib'
 }
 

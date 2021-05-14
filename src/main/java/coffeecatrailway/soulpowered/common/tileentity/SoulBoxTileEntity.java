@@ -47,11 +47,11 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
     public void tick()
     {
         super.tick();
-        if (this.world == null || this.world.isRemote) return;
+        if (this.level == null || this.level.isClientSide()) return;
 
         if (this.energy.canReceive())
         {
-            ItemStack inStack = this.getStackInSlot(0);
+            ItemStack inStack = this.getItem(0);
             if (EnergyUtils.isPresent(inStack))
             {
                 IEnergyStorage energyIn = EnergyUtils.get(inStack).orElse(EnergyUtils.EMPTY);
@@ -67,7 +67,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
 
         if (this.energy.canExtract())
         {
-            ItemStack outStack = this.getStackInSlot(1);
+            ItemStack outStack = this.getItem(1);
             if (EnergyUtils.isPresent(outStack))
             {
                 if (this.energy.getEnergyStored() > 0)
@@ -80,12 +80,12 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
             }
         }
 
-        if (this.world.getGameTime() % 30 == 0)
+        if (this.level.getGameTime() % 30 == 0)
         {
             BlockState currentState = this.getBlockState();
-            BlockState newState = this.getBlockState().with(AbstractMachineBlock.LIT, this.energy.getEnergyStored() > 0);
+            BlockState newState = this.getBlockState().setValue(AbstractMachineBlock.LIT, this.energy.getEnergyStored() > 0);
             if (currentState != newState)
-                this.world.setBlockState(this.pos, newState, Constants.BlockFlags.DEFAULT);
+                this.level.setBlock(this.getBlockPos(), newState, Constants.BlockFlags.DEFAULT);
         }
     }
 
@@ -96,13 +96,13 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack stack, @Nullable Direction direction)
+    public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction)
     {
         return EnergyUtils.isPresent(stack);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction)
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction)
     {
         return EnergyUtils.isPresent(stack);
     }

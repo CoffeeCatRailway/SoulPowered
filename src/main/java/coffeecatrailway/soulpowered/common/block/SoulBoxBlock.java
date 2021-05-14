@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
  */
 public class SoulBoxBlock extends AbstractMachineBlock
 {
-    private static final VoxelShape SHAPE = new VoxelShapeHelper.Builder().append(VoxelShapes.fullCube(),
+    private static final VoxelShape SHAPE = new VoxelShapeHelper.Builder().append(VoxelShapes.block(),
             VoxelShapeHelper.makeCuboidShape(1d, 16d, 1d, 3d, 17d, 3d, Direction.EAST),
             VoxelShapeHelper.makeCuboidShape(1d, 16d, 13d, 3d, 17d, 15d, Direction.EAST),
             VoxelShapeHelper.makeCuboidShape(13d, 16d, 13d, 15d, 17d, 15d, Direction.EAST),
@@ -37,13 +37,13 @@ public class SoulBoxBlock extends AbstractMachineBlock
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader world)
+    public TileEntity newBlockEntity(IBlockReader world)
     {
         return new SoulBoxTileEntity(this.tier);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public BlockRenderType getRenderShape(BlockState state)
     {
         return BlockRenderType.MODEL;
     }

@@ -31,7 +31,7 @@ public class MachineFrameBlock extends RotatedPillarBlock
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public BlockRenderType getRenderShape(BlockState state)
     {
         return BlockRenderType.MODEL;
     }
@@ -43,7 +43,7 @@ public class MachineFrameBlock extends RotatedPillarBlock
         NonNullFunction<Direction, VoxelShape> frameTopPart = dir -> VoxelShapeHelper.makeCuboidShape(0d, 12d, 0d, 16d, 16d, 4d, dir);
         VoxelShapeHelper.Builder builder = new VoxelShapeHelper.Builder();
 
-        Direction.Plane.HORIZONTAL.getDirectionValues().forEach(dir -> builder.append(frameBottomPart.apply(dir)).append(frameSidePart.apply(dir)).append(frameTopPart.apply(dir)));
+        Direction.Plane.HORIZONTAL.forEach(dir -> builder.append(frameBottomPart.apply(dir)).append(frameSidePart.apply(dir)).append(frameTopPart.apply(dir)));
 
         return builder.build();
     }

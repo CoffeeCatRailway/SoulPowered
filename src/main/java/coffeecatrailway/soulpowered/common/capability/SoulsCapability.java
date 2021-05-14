@@ -89,8 +89,8 @@ public class SoulsCapability
             if (this.souls + amount <= 20 || force)
             {
                 this.souls += amount;
-                if (!this.owner.world.isRemote())
-                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), amount, false));
+                if (!this.owner.level.isClientSide())
+                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getId(), amount, false));
                 this.checkAmount(this.souls);
                 return true;
             }
@@ -104,8 +104,8 @@ public class SoulsCapability
             {
                 amount = Math.min(this.getSouls(), amount);
                 this.souls -= amount;
-                if (!this.owner.world.isRemote())
-                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getEntityId(), amount, true));
+                if (!this.owner.level.isClientSide())
+                    SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsChangeMessage(this.owner.getId(), amount, true));
                 this.checkAmount(this.souls);
                 return true;
             }
@@ -116,8 +116,8 @@ public class SoulsCapability
         public void checkAmount(int souls)
         {
             this.souls = Math.min(20, Math.max(0, souls));
-            if (!this.owner.world.isRemote())
-                SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsTotalMessage(this.owner.getEntityId(), souls));
+            if (!this.owner.level.isClientSide())
+                SoulMessageHandler.PLAY.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.owner), new SyncSoulsTotalMessage(this.owner.getId(), souls));
         }
     }
 

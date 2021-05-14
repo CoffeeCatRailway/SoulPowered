@@ -55,17 +55,17 @@ public class SoulHUDOverlayHandler
 
         this.playerSouls = SoulsCapability.get(player).orElse(SoulsCapability.EMPTY).getSouls();
 
-        int left = mc.getMainWindow().getScaledWidth() / 2 + 91;
-        int top = mc.getMainWindow().getScaledHeight() - this.soulsIconsOffset;
+        int left = mc.getWindow().getGuiScaledWidth() / 2 + 91;
+        int top = mc.getWindow().getGuiScaledHeight() - this.soulsIconsOffset;
 
-        mc.getTextureManager().bindTexture(ICONS_TEX);
+        mc.getTextureManager().getTexture(ICONS_TEX);
         RenderSystem.enableBlend();
 
         for (int i = 0; i < 10; i++)
         {
             int x = left - i * 8 - 9;
             int y = top;
-            if (player.getAir() < player.getMaxAir())
+            if (player.getAirSupply() < player.getMaxAirSupply())
                 y -= 9;
 
             AbstractGui.blit(matrixStack, x, y, 18, 0, 9, 9, 32, 32);
@@ -81,6 +81,6 @@ public class SoulHUDOverlayHandler
             }
         }
         RenderSystem.disableBlend();
-        mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+        mc.getTextureManager().getTexture(AbstractGui.GUI_ICONS_LOCATION);
     }
 }

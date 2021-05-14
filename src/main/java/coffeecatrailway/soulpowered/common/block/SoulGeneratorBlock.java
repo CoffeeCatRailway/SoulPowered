@@ -27,7 +27,7 @@ public class SoulGeneratorBlock extends AbstractMachineBlock
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader world)
+    public TileEntity newBlockEntity(IBlockReader world)
     {
         return new SoulGeneratorTileEntity();
     }
@@ -35,20 +35,20 @@ public class SoulGeneratorBlock extends AbstractMachineBlock
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
     {
-        if (state.get(LIT))
+        if (state.getValue(LIT))
         {
             double d0 = (double) pos.getX() + .5d;
             double d1 = pos.getY();
             double d2 = (double) pos.getZ() + .5d;
             if (rand.nextDouble() < .1d)
-                world.playSound(d0, d1, d2, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1f, 1f, false);
+                world.playLocalSound(d0, d1, d2, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1f, 1f, false);
 
-            Direction direction = state.get(FACING);
+            Direction direction = state.getValue(FACING);
             Direction.Axis direction$axis = direction.getAxis();
             double d4 = rand.nextDouble() * .6d - .3d;
-            double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * .52d : d4;
+            double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * .52d : d4;
             double d6 = rand.nextDouble() * 9d / 16d;
-            double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * .52d : d4;
+            double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * .52d : d4;
             world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0d, 0d, 0d);
         }

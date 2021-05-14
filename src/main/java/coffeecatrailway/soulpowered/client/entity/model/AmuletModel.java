@@ -14,32 +14,32 @@ public class AmuletModel extends EntityModel<LivingEntity>
 
     public AmuletModel()
     {
-        textureWidth = 32;
-        textureHeight = 16;
+        texWidth = 32;
+        texHeight = 16;
 
         frame = new ModelRenderer(this);
-        frame.setRotationPoint(0f, 7.9f, 0f);
-        frame.setTextureOffset(0, 0).addBox(-1.5f, -3f, -3f, 3f, 1f, 1f, 0f, false);
-        frame.setTextureOffset(0, 6).addBox(-1.5f, -7f, -3f, 3f, 1f, 1f, 0f, false);
-        frame.setTextureOffset(0, 2).addBox(-2.5f, -6f, -3f, 1f, 3f, 1f, 0f, false);
-        frame.setTextureOffset(4, 2).addBox(1.5f, -6f, -3f, 1f, 3f, 1f, 0f, false);
+        frame.setPos(0f, 7.9f, 0f);
+        frame.texOffs(0, 0).addBox(-1.5f, -3f, -3f, 3f, 1f, 1f, 0f, false);
+        frame.texOffs(0, 6).addBox(-1.5f, -7f, -3f, 3f, 1f, 1f, 0f, false);
+        frame.texOffs(0, 2).addBox(-2.5f, -6f, -3f, 1f, 3f, 1f, 0f, false);
+        frame.texOffs(4, 2).addBox(1.5f, -6f, -3f, 1f, 3f, 1f, 0f, false);
 
         gem = new ModelRenderer(this);
-        gem.setRotationPoint(0f, 7.9f, 0f);
-        gem.setTextureOffset(8, 2).addBox(-1.5f, -6f, -3.25f, 3f, 3f, 1f, 0f, false);
+        gem.setPos(0f, 7.9f, 0f);
+        gem.texOffs(8, 2).addBox(-1.5f, -6f, -3.25f, 3f, 3f, 1f, 0f, false);
 
         chain = new ModelRenderer(this);
-        chain.setRotationPoint(0f, 7.9f, 0f);
-        chain.setTextureOffset(0, 8).addBox(-4f, -8f, -2f, 8f, 3f, 4f, 0f, false);
+        chain.setPos(0f, 7.9f, 0f);
+        chain.texOffs(0, 8).addBox(-4f, -8f, -2f, 8f, 3f, 4f, 0f, false);
     }
 
     @Override
-    public void setRotationAngles(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void renderToBuffer(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
         frame.render(matrixStack, buffer, packedLight, packedOverlay);
         gem.render(matrixStack, buffer, packedLight, packedOverlay);
@@ -48,8 +48,8 @@ public class AmuletModel extends EntityModel<LivingEntity>
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
     {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }

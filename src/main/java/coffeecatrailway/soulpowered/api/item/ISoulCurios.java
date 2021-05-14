@@ -40,13 +40,13 @@ public interface ISoulCurios
     default boolean canUnequip(ItemStack stack, String identifier, LivingEntity livingEntity)
     {
         if (livingEntity instanceof PlayerEntity)
-            return this instanceof Item && !((PlayerEntity) livingEntity).getCooldownTracker().hasCooldown((Item) this);
+            return this instanceof Item && !((PlayerEntity) livingEntity).getCooldowns().isOnCooldown((Item) this);
         return false;
     }
 
     default void playRightClickEquipSound(ItemStack stack, LivingEntity livingEntity)
     {
-        livingEntity.world.playSound(null, new BlockPos(livingEntity.getPositionVec()), SoundEvents.ITEM_ARMOR_EQUIP_GOLD, SoundCategory.NEUTRAL, 1f, 1f);
+        livingEntity.level.playSound(null, new BlockPos(livingEntity.position()), SoundEvents.ARMOR_EQUIP_GOLD, SoundCategory.NEUTRAL, 1f, 1f);
     }
 
     default boolean canRightClickEquip(ItemStack stack)

@@ -17,7 +17,7 @@ public class SoulClientPlayHandler implements ISoulClientPlayHandler
     public void handleSyncSoulsTotalMessage(SyncSoulsTotalMessage message, NetworkEvent.Context ctx)
     {
         ctx.enqueueWork(() -> {
-            Entity entity = Minecraft.getInstance().world.getEntityByID(message.getOwner());
+            Entity entity = Minecraft.getInstance().level.getEntity(message.getOwner());
             if (entity != null)
                 SoulsCapability.ifPresent(entity, handler -> handler.setSouls(message.getSouls()));
         });
@@ -28,7 +28,7 @@ public class SoulClientPlayHandler implements ISoulClientPlayHandler
     public void handleSyncSoulsChangeMessage(SyncSoulsChangeMessage message, NetworkEvent.Context ctx)
     {
         ctx.enqueueWork(() -> {
-            Entity entity = Minecraft.getInstance().world.getEntityByID(message.getOwner());
+            Entity entity = Minecraft.getInstance().level.getEntity(message.getOwner());
             if (entity != null)
                 SoulsCapability.ifPresent(entity, handler -> {
                     if (message.isRemove())

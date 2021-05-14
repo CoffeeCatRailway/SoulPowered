@@ -33,30 +33,30 @@ public class SoulBoxScreen extends AbstractMachineScreen<SoulBoxContainer>
     {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+        this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderHoveredTooltip(MatrixStack matrixStack, int x, int y)
+    protected void renderTooltip(MatrixStack matrixStack, int x, int y)
     {
-        if (isPointInRegion(74, 17, 27, 51, x, y))
+        if (this.isHovering(74, 17, 27, 51, x, y))
         {
-            ITextComponent text = SoulData.Lang.energyWithMax(this.container.getEnergyStored(), this.container.getTileEntity().getMaxEnergyStored());
+            ITextComponent text = SoulData.Lang.energyWithMax(this.menu.getEnergyStored(), this.menu.getTileEntity().getMaxEnergyStored());
             renderTooltip(matrixStack, text, x, y);
         }
-        super.renderHoveredTooltip(matrixStack, x, y);
+        super.renderTooltip(matrixStack, x, y);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y)
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y)
     {
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
+        super.renderBg(matrixStack, partialTicks, x, y);
 
         if (this.minecraft == null) return;
-        int xPos = (this.width - this.xSize) / 2;
-        int yPos = (this.height - this.ySize) / 2;
+        int xPos = (this.width - this.getXSize()) / 2;
+        int yPos = (this.height - this.getYSize()) / 2;
 
         // Energy meter
-        EnergyUtils.renderWideEnergyBar(matrixStack, xPos + 74, yPos + 67, this.container.getEnergyStored(), this.container.getMaxEnergyStored());
+        EnergyUtils.renderWideEnergyBar(matrixStack, xPos + 74, yPos + 67, this.menu.getEnergyStored(), this.menu.getMaxEnergyStored());
     }
 }

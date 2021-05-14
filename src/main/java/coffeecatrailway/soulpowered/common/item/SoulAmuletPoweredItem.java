@@ -53,22 +53,22 @@ public class SoulAmuletPoweredItem extends SoulAmuletItem implements IEnergyItem
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items)
     {
-        super.fillItemGroup(group, items);
-        if (this.isInGroup(group))
+        super.fillItemCategory(group, items);
+        if (this.allowdedIn(group))
             this.addItemVarients(items);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
     {
-        super.addInformation(stack, world, tooltip, flag);
+        super.appendHoverText(stack, world, tooltip, flag);
         IEnergyItem.super.addInformation(stack, world, tooltip, flag);
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
+    public boolean isFoil(ItemStack stack)
     {
         return IEnergyItem.super.hasEnergy(stack, 0);
     }

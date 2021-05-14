@@ -44,25 +44,25 @@ public class CoalGeneratorTileEntity extends AbstractGeneratorTileEntity
     @Override
     protected boolean hasFuel()
     {
-        return isFuel(this.getStackInSlot(0));
+        return isFuel(this.getItem(0));
     }
 
     @Override
     protected void consumeFuel()
     {
-        ItemStack fuel = this.getStackInSlot(0);
+        ItemStack fuel = this.getItem(0);
         this.burnTime = ForgeHooks.getBurnTime(fuel);
         if (this.burnTime > 0)
         {
             this.totalBurnTime = this.burnTime;
 
             if (fuel.hasContainerItem())
-                this.setInventorySlotContents(0, fuel.getContainerItem());
+                this.setItem(0, fuel.getContainerItem());
             else if (!fuel.isEmpty())
             {
                 fuel.shrink(1);
                 if (fuel.isEmpty())
-                    this.setInventorySlotContents(0, fuel.getContainerItem());
+                    this.setItem(0, fuel.getContainerItem());
             }
         }
     }
@@ -80,13 +80,13 @@ public class CoalGeneratorTileEntity extends AbstractGeneratorTileEntity
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack stack, @Nullable Direction direction)
+    public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction)
     {
         return isFuel(stack);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction)
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction)
     {
         return !isFuel(stack);
     }

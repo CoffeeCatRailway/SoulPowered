@@ -32,33 +32,33 @@ public class PoweredSouliumHoeItem extends PoweredModifierToolItem
 
     public PoweredSouliumHoeItem(Properties properties)
     {
-        super(-3, 0f, SoulItemTier.POWERED_SOULIUM, HoeItem.EFFECTIVE_ON_BLOCKS, properties.maxStackSize(1).defaultMaxDamage(0), ToolType.HOE);
+        super(-3, 0f, SoulItemTier.POWERED_SOULIUM, HoeItem.DIGGABLES, properties.stacksTo(1).durability(0), ToolType.HOE);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", 0f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", this.getAttackDamage() / 2f, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", 0f, AttributeModifier.Operation.ADDITION));
         this.unpoweredAttributeModifiers = builder.build();
     }
 
     @Override
     protected ActionResultType modifyAtPosition(ItemUseContext context, BlockPos pos)
     {
-        World world = context.getWorld();
+        World world = context.getLevel();
         int hook = ForgeEventFactory.onHoeUse(context);
         if (hook != 0) return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-        if (context.getFace() != Direction.DOWN && world.isAirBlock(pos.up()))
+        if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(pos.above()))
         {
-            BlockState modifiedState = world.getBlockState(pos).getToolModifiedState(world, pos, context.getPlayer(), context.getItem(), net.minecraftforge.common.ToolType.HOE);
+            BlockState modifiedState = world.getBlockState(pos).getToolModifiedState(world, pos, context.getPlayer(), context.getItemInHand(), net.minecraftforge.common.ToolType.HOE);
             if (modifiedState != null)
             {
                 PlayerEntity playerentity = context.getPlayer();
-                world.playSound(playerentity, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                if (!world.isRemote)
+                world.playSound(playerentity, pos, SoundEvents.HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                if (!world.isClientSide())
                 {
-                    world.setBlockState(pos, modifiedState, 11);
-                    this.consumeEnergy(context.getItem(), true);
+                    world.setBlock(pos, modifiedState, 11);
+                    this.consumeEnergy(context.getItemInHand(), true);
                 }
 
-                return ActionResultType.func_233537_a_(world.isRemote);
+                return ActionResultType.sidedSuccess(world.isClientSide());
             }
         }
 
@@ -72,7 +72,7 @@ public class PoweredSouliumHoeItem extends PoweredModifierToolItem
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
+    public boolean isFoil(ItemStack stack)
     {
         return super.hasEnergy(stack, SoulPoweredMod.SERVER_CONFIG.poweredSouliumHoeEffectEnergyAmount.get());
     }

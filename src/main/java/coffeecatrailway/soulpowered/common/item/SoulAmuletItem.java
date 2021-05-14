@@ -40,12 +40,12 @@ public class SoulAmuletItem extends Item implements ISoulCurios
 
     public SoulAmuletItem(Properties properties, IItemTier tier, float range, float soulGatheringChance, ResourceLocation modelTexture)
     {
-        this(properties, tier.getMaxUses(), range, soulGatheringChance, modelTexture);
+        this(properties, tier.getUses(), range, soulGatheringChance, modelTexture);
     }
 
     public SoulAmuletItem(Properties properties, int maxUses, float range, float soulGatheringChance, ResourceLocation modelTexture)
     {
-        super(properties.defaultMaxDamage(maxUses));
+        super(properties.durability(maxUses));
         this.range = range;
         this.soulGatheringChance = soulGatheringChance;
         this.modelTexture = modelTexture;
@@ -71,7 +71,7 @@ public class SoulAmuletItem extends Item implements ISoulCurios
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> info, ITooltipFlag flag)
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info, ITooltipFlag flag)
     {
         info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + "." + stack.getItem().getRegistryName().getPath() + ".description"));
 
@@ -92,9 +92,9 @@ public class SoulAmuletItem extends Item implements ISoulCurios
         ICurio.RenderHelper.translateIfSneaking(matrixStack, livingEntity);
         ICurio.RenderHelper.rotateIfSneaking(matrixStack, livingEntity);
 
-        IVertexBuilder vertexBuilder = ItemRenderer.getBuffer(renderTypeBuffer, MODEL.getRenderType(this.modelTexture), false, stack.hasEffect());
+        IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, MODEL.renderType(this.modelTexture), false, stack.hasFoil());
         matrixStack.scale(1.01f, 1.01f, 1.01f);
-        MODEL.render(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
-        MODEL.setRotationAngles(livingEntity, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch);
+        MODEL.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        MODEL.setupAnim(livingEntity, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch);
     }
 }

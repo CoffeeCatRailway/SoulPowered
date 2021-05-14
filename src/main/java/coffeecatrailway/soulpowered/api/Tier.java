@@ -1,6 +1,5 @@
 package coffeecatrailway.soulpowered.api;
 
-import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -8,6 +7,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraftforge.common.util.NonNullFunction;
 
 import java.util.function.ToIntFunction;
 
@@ -18,11 +18,11 @@ import java.util.function.ToIntFunction;
 public enum Tier
 {
     SIMPLE("simple", 2f, 1.5f, .5f, .5f, .5f,
-            prop -> AbstractBlock.Properties.from(Blocks.OAK_PLANKS).setLightLevel(getLightValueLit(6)), Material.WOOD),
+            prop -> AbstractBlock.Properties.copy(Blocks.OAK_PLANKS).lightLevel(getLightValueLit(6)), Material.WOOD),
     NORMAL("normal", 1f, 1f, 1f, 1f, 1f,
-            prop -> AbstractBlock.Properties.from(Blocks.STONE).setLightLevel(getLightValueLit(10)), Material.ROCK),
+            prop -> AbstractBlock.Properties.copy(Blocks.STONE).lightLevel(getLightValueLit(10)), Material.STONE),
     SOULIUM("soulium", .75f, .75f, 1.5f, 1.5f, 1.5f,
-            prop -> prop.setRequiresTool().hardnessAndResistance(3.5f).setLightLevel(getLightValueLit(13)).sound(SoundType.METAL), Material.IRON, MaterialColor.LIGHT_GRAY);
+            prop -> prop.requiresCorrectToolForDrops().strength(3.5f).lightLevel(getLightValueLit(13)).sound(SoundType.METAL), Material.METAL, MaterialColor.COLOR_LIGHT_GRAY);
 
     String id;
 
@@ -109,6 +109,6 @@ public enum Tier
 
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue)
     {
-        return state -> state.hasProperty(BlockStateProperties.LIT) && state.get(BlockStateProperties.LIT) ? lightValue : 0;
+        return state -> state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 }

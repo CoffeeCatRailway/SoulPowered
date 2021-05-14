@@ -26,33 +26,33 @@ public abstract class AbstractMachineBlock extends AbstractFurnaceBlock
     }
 
     @Override
-    protected void interactWith(World world, BlockPos pos, PlayerEntity player)
+    protected void openContainer(World world, BlockPos pos, PlayerEntity player)
     {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
         if (tile instanceof INamedContainerProvider)
-            player.openContainer((INamedContainerProvider) tile);
+            player.openMenu((INamedContainerProvider) tile);
     }
 
     @Override
-    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (state.getBlock() != newState.getBlock())
         {
-            TileEntity tile = world.getTileEntity(pos);
+            TileEntity tile = world.getBlockEntity(pos);
             if (tile instanceof IInventory)
             {
-                InventoryHelper.dropInventoryItems(world, pos, (IInventory) tile);
-                world.updateComparatorOutputLevel(pos, this);
+                InventoryHelper.dropContents(world, pos, (IInventory) tile);
+                world.updateNeighbourForOutputSignal(pos, this);
             }
-            super.onReplaced(state, world, pos, newState, isMoving);
+            super.onRemove(state, world, pos, newState, isMoving);
         }
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        TileEntity tile = world.getTileEntity(pos);
-        if (stack.hasDisplayName())
+        TileEntity tile = world.getBlockEntity(pos);
+        if (stack.hasCustomHoverName())
             if (tile instanceof AbstractMachineTileEntity)
                 ((AbstractMachineTileEntity) tile).setCustomName(stack.getDisplayName());
     }

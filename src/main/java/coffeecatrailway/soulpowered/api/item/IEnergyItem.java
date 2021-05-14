@@ -89,7 +89,7 @@ public interface IEnergyItem extends IItemProvider, IForgeItem
     @Override
     default int getRGBDurabilityForDisplay(ItemStack stack)
     {
-        return MathHelper.hsvToRGB((1 + this.getChargeRatio(stack)) / 3f, 1f, 1f);
+        return MathHelper.hsvToRgb((1 + this.getChargeRatio(stack)) / 3f, 1f, 1f);
     }
 
     default float getChargeRatio(ItemStack stack)

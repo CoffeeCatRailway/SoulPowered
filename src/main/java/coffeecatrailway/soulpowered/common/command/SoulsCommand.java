@@ -26,7 +26,7 @@ public class SoulsCommand
 {
     public static void register(CommandDispatcher<CommandSource> dispatcher)
     {
-        LiteralArgumentBuilder<CommandSource> builder = Commands.literal("souls").requires(source -> source.hasPermissionLevel(4));
+        LiteralArgumentBuilder<CommandSource> builder = Commands.literal("souls").requires(source -> source.hasPermission(4));
 
         builder.then(Commands.literal("modify").then(Commands.literal("set").then(Commands.argument("souls", IntegerArgumentType.integer(0))
                 .executes(source -> setValue(source, Collections.singleton(source.getSource().getEntity()), IntegerArgumentType.getInteger(source, "souls")))
@@ -52,7 +52,7 @@ public class SoulsCommand
         if (entity instanceof LivingEntity)
         {
             entity.getCapability(SoulsCapability.SOULS_CAP).ifPresent(handler ->
-                    source.getSource().sendFeedback(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.get", entity.getDisplayName(), handler.getSouls()), true));
+                    source.getSource().sendSuccess(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.get", entity.getDisplayName(), handler.getSouls()), true));
             return 1;
         }
         return 0;
@@ -70,7 +70,7 @@ public class SoulsCommand
                 if (cap.isPresent())
                 {
                     cap.orElseThrow(NullPointerException::new).setSouls(souls);
-                    source.getSource().sendFeedback(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.modify.set", entity.getDisplayName(), souls), true);
+                    source.getSource().sendSuccess(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.modify.set", entity.getDisplayName(), souls), true);
                     i++;
                 }
             }
@@ -93,11 +93,11 @@ public class SoulsCommand
                     if (remove)
                     {
                         cap.orElseThrow(NullPointerException::new).removeSouls(souls, true);
-                        source.getSource().sendFeedback(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.modify.remove", entity.getDisplayName(), souls), true);
+                        source.getSource().sendSuccess(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.modify.remove", entity.getDisplayName(), souls), true);
                     } else
                     {
                         cap.orElseThrow(NullPointerException::new).addSouls(souls, true);
-                        source.getSource().sendFeedback(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.modify.add", entity.getDisplayName(), souls), true);
+                        source.getSource().sendSuccess(new TranslationTextComponent("commands." + SoulPoweredMod.MOD_ID + ".souls.modify.add", entity.getDisplayName(), souls), true);
                     }
                     i++;
                 }

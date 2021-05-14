@@ -55,13 +55,13 @@ public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloyS
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int index)
+    public ItemStack quickMoveStack(PlayerEntity player, int index)
     {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack())
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem())
         {
-            ItemStack itemstack1 = slot.getStack();
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             final int inventorySize = 4;
@@ -72,21 +72,21 @@ public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloyS
             {
                 if (this.hasRecipe(itemstack1))
                 {
-                    if (!this.mergeItemStack(itemstack1, 0, 1, false))
+                    if (!this.moveItemStackTo(itemstack1, 0, 1, false))
                         return ItemStack.EMPTY;
                 } else if (index < playerInventoryEnd)
                 {
-                    if (!this.mergeItemStack(itemstack1, playerInventoryEnd, playerHotbarEnd, false))
+                    if (!this.moveItemStackTo(itemstack1, playerInventoryEnd, playerHotbarEnd, false))
                         return ItemStack.EMPTY;
-                } else if (index < playerHotbarEnd && !this.mergeItemStack(itemstack1, inventorySize, playerInventoryEnd, false))
+                } else if (index < playerHotbarEnd && !this.moveItemStackTo(itemstack1, inventorySize, playerInventoryEnd, false))
                     return ItemStack.EMPTY;
-            } else if (!this.mergeItemStack(itemstack1, inventorySize, playerHotbarEnd, false))
+            } else if (!this.moveItemStackTo(itemstack1, inventorySize, playerHotbarEnd, false))
                 return ItemStack.EMPTY;
 
             if (itemstack1.isEmpty())
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             else
-                slot.onSlotChanged();
+                slot.setChanged();
 
             if (itemstack1.getCount() == itemstack.getCount())
                 return ItemStack.EMPTY;
