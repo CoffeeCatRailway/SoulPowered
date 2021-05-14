@@ -1,7 +1,0 @@
-{
-  "parent": "soulpowered:block/soul_box_template",
-  "textures": {
-    "side": "soulpowered:block/charred_simple_soul_box_side_on",
-    "top": "soulpowered:block/charred_simple_soul_box_top"
-  }
-}

@@ -128,17 +128,11 @@ public class SoulData
         public static final ITag.INamedTag<Block> STORAGE_BLOCKS_COPPER = BlockTags.createOptional(new ResourceLocation("forge", "storage_blocks/copper"));
         public static final ITag.INamedTag<Block> ORES_COPPER = BlockTags.createOptional(new ResourceLocation("forge", "ores/copper"));
 
-        public static final ITag.INamedTag<Block> HEAT_BLOCKS_BOTTOM = BlockTags.createOptional(SoulPoweredMod.getLocation("heat_blocks_bottom"));
-        public static final ITag.INamedTag<Block> HEAT_BLOCKS = BlockTags.createOptional(SoulPoweredMod.getLocation("heat_blocks"));
-
         @Override
         public void accept(RegistrateTagsProvider<Block> provider)
         {
             provider.getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addTag(STORAGE_BLOCKS_COPPER);
             provider.getOrCreateBuilder(Tags.Blocks.ORES).addTag(ORES_COPPER);
-
-            provider.getOrCreateBuilder(HEAT_BLOCKS_BOTTOM).addTag(BlockTags.CAMPFIRES);
-            provider.getOrCreateBuilder(HEAT_BLOCKS).addTag(BlockTags.FIRE).add(Blocks.WALL_TORCH, Blocks.SOUL_WALL_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.MAGMA_BLOCK, Blocks.TORCH, Blocks.SOUL_TORCH, Blocks.REDSTONE_TORCH);
         }
     }
 

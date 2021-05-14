@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "soulpowered:simple_coal_generator"
-  },
-  "result": "soulpowered:charred_simple_coal_generator",
-  "experience": 0.7,
-  "cookingtime": 100
-}
