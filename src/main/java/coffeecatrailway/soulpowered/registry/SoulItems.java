@@ -85,12 +85,7 @@ public class SoulItems
             .recipe((ctx, provider) -> provider.singleItem(DataIngredient.items(SoulBlocks.SOULIUM_BLOCK.get()), ctx::getEntry, 1, 9)).register();
 
     public static final RegistryEntry<Item> COPPER_INGOT = REGISTRATE.item("copper_ingot", Item::new).defaultLang().defaultModel()
-            .tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS, SoulData.TagItems.INGOTS_COPPER)
-            .recipe((ctx, provider) -> {
-                provider.singleItem(DataIngredient.items(SoulBlocks.COPPER_BLOCK.get()), ctx::getEntry, 1, 9);
-                provider.smelting(DataIngredient.items(SoulBlocks.COPPER_ORE), ctx::getEntry, .7f, 200);
-                provider.blasting(DataIngredient.items(SoulBlocks.COPPER_ORE), ctx::getEntry, .7f, 100);
-            }).register();
+            .tag(Tags.Items.INGOTS, ItemTags.BEACON_PAYMENT_ITEMS, SoulData.TagItems.INGOTS_COPPER).register();
 
     // Weapons & Tools
     public static final RegistryEntry<SwordItem> SOULIUM_SWORD = REGISTRATE.item("soulium_sword", prop -> new SwordItem(SoulItemTier.SOULIUM, 3, -2.4f, prop))

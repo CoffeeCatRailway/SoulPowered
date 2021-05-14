@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "soulpowered:soulium_block",
-    "soulpowered:copper_block"
+    "soulpowered:soulium_block"
   ]
 }

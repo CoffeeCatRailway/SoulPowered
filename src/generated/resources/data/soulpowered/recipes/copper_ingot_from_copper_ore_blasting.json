@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "soulpowered:copper_ore"
-  },
-  "result": "soulpowered:copper_ingot",
-  "experience": 0.7,
-  "cookingtime": 100
-}

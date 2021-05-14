@@ -26,7 +26,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.FlatChunkGenerator;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
@@ -183,10 +182,6 @@ public class CommonEvents
     public static void onBiomeLoading(BiomeLoadingEvent event)
     {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
-        if (SoulPoweredMod.COMMON_CONFIG.oreGeneration.get())
-        {
-            generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, SoulFeatures.COPPER_ORE.get());
-        }
         if (SoulPoweredMod.COMMON_CONFIG.soulCastleGeneration.get())
         {
             if (event.getCategory() == Biome.Category.NETHER)
