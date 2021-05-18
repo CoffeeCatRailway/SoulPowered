@@ -32,7 +32,7 @@ public class SoulEntities
     {
         RegistryObject<EntityType<E>> object = ENTITIES.register(id, () -> factory.apply(EntityType.Builder.<E>of(entityFactory::apply, classification)).build(SoulMod.getLocation(id).toString()));
         SoulLanguage.ENTITIES.put(object, SoulLanguage.capitalize(id));
-        SoulItems.registerIdAsName(id + "_spawn_egg", prop -> new SpawnEggItemBase<>(object, 0xffffff, 0x7a3205, true, prop));
+//        SoulItems.registerIdAsName(id + "_spawn_egg", prop -> new SpawnEggItemBase<>(object, 0xffffff, 0x7a3205, true, prop));
         return object;
     }
 
