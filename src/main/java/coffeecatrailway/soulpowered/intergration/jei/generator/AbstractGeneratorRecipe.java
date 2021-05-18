@@ -1,7 +1,7 @@
 package coffeecatrailway.soulpowered.intergration.jei.generator;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.Tier;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import com.google.common.base.Preconditions;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -30,7 +30,7 @@ public class AbstractGeneratorRecipe
 
         this.inputs = new ArrayList<>(inputs);
         this.rfPerTick = rfPerTick * burnTime;
-        this.burnTime = SoulData.Lang.itemBurnTime(burnTime);
+        this.burnTime = SoulLanguage.itemBurnTime(burnTime);
         this.flame = guiHelper.drawableBuilder(AbstractGeneratorRecipeCategory.TEXTURE, 92, 0, 14, 14).buildAnimated(200, IDrawableAnimated.StartDirection.TOP, true);
     }
 
@@ -46,7 +46,7 @@ public class AbstractGeneratorRecipe
 
     public ITextComponent getRfPerTickLang(Tier tier)
     {
-        return SoulData.Lang.energyPerTick(this.getRfPerTick(tier));
+        return SoulLanguage.energyPerTick(this.getRfPerTick(tier));
     }
 
     public ITextComponent getBurnTime()

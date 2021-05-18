@@ -1,13 +1,12 @@
 package coffeecatrailway.soulpowered.common.tileentity;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.item.ISoulFuel;
 import coffeecatrailway.soulpowered.common.inventory.container.SoulGeneratorContainer;
+import coffeecatrailway.soulpowered.data.gen.SoulItemTags;
 import coffeecatrailway.soulpowered.registry.SoulTileEntities;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 
 import javax.annotation.Nullable;
@@ -25,17 +24,12 @@ public class SoulGeneratorTileEntity extends AbstractGeneratorTileEntity
 
     public SoulGeneratorTileEntity()
     {
-        this(SoulTileEntities.SOUL_GENERATOR.get());
-    }
-
-    public SoulGeneratorTileEntity(TileEntityType<? extends SoulGeneratorTileEntity> type)
-    {
-        super(type, 1, MAX_ENERGY, 0, MAX_SEND);
+        super(SoulTileEntities.SOUL_GENERATOR.get(), 1, MAX_ENERGY, 0, MAX_SEND);
     }
 
     public static boolean isFuel(ItemStack stack)
     {
-        return stack.getItem().is(SoulData.TagItems.SOUL_GENERATOR_FUEL) && stack.getItem() instanceof ISoulFuel;
+        return stack.getItem().is(SoulItemTags.SOUL_GENERATOR_FUEL) && stack.getItem() instanceof ISoulFuel;
     }
 
     @Override

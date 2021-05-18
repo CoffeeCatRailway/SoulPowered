@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ici",
-    "srs",
-    "ici"
+    "oco",
+    "mrm",
+    "oco"
   ],
   "key": {
-    "i": {
-      "tag": "forge:ingots/iron"
-    },
     "c": {
       "tag": "forge:ingots/copper"
     },
     "r": {
       "tag": "forge:dusts/redstone"
     },
-    "s": {
+    "m": {
+      "tag": "forge:ingots/iron"
+    },
+    "o": {
       "tag": "forge:stone"
     }
   },

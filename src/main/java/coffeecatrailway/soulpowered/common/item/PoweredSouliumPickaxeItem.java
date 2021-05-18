@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.item.PoweredToolItem;
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.block.BlockState;
@@ -57,13 +57,13 @@ public class PoweredSouliumPickaxeItem extends PoweredToolItem
     @Override
     public ForgeConfigSpec.IntValue getEnergyCost()
     {
-        return SoulPoweredMod.SERVER_CONFIG.poweredSouliumPickaxeEnergyCost;
+        return SoulMod.SERVER_CONFIG.poweredSouliumPickaxeEnergyCost;
     }
 
     @Override
     public boolean isFoil(ItemStack stack)
     {
-        return super.hasEnergy(stack, SoulPoweredMod.SERVER_CONFIG.poweredSouliumPickaxeEffectEnergyAmount.get());
+        return super.hasEnergy(stack, SoulMod.SERVER_CONFIG.poweredSouliumPickaxeEffectEnergyAmount.get());
     }
 
     @Override

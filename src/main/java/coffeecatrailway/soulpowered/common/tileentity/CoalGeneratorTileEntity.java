@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -27,12 +26,7 @@ public class CoalGeneratorTileEntity extends AbstractGeneratorTileEntity
 
     public CoalGeneratorTileEntity(Tier tier)
     {
-        this(SoulTileEntities.COAL_GENERATOR.get(tier).get(), tier);
-    }
-
-    public CoalGeneratorTileEntity(TileEntityType<? extends CoalGeneratorTileEntity> type, Tier tier)
-    {
-        super(type, 1, tier.calculateEnergyCapacity(MAX_ENERGY), 0, tier.calculateEnergyTransfer(MAX_SEND));
+        super(SoulTileEntities.COAL_GENERATOR.get(tier).get(), 1, tier.calculateEnergyCapacity(MAX_ENERGY), 0, tier.calculateEnergyTransfer(MAX_SEND));
         this.tier = tier;
     }
 

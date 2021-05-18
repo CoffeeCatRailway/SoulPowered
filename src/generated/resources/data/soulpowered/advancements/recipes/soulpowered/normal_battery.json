@@ -6,7 +6,17 @@
     ]
   },
   "criteria": {
-    "has_iron_ingot": {
+    "has_corner_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:stone"
+          }
+        ]
+      }
+    },
+    "has_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -22,16 +32,6 @@
         "items": [
           {
             "tag": "forge:ingots/copper"
-          }
-        ]
-      }
-    },
-    "has_stone": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:stone"
           }
         ]
       }
@@ -55,9 +55,9 @@
   },
   "requirements": [
     [
-      "has_iron_ingot",
+      "has_corner_material",
+      "has_material",
       "has_copper_ingot",
-      "has_stone",
       "has_redstone",
       "has_the_recipe"
     ]

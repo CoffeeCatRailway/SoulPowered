@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    "XXX",
-    "XXX"
+    "iii",
+    "iii",
+    "iii"
   ],
   "key": {
-    "X": {
+    "i": {
       "item": "soulpowered:soulium_ingot"
     }
   },

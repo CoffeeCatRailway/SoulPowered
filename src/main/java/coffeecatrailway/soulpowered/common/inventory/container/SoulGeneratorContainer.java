@@ -16,9 +16,9 @@ import net.minecraft.util.IntArray;
  */
 public class SoulGeneratorContainer extends AbstractGeneratorContainer<SoulGeneratorTileEntity>
 {
-    public SoulGeneratorContainer(ContainerType<? extends SoulGeneratorContainer> type, int id, PlayerInventory inventory)
+    public SoulGeneratorContainer(int id, PlayerInventory inventory)
     {
-        this(type, id, inventory, new SoulGeneratorTileEntity(), new IntArray(AbstractGeneratorTileEntity.FIELDS_COUNT));
+        this(SoulContainers.SOUL_GENERATOR.get(), id, inventory, new SoulGeneratorTileEntity(), new IntArray(AbstractGeneratorTileEntity.FIELDS_COUNT));
     }
 
     public SoulGeneratorContainer(int id, PlayerInventory inventory, SoulGeneratorTileEntity tile, IIntArray fields)

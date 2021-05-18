@@ -1,10 +1,20 @@
 {
-  "type": "minecraft:smithing",
-  "base": {
-    "item": "soulpowered:soulium_soul_amulet"
-  },
-  "addition": {
-    "item": "soulpowered:soulium_battery"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " t ",
+    "i i",
+    " s "
+  ],
+  "key": {
+    "i": {
+      "item": "soulpowered:soulium_ingot"
+    },
+    "s": {
+      "item": "soulpowered:soul_bottle"
+    },
+    "t": {
+      "item": "soulpowered:soulium_battery"
+    }
   },
   "result": {
     "item": "soulpowered:powered_soulium_soul_amulet"

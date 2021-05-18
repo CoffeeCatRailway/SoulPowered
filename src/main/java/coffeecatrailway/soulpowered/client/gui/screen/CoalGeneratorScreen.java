@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client.gui.screen;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.common.inventory.container.CoalGeneratorContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -12,7 +12,7 @@ import net.minecraft.util.text.ITextComponent;
  */
 public class CoalGeneratorScreen extends AbstractGeneratorScreen<CoalGeneratorContainer>
 {
-    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/gui/container/coal_generator.png");
+    public static final ResourceLocation TEXTURE = SoulMod.getLocation("textures/gui/container/coal_generator.png");
 
     public CoalGeneratorScreen(CoalGeneratorContainer container, PlayerInventory inv, ITextComponent title)
     {

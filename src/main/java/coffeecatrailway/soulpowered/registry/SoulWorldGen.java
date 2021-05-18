@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.registry;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.common.world.gen.structure.SoulCastlePieces;
 import coffeecatrailway.soulpowered.common.world.gen.structure.SoulCastleStructure;
 import com.google.common.collect.ImmutableList;
@@ -25,20 +25,20 @@ import org.apache.logging.log4j.Logger;
  */
 public class SoulWorldGen
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("World-Generation-Registry");
-    private static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, SoulPoweredMod.MOD_ID);
+    private static final Logger LOGGER = SoulMod.getLogger("World-Generation-Registry");
+    private static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, SoulMod.MOD_ID);
 
-    public static final RegistryObject<SoulCastleStructure<NoFeatureConfig>> SOUL_CASTLE = registerStructure("soul_castle", new SoulCastleStructure<>(NoFeatureConfig.field_236558_a_),
-            new StructureSeparationSettings(SoulPoweredMod.COMMON_CONFIG.soulCastleChunksMax.get(), SoulPoweredMod.COMMON_CONFIG.soulCastleChunksMin.get(), 12230000), false, GenerationStage.Decoration.UNDERGROUND_STRUCTURES);
+    public static final RegistryObject<SoulCastleStructure<NoFeatureConfig>> SOUL_CASTLE = registerStructure("soul_castle", new SoulCastleStructure<>(NoFeatureConfig.CODEC),
+            new StructureSeparationSettings(SoulMod.COMMON_CONFIG.soulCastleChunksMax.get(), SoulMod.COMMON_CONFIG.soulCastleChunksMin.get(), 12230000), false, GenerationStage.Decoration.UNDERGROUND_STRUCTURES);
 
     private static <T extends Structure<NoFeatureConfig>> RegistryObject<T> registerStructure(String id, T structure, StructureSeparationSettings separationSettings, boolean transformSurroundingLand, GenerationStage.Decoration decoration)
     {
-        Structure.NAME_STRUCTURE_BIMAP.put(SoulPoweredMod.getLocation(id).toString(), structure);
-        Structure.STRUCTURE_DECORATION_STAGE_MAP.put(structure, decoration);
-        DimensionStructuresSettings.field_236191_b_ = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder().putAll(DimensionStructuresSettings.field_236191_b_)
+        Structure.STRUCTURES_REGISTRY.put(SoulMod.getLocation(id).toString(), structure);
+        Structure.STEP.put(structure, decoration);
+        DimensionStructuresSettings.DEFAULTS = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder().putAll(DimensionStructuresSettings.DEFAULTS)
                 .put(structure, separationSettings).build();
         if (transformSurroundingLand)
-            Structure.field_236384_t_ = ImmutableList.<Structure<?>>builder().addAll(Structure.field_236384_t_).add(structure).build();
+            Structure.NOISE_AFFECTING_FEATURES = ImmutableList.<Structure<?>>builder().addAll(Structure.NOISE_AFFECTING_FEATURES).add(structure).build();
         return STRUCTURES.register(id, () -> structure);
     }
 
@@ -48,8 +48,8 @@ public class SoulWorldGen
 
         public static void loadStructureTypes()
         {
-            Registry.register(Registry.STRUCTURE_PIECE, SoulPoweredMod.getLocation("soul_castle"), SOUL_CASTLE);
-            WorldGenRegistries.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, SoulPoweredMod.getLocation("soul_castle"), SoulWorldGen.SOUL_CASTLE.get().withConfiguration(NoFeatureConfig.field_236559_b_));
+            Registry.register(Registry.STRUCTURE_PIECE, SoulMod.getLocation("soul_castle"), SOUL_CASTLE);
+            WorldGenRegistries.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, SoulMod.getLocation("soul_castle"), SoulWorldGen.SOUL_CASTLE.get().configured(NoFeatureConfig.INSTANCE));
             LOGGER.debug("Loaded structure types");
         }
     }

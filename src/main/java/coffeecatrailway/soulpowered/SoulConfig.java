@@ -9,7 +9,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
  */
 public class SoulConfig
 {
-    private static final String CONFIG = "config." + SoulPoweredMod.MOD_ID + ".";
+    private static final String CONFIG = "config." + SoulMod.MOD_ID + ".";
 
     public static class Client
     {

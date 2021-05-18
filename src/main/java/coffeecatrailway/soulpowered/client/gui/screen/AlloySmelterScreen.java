@@ -1,9 +1,9 @@
 package coffeecatrailway.soulpowered.client.gui.screen;
 
-import coffeecatrailway.soulpowered.SoulData;
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.common.inventory.container.AlloySmelterContainer;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +15,7 @@ import net.minecraft.util.text.ITextComponent;
  */
 public class AlloySmelterScreen extends AbstractMachineScreen<AlloySmelterContainer>
 {
-    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/gui/container/alloy_smelter.png");
+    public static final ResourceLocation TEXTURE = SoulMod.getLocation("textures/gui/container/alloy_smelter.png");
 
     public AlloySmelterScreen(AlloySmelterContainer container, PlayerInventory inv, ITextComponent title)
     {
@@ -41,7 +41,7 @@ public class AlloySmelterScreen extends AbstractMachineScreen<AlloySmelterContai
     {
         if (this.isHovering(153, 17, 13, 51, x, y))
         {
-            ITextComponent text = SoulData.Lang.energyWithMax(this.menu.getEnergyStored(), this.menu.getTileEntity().getMaxEnergyStored());
+            ITextComponent text = SoulLanguage.energyWithMax(this.menu.getEnergyStored(), this.menu.getBlockEntity().getMaxEnergyStored());
             renderTooltip(matrixStack, text, x, y);
         }
         super.renderTooltip(matrixStack, x, y);

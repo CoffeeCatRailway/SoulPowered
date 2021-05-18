@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.intergration.jei.generator;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public abstract class AbstractGeneratorRecipeCategory<R extends AbstractGeneratorRecipe> implements IRecipeCategory<R>
 {
-    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/gui/jei_generator.png");
+    public static final ResourceLocation TEXTURE = SoulMod.getLocation("textures/gui/jei_generator.png");
 
     private final IDrawableStatic background;
     private final IDrawable icon;
@@ -35,7 +35,7 @@ public abstract class AbstractGeneratorRecipeCategory<R extends AbstractGenerato
     {
         this.background = guiHelper.createDrawable(AbstractGeneratorRecipeCategory.TEXTURE, 0, 0, 92, 56); // TODO: Fix background not rendering
         this.icon = guiHelper.createDrawableIngredient(icon);
-        this.localizedName = I18n.format(unlocalizedName);
+        this.localizedName = I18n.get(unlocalizedName);
         this.maxEnergy = maxEnergy;
     }
 
@@ -64,7 +64,7 @@ public abstract class AbstractGeneratorRecipeCategory<R extends AbstractGenerato
     {
         IDrawableAnimated flame = recipe.getFlame();
         flame.draw(matrixStack, 3, 37);
-        Minecraft.getInstance().fontRenderer.func_243248_b(matrixStack, recipe.getBurnTime(), 24f, 13f, -8355712);
+        Minecraft.getInstance().font.draw(matrixStack, recipe.getBurnTime(), 24f, 13f, -8355712);
 
         EnergyUtils.renderThinEnergyBar(matrixStack, 76, 52, recipe.getRfPerTick(this.getTier()), this.maxEnergy);
     }

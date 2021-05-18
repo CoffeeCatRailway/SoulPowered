@@ -6,17 +6,27 @@
     ]
   },
   "criteria": {
-    "has_soulium_soul_amulet": {
+    "has_soul_bottle": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:soulium_soul_amulet"
+            "item": "soulpowered:soul_bottle"
           }
         ]
       }
     },
-    "has_battery": {
+    "has_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "soulpowered:soulium_ingot"
+          }
+        ]
+      }
+    },
+    "has_top": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -35,8 +45,9 @@
   },
   "requirements": [
     [
-      "has_soulium_soul_amulet",
-      "has_battery",
+      "has_soul_bottle",
+      "has_ingot",
+      "has_top",
       "has_the_recipe"
     ]
   ]

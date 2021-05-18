@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.item.ISoulCurios;
 import coffeecatrailway.soulpowered.client.entity.model.AmuletModel;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
@@ -73,11 +73,11 @@ public class SoulAmuletItem extends Item implements ISoulCurios
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> info, ITooltipFlag flag)
     {
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + "." + stack.getItem().getRegistryName().getPath() + ".description"));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + "." + stack.getItem().getRegistryName().getPath() + ".description"));
 
         CompoundNBT nbt = stack.getOrCreateTag();
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".curio.range", nbt.getFloat("Range")));
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_amulet.soul_gathering_chance", (int) (nbt.getFloat("SoulGatheringChance") * 100)));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + ".curio.range", nbt.getFloat("Range")));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + ".soul_amulet.soul_gathering_chance", (int) (nbt.getFloat("SoulGatheringChance") * 100)));
     }
 
     @Override

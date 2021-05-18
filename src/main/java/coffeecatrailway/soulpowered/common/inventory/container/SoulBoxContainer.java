@@ -10,11 +10,14 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -24,9 +27,9 @@ import javax.annotation.Nullable;
  */
 public class SoulBoxContainer extends AbstractEnergyStorageContainer<SoulBoxTileEntity>
 {
-    public SoulBoxContainer(ContainerType<? extends SoulBoxContainer> type, int id, PlayerInventory playerInventory, Tier tier)
+    public SoulBoxContainer(int id, PlayerInventory playerInventory, Tier tier)
     {
-        this(type, id, playerInventory, new SoulBoxTileEntity(tier), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));
+        this(SoulContainers.SOUL_BOX.get(tier).get(), id, playerInventory, new SoulBoxTileEntity(tier), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));
     }
 
     public SoulBoxContainer(int id, PlayerInventory playerInventory, SoulBoxTileEntity tileEntity, IIntArray fields, Tier tier)
@@ -40,20 +43,20 @@ public class SoulBoxContainer extends AbstractEnergyStorageContainer<SoulBoxTile
 
         this.addSlot(new Slot(this.tileEntity, 0, 44, 34)
         {
-            @Nullable
+            @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon()
             {
-                return Pair.of(SoulPoweredAtlases.EMPTY_SLOT_MINUS_MATERIAL.atlasLocation(), SoulPoweredAtlases.EMPTY_SLOT_MINUS_MATERIAL.atlasLocation());
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, SoulPoweredAtlases.EMPTY_SLOT_MINUS);
             }
         });
         this.addSlot(new Slot(this.tileEntity, 1, 116, 34)
         {
-            @Nullable
+            @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon()
             {
-                return Pair.of(SoulPoweredAtlases.EMPTY_SLOT_PLUS_MATERIAL.atlasLocation(), SoulPoweredAtlases.EMPTY_SLOT_PLUS_MATERIAL.atlasLocation());
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, SoulPoweredAtlases.EMPTY_SLOT_PLUS);
             }
         });
 

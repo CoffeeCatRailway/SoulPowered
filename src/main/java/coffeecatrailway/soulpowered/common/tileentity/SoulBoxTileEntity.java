@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -34,12 +33,7 @@ public class SoulBoxTileEntity extends AbstractMachineTileEntity
 
     public SoulBoxTileEntity(Tier tier)
     {
-        this(SoulTileEntities.SOUL_BOX.get(tier).get(), tier);
-    }
-
-    public SoulBoxTileEntity(TileEntityType<? extends SoulBoxTileEntity> type, Tier tier)
-    {
-        super(type, INVENTORY_SIZE, (int) tier.calculateEnergyCapacity(MAX_ENERGY), MAX_TRANSFER.apply(tier), MAX_TRANSFER.apply(tier));
+        super(SoulTileEntities.SOUL_BOX.get(tier).get(), INVENTORY_SIZE, tier.calculateEnergyCapacity(MAX_ENERGY), MAX_TRANSFER.apply(tier), MAX_TRANSFER.apply(tier));
         this.tier = tier;
     }
 

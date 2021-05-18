@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client.entity;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.common.entity.SoulShieldEntity;
 import coffeecatrailway.soulpowered.common.item.SoulShieldItem;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,17 +45,14 @@ import java.util.Set;
 @OnlyIn(Dist.CLIENT)
 public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
 {
-    private static final ResourceLocation SHIELD_TEXTURE = SoulPoweredMod.getLocation("textures/misc/shield.png");
+    private static final ResourceLocation SHIELD_TEXTURE = SoulMod.getLocation("textures/misc/shield.png");
 
     private static final Set<SoulShieldEntity> TO_RENDER = new HashSet<>();
     private static List<PosUv> POS_UVS = new ArrayList<>();
 
-    private final boolean doesExpandUp;
-
-    public SoulShieldRenderer(EntityRendererManager renderManager, boolean doesExpandUp)
+    public SoulShieldRenderer(EntityRendererManager renderManager)
     {
         super(renderManager);
-        this.doesExpandUp = doesExpandUp;
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -141,7 +139,7 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
             return;
 
         IVertexBuilder buffer = null;
-        Vector3f view = Minecraft.getInstance().getEntityRenderDispatcher().camera.getLookVector();
+        Vector3d view = Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition();
 
         matrix.pushPose();
         matrix.translate(-view.x(), -view.y(), -view.z());
@@ -155,7 +153,7 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
                     buffer = this.getVertexBuilder(shieldEntity, typeBuffer);
 
                 matrix.pushPose();
-                matrix.translate(shieldEntity.xOld + (shieldEntity.position().x - shieldEntity.xOld) * event.getPartialTicks(), shieldEntity.yOld + (shieldEntity.position().y - shieldEntity.yOld) * event.getPartialTicks(), shieldEntity.zOld + (shieldEntity.position().z - shieldEntity.zOld) * event.getPartialTicks());
+                matrix.translate(shieldEntity.xOld + (shieldEntity.getX() - shieldEntity.xOld) * event.getPartialTicks(), shieldEntity.yOld + (shieldEntity.getY() - shieldEntity.yOld) * event.getPartialTicks(), shieldEntity.zOld + (shieldEntity.getZ() - shieldEntity.zOld) * event.getPartialTicks());
 
                 this.render(stack, packedLight, buffer, matrix);
 
@@ -186,7 +184,7 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
                 int a = color.getAlpha();
 
                 buffer.vertex(matrixLast, posUvs.get(i).pos.x(), posUvs.get(i).pos.y(), posUvs.get(i).pos.z()).color(r, g, b, a).uv(posUvs.get(i).u, posUvs.get(i).v)
-                        .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex();
+                        .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex(); // TODO: Fix normals
                 buffer.vertex(matrixLast, posUvs.get(i + 1).pos.x(), posUvs.get(i + 1).pos.y(), posUvs.get(i + 1).pos.z()).color(r, g, b, a).uv(posUvs.get(i + 1).u, posUvs.get(i + 1).v)
                         .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(0f, 1f, 0f).endVertex();
                 buffer.vertex(matrixLast, posUvs.get(i + 2).pos.x(), posUvs.get(i + 2).pos.y(), posUvs.get(i + 2).pos.z()).color(r, g, b, a).uv(posUvs.get(i + 2).u, posUvs.get(i + 2).v)
@@ -234,12 +232,12 @@ public class SoulShieldRenderer extends EntityRenderer<SoulShieldEntity>
             return true;
         AxisAlignedBB box = shieldEntity.getBoundingBox();
         float range = shieldEntity.getShieldStack().getOrCreateTag().getFloat("Range");
-        return camera.isVisible(box.expandTowards(range, this.doesExpandUp ? range : 0f, range));
+        return camera.isVisible(box.expandTowards(range, range, range));
     }
 
     private boolean isEnding(SoulShieldEntity shieldEntity)
     {
-        return shieldEntity.tickCount >= shieldEntity.getDuration() - SoulPoweredMod.CLIENT_CONFIG.soulShieldEndDuration.get().floatValue();
+        return shieldEntity.tickCount >= shieldEntity.getDuration() - SoulMod.CLIENT_CONFIG.soulShieldEndDuration.get().floatValue();
     }
 
     public static Vector2f rotatePoint(Vector2f point, Vector2f origin, float angle)

@@ -53,10 +53,10 @@ import top.theillusivec4.curios.api.CuriosApi;
  * @author CoffeeCatRailway
  * Created: 6/11/2020
  */
-@Mod.EventBusSubscriber(modid = SoulPoweredMod.MOD_ID)
+@Mod.EventBusSubscriber(modid = SoulMod.MOD_ID)
 public class CommonEvents
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("Common Events");
+    private static final Logger LOGGER = SoulMod.getLogger("Common Events");
 
     public static void init(final FMLCommonSetupEvent event)
     {
@@ -140,7 +140,7 @@ public class CommonEvents
                 {
                     boolean isPowered = EnergyUtils.isPresent(charm);
                     IEnergyStorage energy = EnergyUtils.getIfPresent(charm).orElse(EnergyUtils.EMPTY);
-                    if (isPowered && energy.canExtract() && energy.getEnergyStored() < SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get())
+                    if (isPowered && energy.canExtract() && energy.getEnergyStored() < SoulMod.SERVER_CONFIG.soulAmuletPoweredExtract.get())
                         return;
 
                     LivingEntity entityKilled = event.getEntityLiving();
@@ -150,7 +150,7 @@ public class CommonEvents
                     {
                         PoweredSouliumSwordItem.gainSouls(player, entityKilled, world, () -> {
                             if (isPowered)
-                                energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
+                                energy.extractEnergy(SoulMod.SERVER_CONFIG.soulAmuletPoweredExtract.get(), false);
                             else if (player instanceof ServerPlayerEntity)
                                 charm.hurt(1, world.random, (ServerPlayerEntity) player);
                         });
@@ -190,7 +190,7 @@ public class CommonEvents
         if (event.getObject() instanceof IEnergyItem)
         {
             IEnergyItem item = (IEnergyItem) event.getObject();
-            event.addCapability(SoulPoweredMod.getLocation("energy"), new SoulEnergyStorageImplBase(item.getMaxEnergy(), item.getMaxReceive(), item.getMaxExtract()));
+            event.addCapability(SoulMod.getLocation("energy"), new SoulEnergyStorageImplBase(item.getMaxEnergy(), item.getMaxReceive(), item.getMaxExtract()));
             LOGGER.debug("Capability - Energy item capability updated");
         }
     }
@@ -199,7 +199,7 @@ public class CommonEvents
     public static void onBiomeLoading(BiomeLoadingEvent event)
     {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
-        if (SoulPoweredMod.COMMON_CONFIG.soulCastleGeneration.get())
+        if (SoulMod.COMMON_CONFIG.soulCastleGeneration.get())
         {
             if (event.getCategory() == Biome.Category.NETHER)
                 generation.getStructures().add(SoulFeatures.SOUL_CASTLE::get);

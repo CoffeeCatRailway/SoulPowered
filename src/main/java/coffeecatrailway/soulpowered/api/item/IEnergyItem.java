@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.api.item;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageItemImpl;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -57,7 +57,7 @@ public interface IEnergyItem extends IItemProvider, IForgeItem
     {
         // Apparently, addInformation can be called before caps are initialized
         if (CapabilityEnergy.ENERGY != null)
-            EnergyUtils.ifPresent(stack, storage -> tooltip.add(SoulData.Lang.energyWithMax(storage.getEnergyStored(), storage.getMaxEnergyStored())));
+            EnergyUtils.ifPresent(stack, storage -> tooltip.add(SoulLanguage.energyWithMax(storage.getEnergyStored(), storage.getMaxEnergyStored())));
     }
 
     default void addItemVarients(NonNullList<ItemStack> items)

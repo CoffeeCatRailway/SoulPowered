@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.particle.SoulParticle;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("Powered Soulium Sword");
+    private static final Logger LOGGER = SoulMod.getLogger("Powered Soulium Sword");
 
     public static final int CAPACITY = 12_500;
     public static final int TRANSFER = 5000;
@@ -76,9 +76,9 @@ public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
-        EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get(), false));
-        if (attacker instanceof PlayerEntity && this.isFoil(stack) && MathHelper.nextDouble(attacker.level.getRandom(), 0d, 1d) < SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordSoulChance.get())
-            gainSouls((PlayerEntity) attacker, target, attacker.level, () -> EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false)));
+        EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get(), false));
+        if (attacker instanceof PlayerEntity && this.isFoil(stack) && MathHelper.nextDouble(attacker.level.getRandom(), 0d, 1d) < SoulMod.SERVER_CONFIG.poweredSouliumSwordSoulChance.get())
+            gainSouls((PlayerEntity) attacker, target, attacker.level, () -> EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false)));
         return true;
     }
 
@@ -86,7 +86,7 @@ public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
     public boolean mineBlock(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
         if (state.getDestroySpeed(world, pos) != 0f)
-            EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false));
+            EnergyUtils.ifPresent(stack, energy -> energy.extractEnergy(SoulMod.SERVER_CONFIG.poweredSouliumSwordEnergyCost.get() * 2, false));
         return true;
     }
 
@@ -116,7 +116,7 @@ public class PoweredSouliumSwordItem extends SwordItem implements IEnergyItem
     @Override
     public boolean isFoil(ItemStack stack)
     {
-        return IEnergyItem.super.hasEnergy(stack, SoulPoweredMod.SERVER_CONFIG.poweredSouliumSwordEffectEnergyAmount.get());
+        return IEnergyItem.super.hasEnergy(stack, SoulMod.SERVER_CONFIG.poweredSouliumSwordEffectEnergyAmount.get());
     }
 
     @Override

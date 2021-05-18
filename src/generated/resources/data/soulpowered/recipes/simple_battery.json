@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "scs",
-    "prp",
-    "scs"
+    "oco",
+    "mrm",
+    "oco"
   ],
   "key": {
-    "p": {
-      "tag": "minecraft:planks"
-    },
     "c": {
       "tag": "forge:ingots/copper"
     },
     "r": {
       "tag": "forge:dusts/redstone"
     },
-    "s": {
+    "m": {
+      "tag": "minecraft:planks"
+    },
+    "o": {
       "tag": "forge:rods/wooden"
     }
   },

@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.client.gui.screen;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractGeneratorContainer;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
@@ -30,7 +30,7 @@ public abstract class AbstractGeneratorScreen<C extends AbstractGeneratorContain
     protected void renderTooltip(MatrixStack matrixStack, int x, int y)
     {
         if (this.isHovering(153, 17, 13, 51, x, y))
-            renderTooltip(matrixStack, SoulData.Lang.energyWithMax(this.menu.getEnergyStored(), this.menu.getTileEntity().getMaxEnergyStored()), x, y);
+            renderTooltip(matrixStack, SoulLanguage.energyWithMax(this.menu.getEnergyStored(), this.menu.getBlockEntity().getMaxEnergyStored()), x, y);
         super.renderTooltip(matrixStack, x, y);
     }
 

@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.item.IEnergyItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemGroup;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class SoulAmuletPoweredItem extends SoulAmuletItem implements IEnergyItem
 {
-    public static final ResourceLocation TEXTURE = SoulPoweredMod.getLocation("textures/models/powered_soulium_soul_amulet.png");
+    public static final ResourceLocation TEXTURE = SoulMod.getLocation("textures/models/powered_soulium_soul_amulet.png");
     public static final int CAPACITY = 10_000;
     public static final int TRANSFER = 5000;
 

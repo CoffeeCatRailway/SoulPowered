@@ -1,9 +1,9 @@
 package coffeecatrailway.soulpowered.client.gui.screen;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.RedstoneMode;
 import coffeecatrailway.soulpowered.client.gui.screen.button.RedstoneModeButton;
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergyStorageContainer;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import coffeecatrailway.soulpowered.network.SetRedstoneModeMessage;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -43,7 +43,7 @@ public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageConta
     {
         if (this.isHovering(153, 17, 13, 51, x, y))
         {
-            IFormattableTextComponent text = SoulData.Lang.energyWithMax(this.menu.getEnergyStored(), this.menu.getMaxEnergyStored());
+            IFormattableTextComponent text = SoulLanguage.energyWithMax(this.menu.getEnergyStored(), this.menu.getMaxEnergyStored());
             this.renderTooltip(matrixStack, text, x, y);
         }
         super.renderTooltip(matrixStack, x, y);
@@ -54,7 +54,7 @@ public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageConta
     {
         if (this.minecraft == null) return;
         GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().getTexture(getGuiTexture());
+        this.minecraft.getTextureManager().bind(getGuiTexture());
         int xPos = (this.width - this.getXSize()) / 2;
         int yPos = (this.height - this.getYSize()) / 2;
         blit(matrixStack, xPos, yPos, 0, 0, this.getXSize(), this.getYSize());
@@ -70,7 +70,7 @@ public abstract class AbstractMachineScreen<C extends AbstractEnergyStorageConta
             if (widget.isHovered() && widget instanceof RedstoneModeButton)
             {
                 RedstoneMode mode = ((RedstoneModeButton) widget).getMode();
-                renderTooltip(matrixStack, SoulData.Lang.redstoneMode(mode), x - this.getGuiLeft(), y - this.getGuiTop());
+                renderTooltip(matrixStack, SoulLanguage.redstoneMode(mode), x - this.getGuiLeft(), y - this.getGuiTop());
             }
         }
     }

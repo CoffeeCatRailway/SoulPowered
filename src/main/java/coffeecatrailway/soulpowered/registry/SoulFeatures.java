@@ -1,10 +1,9 @@
 package coffeecatrailway.soulpowered.registry;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.FlatGenerationSettings;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
@@ -19,20 +18,13 @@ import java.util.function.Supplier;
  */
 public class SoulFeatures
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("Features");
+    public static final Supplier<StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>>> SOUL_CASTLE = registerConfiguredStructure("soul_castle", () -> SoulWorldGen.SOUL_CASTLE.get().configured(NoFeatureConfig.INSTANCE),
+            SoulWorldGen.SOUL_CASTLE);
 
-    public static final Supplier<StructureFeature<NoFeatureConfig, ? extends Structure<NoFeatureConfig>>> SOUL_CASTLE = registerConfiguredStructure("soul_castle", SoulWorldGen.SOUL_CASTLE.get().withConfiguration(NoFeatureConfig.field_236559_b_),
-            SoulWorldGen.SOUL_CASTLE.get());
-
-    private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> registerConfiguredFeature(String id, ConfiguredFeature<FC, ?> configuredFeature)
+    private static <FC extends IFeatureConfig, F extends StructureFeature<FC, ? extends Structure<FC>>, UC extends Structure<FC>> Supplier<F> registerConfiguredStructure(String id, Supplier<F> structure, Supplier<UC> unconfiguredStructure)
     {
-        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, SoulPoweredMod.getLocation(id), configuredFeature);
-    }
-
-    private static <FC extends IFeatureConfig, F extends StructureFeature<FC, ? extends Structure<FC>>, UC extends Structure<FC>> Supplier<F> registerConfiguredStructure(String id, F structure, UC unconfiguredStructure)
-    {
-        F ret = Registry.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, SoulPoweredMod.getLocation(id), structure);
-        FlatGenerationSettings.STRUCTURES.put(unconfiguredStructure, ret);
+        F ret = Registry.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, SoulMod.getLocation(id), structure.get());
+        FlatGenerationSettings.STRUCTURE_FEATURES.put(unconfiguredStructure.get(), ret);
         return () -> ret;
     }
 }

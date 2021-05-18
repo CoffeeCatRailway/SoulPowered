@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.intergration.jei.generator;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.tileentity.CoalGeneratorTileEntity;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import coffeecatrailway.soulpowered.intergration.jei.JeiSoulPlugin;
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
 import mezz.jei.api.constants.VanillaTypes;
@@ -21,7 +21,7 @@ public class CoalGeneratorRecipeCategory extends AbstractGeneratorRecipeCategory
 {
     public CoalGeneratorRecipeCategory(IGuiHelper guiHelper)
     {
-        super(guiHelper, new ItemStack(SoulBlocks.SIMPLE_COAL_GENERATOR.get()), SoulData.Lang.JEI_CATEGORY_COAL_GENERATOR, CoalGeneratorTileEntity.MAX_ENERGY);
+        super(guiHelper, new ItemStack(SoulBlocks.SIMPLE_COAL_GENERATOR.get()), SoulLanguage.JEI_CATEGORY_COAL_GENERATOR, CoalGeneratorTileEntity.MAX_ENERGY);
 //        ITextComponent rfPerTick = SoulData.Lang.energyPerTick(1_000_000);
 //        int stringWidth = Minecraft.getInstance().fontRenderer.getStringWidth(rfPerTick.getString());
     }

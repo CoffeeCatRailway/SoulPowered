@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client.gui.screen.button;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.RedstoneMode;
 import coffeecatrailway.soulpowered.common.inventory.container.AbstractEnergyStorageContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -16,7 +16,7 @@ import net.minecraft.util.text.StringTextComponent;
  */
 public class RedstoneModeButton extends Button
 {
-    public static final ResourceLocation REDSTONE_MODE = SoulPoweredMod.getLocation("textures/gui/container/redstone_mode.png");
+    public static final ResourceLocation REDSTONE_MODE = SoulMod.getLocation("textures/gui/container/redstone_mode.png");
 
     private final AbstractEnergyStorageContainer<?> container;
 
@@ -46,7 +46,7 @@ public class RedstoneModeButton extends Button
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().getTexture(REDSTONE_MODE);
+        minecraft.getTextureManager().bind(REDSTONE_MODE);
         GlStateManager._disableDepthTest();
 
         blit(matrixStack, this.x, this.y, this.width, this.height, 0, 0, 26, 26, 48, 48);

@@ -8,12 +8,10 @@ import coffeecatrailway.soulpowered.registry.SoulTileEntities;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.stream.IntStream;
 
 /**
@@ -35,12 +33,7 @@ public class AlloySmelterTileEntity extends AbstractProcessMachineTileEntity<All
 
     public AlloySmelterTileEntity(Tier tier)
     {
-        this(SoulTileEntities.ALLOY_SMELTER.get(tier).get(), tier);
-    }
-
-    public AlloySmelterTileEntity(TileEntityType<?> type, Tier tier)
-    {
-        super(type, INVENTORY_SIZE, tier.calculateEnergyCapacity(MAX_ENERGY), tier.calculateEnergyTransfer(MAX_RECEIVE), 0);
+        super(SoulTileEntities.ALLOY_SMELTER.get(tier).get(), INVENTORY_SIZE, tier.calculateEnergyCapacity(MAX_ENERGY), tier.calculateEnergyTransfer(MAX_RECEIVE), 0);
         this.tier = tier;
     }
 

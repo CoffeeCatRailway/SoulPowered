@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -15,29 +15,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SoulPoweredMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SoulMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SoulPoweredAtlases
 {
-    private static final Set<RenderMaterial> MATERIALS = new HashSet<>();
-
-    public static final RenderMaterial EMPTY_SLOT_PLUS_MATERIAL = register(PlayerContainer.BLOCK_ATLAS, SoulPoweredMod.getLocation("item/empty_power_slot_plus"));
-    public static final RenderMaterial EMPTY_SLOT_MINUS_MATERIAL = register(PlayerContainer.BLOCK_ATLAS, SoulPoweredMod.getLocation("item/empty_power_slot_minus"));
-
-    private static RenderMaterial register(ResourceLocation atlasLocation, ResourceLocation textureLocation)
-    {
-        RenderMaterial material = new RenderMaterial(atlasLocation, textureLocation);
-        MATERIALS.add(material);
-        return material;
-    }
+    public static final ResourceLocation EMPTY_SLOT_PLUS = SoulMod.getLocation("item/empty_power_slot_plus");
+    public static final ResourceLocation EMPTY_SLOT_MINUS = SoulMod.getLocation("item/empty_power_slot_minus");
 
     @SubscribeEvent
-    public static void onEvent(TextureStitchEvent.Pre event)
+    public static void onStitch(TextureStitchEvent.Pre event)
     {
-        AtlasTexture texture = event.getMap();
-        for (RenderMaterial material : MATERIALS)
-        {
-            if (texture.location().equals(material.atlasLocation()))
-                event.addSprite(material.atlasLocation());
-        }
+        if (!event.getMap().location().equals(PlayerContainer.BLOCK_ATLAS))
+            return;
+        event.addSprite(EMPTY_SLOT_PLUS);
+        event.addSprite(EMPTY_SLOT_MINUS);
     }
 }

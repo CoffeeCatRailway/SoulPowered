@@ -6,11 +6,11 @@
     "isi"
   ],
   "key": {
-    "i": {
-      "tag": "minecraft:logs"
-    },
     "s": {
       "tag": "minecraft:planks"
+    },
+    "i": {
+      "tag": "minecraft:logs"
     }
   },
   "result": {

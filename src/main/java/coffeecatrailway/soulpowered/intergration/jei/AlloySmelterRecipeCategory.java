@@ -41,7 +41,7 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory<AlloySmelterR
         this.progress = guiHelper.drawableBuilder(AlloySmelterScreen.TEXTURE, 176, 0, 46, 20)
                 .buildAnimated(200, IDrawableAnimated.StartDirection.TOP, false);
 
-        this.localizedName = SoulBlocks.SOULIUM_ALLOY_SMELTER.get().getTranslatedName().getString();
+        this.localizedName = SoulBlocks.SOULIUM_ALLOY_SMELTER.get().getName().getString();
     }
 
     @Override
@@ -77,8 +77,8 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory<AlloySmelterR
     @Override
     public void setIngredients(AlloySmelterRecipe recipe, IIngredients ingredients)
     {
-        ingredients.setInputLists(VanillaTypes.ITEM, recipe.getIngredientsMap().keySet().stream().map(ingredient -> Arrays.asList(ingredient.getMatchingStacks())).collect(Collectors.toList()));
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+        ingredients.setInputLists(VanillaTypes.ITEM, recipe.getIngredientsMap().keySet().stream().map(ingredient -> Arrays.asList(ingredient.getItems())).collect(Collectors.toList()));
+        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
     @Override
@@ -93,14 +93,14 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory<AlloySmelterR
         int i = 0;
         for (Map.Entry<Ingredient, Integer> entry : recipe.getIngredientsMap().entrySet())
         {
-            group.set(i++, Arrays.stream(entry.getKey().getMatchingStacks()).map(s -> {
+            group.set(i++, Arrays.stream(entry.getKey().getItems()).map(s -> {
                         ItemStack stack = s.copy();
                         stack.setCount(entry.getValue());
                         return stack;
                     }).collect(Collectors.toList())
             );
         }
-        group.set(3, recipe.getRecipeOutput());
+        group.set(3, recipe.getResultItem());
     }
 
     @Override

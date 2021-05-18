@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client.particle;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 @OnlyIn(Dist.CLIENT)
 public class SoulParticle extends SimpleAnimatedParticle
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("Soul-Particle");
+    private static final Logger LOGGER = SoulMod.getLogger("Soul-Particle");
 
     private final PlayerEntity player;
     private final boolean avoid;
@@ -52,7 +52,7 @@ public class SoulParticle extends SimpleAnimatedParticle
     public void tick() {
         super.tick();
         if (this.player != null) {
-            float motionSpeed = SoulPoweredMod.SERVER_CONFIG.soulParticleSpeed.get().floatValue();
+            float motionSpeed = SoulMod.SERVER_CONFIG.soulParticleSpeed.get().floatValue();
             Vector3d pos = new Vector3d(this.x, this.y, this.z);
             Vector3d playerPos = this.player.position().add(0f, 1f, 0f);
             Vector3d motion = pos.subtract(playerPos).normalize().multiply(motionSpeed, motionSpeed, motionSpeed).reverse();
@@ -64,7 +64,7 @@ public class SoulParticle extends SimpleAnimatedParticle
             this.yd = motion.y;
             this.zd = motion.z;
 
-            if (pos.distanceToSqr(playerPos) <= SoulPoweredMod.SERVER_CONFIG.soulParticleExpireDistance.get() * SoulPoweredMod.SERVER_CONFIG.soulParticleExpireDistance.get())
+            if (pos.distanceToSqr(playerPos) <= SoulMod.SERVER_CONFIG.soulParticleExpireDistance.get() * SoulMod.SERVER_CONFIG.soulParticleExpireDistance.get())
                 this.remove();
         }
     }

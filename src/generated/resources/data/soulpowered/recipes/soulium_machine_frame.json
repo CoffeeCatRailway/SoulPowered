@@ -6,11 +6,11 @@
     "isi"
   ],
   "key": {
-    "i": {
-      "item": "soulpowered:soulium_ingot"
-    },
     "s": {
       "tag": "soulpowered:soul_blocks"
+    },
+    "i": {
+      "item": "soulpowered:soulium_ingot"
     }
   },
   "result": {

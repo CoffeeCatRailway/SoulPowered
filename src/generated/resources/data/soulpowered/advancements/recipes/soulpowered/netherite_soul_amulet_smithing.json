@@ -2,36 +2,26 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulpowered:soulium_battery"
+      "soulpowered:netherite_soul_amulet_smithing"
     ]
   },
   "criteria": {
-    "has_material": {
+    "has_diamond_soul_amulet": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "soulpowered:soulium_ingot"
+            "item": "soulpowered:diamond_soul_amulet"
           }
         ]
       }
     },
-    "has_copper_ingot": {
+    "has_netherite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/copper"
-          }
-        ]
-      }
-    },
-    "has_redstone": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:dusts/redstone"
+            "tag": "forge:ingots/netherite"
           }
         ]
       }
@@ -39,15 +29,14 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulpowered:soulium_battery"
+        "recipe": "soulpowered:netherite_soul_amulet_smithing"
       }
     }
   },
   "requirements": [
     [
-      "has_material",
-      "has_copper_ingot",
-      "has_redstone",
+      "has_diamond_soul_amulet",
+      "has_netherite",
       "has_the_recipe"
     ]
   ]

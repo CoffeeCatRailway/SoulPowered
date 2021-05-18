@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.entity;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.common.item.SoulShieldItem;
 import coffeecatrailway.soulpowered.registry.SoulEntities;
 import coffeecatrailway.soulpowered.registry.SoulItems;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  */
 public class SoulShieldEntity extends Entity
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("SoulShieldEntity");
+    private static final Logger LOGGER = SoulMod.getLogger("SoulShieldEntity");
     private static final Vector3d VEC_TWO = new Vector3d(2d, 2d, 2d);
 
     private static final DataParameter<ItemStack> SHIELD_STACK = EntityDataManager.defineId(SoulShieldEntity.class, DataSerializers.ITEM_STACK);
@@ -68,7 +68,7 @@ public class SoulShieldEntity extends Entity
         ItemStack shieldStack = this.getShieldStack();
         if (!shieldStack.isEmpty())
         {
-            double shieldBounceOffset = SoulPoweredMod.SERVER_CONFIG.soulShieldBounceOffset.get();
+            double shieldBounceOffset = SoulMod.SERVER_CONFIG.soulShieldBounceOffset.get();
             double range = shieldStack.getOrCreateTag().getFloat("Range") + shieldBounceOffset;
 
             this.level.getEntities(this, this.getBoundingBox().inflate(range - shieldBounceOffset))

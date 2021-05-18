@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_stone": {
+    "has_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -16,7 +16,7 @@
         ]
       }
     },
-    "has_iron": {
+    "has_corner_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -35,8 +35,8 @@
   },
   "requirements": [
     [
-      "has_stone",
-      "has_iron",
+      "has_material",
+      "has_corner_material",
       "has_the_recipe"
     ]
   ]

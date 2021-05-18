@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.registry;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.common.item.crafting.AlloySmelterRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -20,8 +20,8 @@ import java.util.function.Supplier;
  */
 public class SoulRecipes
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("Recipes");
-    private static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, SoulPoweredMod.MOD_ID);
+    private static final Logger LOGGER = SoulMod.getLogger("Recipes");
+    private static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, SoulMod.MOD_ID);
 
     public static final IRecipeType<AlloySmelterRecipe> ALLOY_SMELTING_TYPE = registerType("alloy_smelting");
     public static final RegistryObject<IRecipeSerializer<?>> ALLOY_SMELTING = registerSerializer("alloy_smelting", AlloySmelterRecipe.Serializer::new);
@@ -34,7 +34,7 @@ public class SoulRecipes
 
     private static <T extends IRecipe<?>> IRecipeType<T> registerType(String name)
     {
-        return Registry.register(Registry.RECIPE_TYPE, SoulPoweredMod.getLocation(name), new IRecipeType<T>()
+        return Registry.register(Registry.RECIPE_TYPE, SoulMod.getLocation(name), new IRecipeType<T>()
         {
             @Override
             public String toString()

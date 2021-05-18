@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.item;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.item.ISoulCurios;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.common.entity.SoulShieldEntity;
@@ -30,7 +30,7 @@ import java.util.Random;
  */
 public class SoulShieldItem extends Item implements ISoulCurios
 {
-    private static Color DUST_COLOR = new Color(SoulPoweredMod.CLIENT_CONFIG.soulShieldParticleColor.get());
+    private static Color DUST_COLOR = new Color(SoulMod.CLIENT_CONFIG.soulShieldParticleColor.get());
 
     private final float range;
     private final float durationInTicks;
@@ -67,16 +67,16 @@ public class SoulShieldItem extends Item implements ISoulCurios
     @Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> info, ITooltipFlag flag)
     {
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_shield.description"));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + ".soul_shield.description"));
 
         CompoundNBT nbt = stack.getOrCreateTag();
         float duration = nbt.getFloat("DurationInTicks") / 20f;
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_shield.duration", duration));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + ".soul_shield.duration", duration));
 
         float cooldown = nbt.getFloat("CooldownInTicks") / 20f;
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".soul_shield.cooldown", cooldown));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + ".soul_shield.cooldown", cooldown));
 
-        info.add(new TranslationTextComponent("item." + SoulPoweredMod.MOD_ID + ".curio.range", nbt.getFloat("Range")));
+        info.add(new TranslationTextComponent("item." + SoulMod.MOD_ID + ".curio.range", nbt.getFloat("Range")));
     }
 
     @Override
@@ -100,7 +100,7 @@ public class SoulShieldItem extends Item implements ISoulCurios
     public void onCurioActivate(float durationInTicks, float cooldownInTicks, ItemStack stack, PlayerEntity player)
     {
         SoulsCapability.ifPresent(player, handler -> {
-            if (handler.getSouls() >= SoulPoweredMod.SERVER_CONFIG.soulShieldSoulsUse.get() || player.isCreative())
+            if (handler.getSouls() >= SoulMod.SERVER_CONFIG.soulShieldSoulsUse.get() || player.isCreative())
             {
                 World world = player.level;
                 SoulShieldEntity shieldEntity = new SoulShieldEntity(world, player, stack, durationInTicks);
@@ -118,7 +118,7 @@ public class SoulShieldItem extends Item implements ISoulCurios
                     float a = getDustColor().getAlpha() / 255f;
                     serverWorld.sendParticles(new RedstoneParticleData(r, g, b, a), shieldEntity.getX(), shieldEntity.getY() + .5f, shieldEntity.getZ(), 10, xs, ys, zs, 1);
 
-                    handler.removeSouls(SoulPoweredMod.SERVER_CONFIG.soulShieldSoulsUse.get(), false);
+                    handler.removeSouls(SoulMod.SERVER_CONFIG.soulShieldSoulsUse.get(), false);
                     if (!player.isCreative())
                         player.getCooldowns().addCooldown(this, (int) (cooldownInTicks + durationInTicks));
                 }
@@ -142,8 +142,8 @@ public class SoulShieldItem extends Item implements ISoulCurios
 
     public static Color getDustColor()
     {
-        if (DUST_COLOR.getRGB() != SoulPoweredMod.CLIENT_CONFIG.soulShieldParticleColor.get())
-            DUST_COLOR = new Color(SoulPoweredMod.CLIENT_CONFIG.soulShieldParticleColor.get());
+        if (DUST_COLOR.getRGB() != SoulMod.CLIENT_CONFIG.soulShieldParticleColor.get())
+            DUST_COLOR = new Color(SoulMod.CLIENT_CONFIG.soulShieldParticleColor.get());
         return DUST_COLOR;
     }
 }

@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.intergration.jei;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.utils.EnergyUtils;
 import coffeecatrailway.soulpowered.client.gui.screen.AlloySmelterScreen;
 import coffeecatrailway.soulpowered.client.gui.screen.CoalGeneratorScreen;
@@ -40,12 +40,12 @@ import java.util.stream.Collectors;
 @JeiPlugin
 public class JeiSoulPlugin implements IModPlugin
 {
-    private static final ResourceLocation UID = SoulPoweredMod.getLocation("plugin/main");
+    private static final ResourceLocation UID = SoulMod.getLocation("plugin/main");
     public static final Set<Supplier<Item>> POWERED_ITEM_SET = new HashSet<>();
 
-    public static final ResourceLocation ALLOY_SMELTER_ID = SoulPoweredMod.getLocation("category/alloy_smelter");
-    public static final ResourceLocation COAL_GENERATOR_ID = SoulPoweredMod.getLocation("category/coal_generator");
-    public static final ResourceLocation SOUL_GENERATOR_ID = SoulPoweredMod.getLocation("category/soul_generator");
+    public static final ResourceLocation ALLOY_SMELTER_ID = SoulMod.getLocation("category/alloy_smelter");
+    public static final ResourceLocation COAL_GENERATOR_ID = SoulMod.getLocation("category/coal_generator");
+    public static final ResourceLocation SOUL_GENERATOR_ID = SoulMod.getLocation("category/soul_generator");
 
     @Override
     public ResourceLocation getPluginUid()
@@ -85,8 +85,8 @@ public class JeiSoulPlugin implements IModPlugin
 
     private static List<IRecipe<?>> getRecipesOfType(IRecipeType<?> type)
     {
-        if (Minecraft.getInstance().world == null) return new ArrayList<>();
-        return Minecraft.getInstance().world.getRecipeManager().getRecipes().stream().filter(recipe -> recipe.getType() == type).collect(Collectors.toList());
+        if (Minecraft.getInstance().level == null) return new ArrayList<>();
+        return Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(recipe -> recipe.getType() == type).collect(Collectors.toList());
     }
 
     @Override

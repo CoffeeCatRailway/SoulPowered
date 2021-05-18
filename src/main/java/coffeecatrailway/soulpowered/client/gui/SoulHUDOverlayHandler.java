@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client.gui;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.common.capability.SoulsCapability;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -27,7 +27,7 @@ public class SoulHUDOverlayHandler
     private int soulsIconsOffset;
     private int playerSouls;
 
-    private static final ResourceLocation ICONS_TEX = SoulPoweredMod.getLocation("textures/gui/icons.png");
+    private static final ResourceLocation ICONS_TEX = SoulMod.getLocation("textures/gui/icons.png");
 
     public static void init()
     {
@@ -58,7 +58,7 @@ public class SoulHUDOverlayHandler
         int left = mc.getWindow().getGuiScaledWidth() / 2 + 91;
         int top = mc.getWindow().getGuiScaledHeight() - this.soulsIconsOffset;
 
-        mc.getTextureManager().getTexture(ICONS_TEX);
+        mc.getTextureManager().bind(ICONS_TEX);
         RenderSystem.enableBlend();
 
         for (int i = 0; i < 10; i++)
@@ -81,6 +81,6 @@ public class SoulHUDOverlayHandler
             }
         }
         RenderSystem.disableBlend();
-        mc.getTextureManager().getTexture(AbstractGui.GUI_ICONS_LOCATION);
+        mc.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
     }
 }

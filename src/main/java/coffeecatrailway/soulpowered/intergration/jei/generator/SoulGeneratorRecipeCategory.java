@@ -1,8 +1,8 @@
 package coffeecatrailway.soulpowered.intergration.jei.generator;
 
-import coffeecatrailway.soulpowered.SoulData;
 import coffeecatrailway.soulpowered.api.Tier;
 import coffeecatrailway.soulpowered.common.tileentity.SoulGeneratorTileEntity;
+import coffeecatrailway.soulpowered.data.gen.SoulLanguage;
 import coffeecatrailway.soulpowered.intergration.jei.JeiSoulPlugin;
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
 import mezz.jei.api.constants.VanillaTypes;
@@ -21,7 +21,7 @@ public class SoulGeneratorRecipeCategory extends AbstractGeneratorRecipeCategory
 {
     public SoulGeneratorRecipeCategory(IGuiHelper guiHelper)
     {
-        super(guiHelper, new ItemStack(SoulBlocks.SOUL_GENERATOR.get()), SoulData.Lang.JEI_CATEGORY_SOUL_GENERATOR, SoulGeneratorTileEntity.MAX_ENERGY);
+        super(guiHelper, new ItemStack(SoulBlocks.SOUL_GENERATOR.get()), SoulLanguage.JEI_CATEGORY_SOUL_GENERATOR, SoulGeneratorTileEntity.MAX_ENERGY);
     }
 
     @Override

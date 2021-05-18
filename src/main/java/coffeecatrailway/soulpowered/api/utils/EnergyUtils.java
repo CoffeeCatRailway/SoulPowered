@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.api.utils;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.tileentity.IEnergyHandler;
 import coffeecatrailway.soulpowered.common.capability.SoulEnergyStorageImplBase;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -25,7 +25,7 @@ public final class EnergyUtils
 {
     public static final SoulEnergyStorageImplBase EMPTY = new SoulEnergyStorageImplBase(0);
 
-    public static final ResourceLocation ENERGY_BAR_TEXTURE = SoulPoweredMod.getLocation("textures/gui/container/energy_bar.png");
+    public static final ResourceLocation ENERGY_BAR_TEXTURE = SoulMod.getLocation("textures/gui/container/energy_bar.png");
 
     private EnergyUtils()
     {
@@ -93,7 +93,7 @@ public final class EnergyUtils
     @OnlyIn(Dist.CLIENT)
     public static void renderThinEnergyBar(MatrixStack matrixStack, int x, int y, int energyBarHeight)
     {
-        Minecraft.getInstance().getTextureManager().getTexture(ENERGY_BAR_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bind(ENERGY_BAR_TEXTURE);
         AbstractGui.blit(matrixStack, x, y - 50, 0, 0, 14, 52, 84, 52);
         if (energyBarHeight > 0)
             AbstractGui.blit(matrixStack, x , y + 2 - energyBarHeight, 14, 52 - energyBarHeight, 14, energyBarHeight, 84, 52);
@@ -108,7 +108,7 @@ public final class EnergyUtils
     @OnlyIn(Dist.CLIENT)
     public static void renderWideEnergyBar(MatrixStack matrixStack, int x, int y, int energyBarHeight)
     {
-        Minecraft.getInstance().getTextureManager().getTexture(ENERGY_BAR_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bind(ENERGY_BAR_TEXTURE);
         AbstractGui.blit(matrixStack, x, y - 50, 28, 0, 28, 52, 84, 52);
         if (energyBarHeight > 0)
             AbstractGui.blit(matrixStack, x, y + 2 - energyBarHeight, 56, 52 - energyBarHeight, 28, energyBarHeight, 84, 52);

@@ -87,7 +87,7 @@ public class AlloySmelterRecipe implements IRecipe<AbstractProcessMachineTileEnt
 
         for (int i = 0; i < inventory.getInputSlotCount(); i++)
         {
-            ItemStack stack = inventory.getStackInSlot(i);
+            ItemStack stack = inventory.getItem(i);
             if (!stack.isEmpty())
             {
                 boolean foundMatch = this.ingredients.keySet().stream().anyMatch(ingredient -> ingredient.test(stack));

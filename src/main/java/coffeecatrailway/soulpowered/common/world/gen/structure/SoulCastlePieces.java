@@ -1,7 +1,7 @@
 package coffeecatrailway.soulpowered.common.world.gen.structure;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
-import coffeecatrailway.soulpowered.registry.OtherRegistries;
+import coffeecatrailway.soulpowered.SoulMod;
+import coffeecatrailway.soulpowered.data.gen.SoulLootTables;
 import coffeecatrailway.soulpowered.registry.SoulWorldGen;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -34,9 +34,9 @@ import java.util.Random;
  */
 public class SoulCastlePieces
 {
-    private static final ResourceLocation INTACT = SoulPoweredMod.getLocation("soul_castle/intact");
-    private static final ResourceLocation PARTLY_DESTROYED = SoulPoweredMod.getLocation("soul_castle/partly_destroyed");
-    private static final ResourceLocation DESTROYED = SoulPoweredMod.getLocation("soul_castle/destroyed");
+    private static final ResourceLocation INTACT = SoulMod.getLocation("soul_castle/intact");
+    private static final ResourceLocation PARTLY_DESTROYED = SoulMod.getLocation("soul_castle/partly_destroyed");
+    private static final ResourceLocation DESTROYED = SoulMod.getLocation("soul_castle/destroyed");
 
     private static final ResourceLocation[] PIECES = new ResourceLocation[]{INTACT, PARTLY_DESTROYED, DESTROYED};
 
@@ -92,7 +92,7 @@ public class SoulCastlePieces
                 world.setBlock(pos, Blocks.CHEST.defaultBlockState(), Constants.BlockFlags.DEFAULT);
                 TileEntity tileentity = world.getBlockEntity(pos);
                 if (tileentity instanceof ChestTileEntity)
-                    ((ChestTileEntity) tileentity).setLootTable(OtherRegistries.CHESTS_SOUL_CASTLE, random.nextLong());
+                    ((ChestTileEntity) tileentity).setLootTable(SoulLootTables.CHESTS_SOUL_CASTLE, random.nextLong());
             }
         }
 

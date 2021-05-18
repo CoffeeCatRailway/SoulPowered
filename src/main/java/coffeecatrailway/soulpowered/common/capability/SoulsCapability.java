@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.common.capability;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.network.SoulMessageHandler;
 import coffeecatrailway.soulpowered.network.SyncSoulsChangeMessage;
 import coffeecatrailway.soulpowered.network.SyncSoulsTotalMessage;
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  */
 public class SoulsCapability
 {
-    public static final ResourceLocation ID = SoulPoweredMod.getLocation("souls");
+    public static final ResourceLocation ID = SoulMod.getLocation("souls");
 
     @CapabilityInject(ISoulsHandler.class)
     public static final Capability<ISoulsHandler> SOULS_CAP = null;

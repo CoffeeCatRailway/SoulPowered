@@ -18,9 +18,9 @@ import net.minecraft.util.IntArray;
  */
 public class AlloySmelterContainer extends AbstractEnergyStorageContainer<AlloySmelterTileEntity>
 {
-    public AlloySmelterContainer(ContainerType<? extends AlloySmelterContainer> type, int id, PlayerInventory inventory, Tier tier)
+    public AlloySmelterContainer(int id, PlayerInventory inventory, Tier tier)
     {
-        this(type, id, inventory, new AlloySmelterTileEntity(tier), new IntArray(AlloySmelterTileEntity.FIELDS_COUNT));
+        this(SoulContainers.ALLOY_SMELTER.get(tier).get(), id, inventory, new AlloySmelterTileEntity(tier), new IntArray(AlloySmelterTileEntity.FIELDS_COUNT));
     }
 
     public AlloySmelterContainer(int id, PlayerInventory inventory, AlloySmelterTileEntity tile, IIntArray fields, Tier tier)

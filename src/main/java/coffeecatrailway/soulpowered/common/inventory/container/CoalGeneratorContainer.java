@@ -17,9 +17,9 @@ import net.minecraft.util.IntArray;
  */
 public class CoalGeneratorContainer extends AbstractGeneratorContainer<CoalGeneratorTileEntity>
 {
-    public CoalGeneratorContainer(ContainerType<? extends CoalGeneratorContainer> type, int id, PlayerInventory inventory, Tier tier)
+    public CoalGeneratorContainer(int id, PlayerInventory inventory, Tier tier)
     {
-        this(type, id, inventory, new CoalGeneratorTileEntity(tier), new IntArray(AbstractGeneratorTileEntity.FIELDS_COUNT));
+        this(SoulContainers.COAL_GENERATOR.get(tier).get(), id, inventory, new CoalGeneratorTileEntity(tier), new IntArray(AbstractGeneratorTileEntity.FIELDS_COUNT));
     }
 
     public CoalGeneratorContainer(int id, PlayerInventory inventory, CoalGeneratorTileEntity tile, IIntArray fields, Tier tier)

@@ -6,22 +6,22 @@
     ]
   },
   "criteria": {
-    "has_log": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "minecraft:logs"
-          }
-        ]
-      }
-    },
-    "has_planks": {
+    "has_material": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "minecraft:planks"
+          }
+        ]
+      }
+    },
+    "has_corner_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "minecraft:logs"
           }
         ]
       }
@@ -35,8 +35,8 @@
   },
   "requirements": [
     [
-      "has_log",
-      "has_planks",
+      "has_material",
+      "has_corner_material",
       "has_the_recipe"
     ]
   ]

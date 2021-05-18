@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.client.particle;
 
-import coffeecatrailway.soulpowered.registry.OtherRegistries;
+import coffeecatrailway.soulpowered.registry.SoulParticles;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
@@ -75,7 +75,7 @@ public class SoulParticleData implements IParticleData
     @Override
     public ParticleType<?> getType()
     {
-        return OtherRegistries.SOUL_PARTICLE.get();
+        return SoulParticles.SOUL_PARTICLE.get();
     }
 
     @Override

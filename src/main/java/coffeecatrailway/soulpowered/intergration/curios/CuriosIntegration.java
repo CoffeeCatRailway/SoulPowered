@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.intergration.curios;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.api.item.ISoulCurios;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  */
 public class CuriosIntegration
 {
-    private static final Logger LOGGER = SoulPoweredMod.getLogger("Curios-Integration");
+    private static final Logger LOGGER = SoulMod.getLogger("Curios-Integration");
 
     public static final Supplier<Optional<ISlotType>> NECKLACE = () -> CuriosApi.getSlotHelper().getSlotType("necklace");
     public static final Supplier<Optional<ISlotType>> CHARM = () -> CuriosApi.getSlotHelper().getSlotType("charm");

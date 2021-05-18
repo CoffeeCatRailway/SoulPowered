@@ -1,6 +1,6 @@
 package coffeecatrailway.soulpowered.api.item;
 
-import coffeecatrailway.soulpowered.SoulPoweredMod;
+import coffeecatrailway.soulpowered.SoulMod;
 import coffeecatrailway.soulpowered.intergration.curios.CuriosIntegration;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -51,7 +51,7 @@ public interface ISoulCurios
 
     default boolean canRightClickEquip(ItemStack stack)
     {
-        return SoulPoweredMod.SERVER_CONFIG.canRightClickEquipCurio.get();
+        return SoulMod.SERVER_CONFIG.canRightClickEquipCurio.get();
     }
 
     default boolean canRender(ItemStack stack, String identifier, int index, LivingEntity livingEntity)

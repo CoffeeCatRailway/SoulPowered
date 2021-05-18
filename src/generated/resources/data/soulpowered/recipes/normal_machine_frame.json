@@ -6,11 +6,11 @@
     "isi"
   ],
   "key": {
-    "i": {
-      "tag": "forge:ingots/iron"
-    },
     "s": {
       "tag": "forge:stone"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
     }
   },
   "result": {
