@@ -66,7 +66,7 @@ public class CommonEvents
     }
 
     @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event)
+    public static void onRegisterCommands(RegisterCommandsEvent event)
     {
         SoulsCommand.register(event.getDispatcher());
         LOGGER.debug("Registered command(s)");
