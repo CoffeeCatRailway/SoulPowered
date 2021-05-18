@@ -7,14 +7,14 @@ import coffeecatrailway.soulpowered.common.block.SoulBoxBlock;
 import coffeecatrailway.soulpowered.registry.SoulBlocks;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DirectoryCache;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
+
+import java.io.IOException;
 
 /**
  * @author CoffeeCatRailway
@@ -31,6 +31,7 @@ public class SoulBlockStates extends BlockStateProvider
     protected void registerStatesAndModels()
     {
         this.simpleBlock(SoulBlocks.SOULIUM_BLOCK.get());
+        this.simpleBlockItem(SoulBlocks.SOULIUM_BLOCK.get(), this.cubeAll(SoulBlocks.SOULIUM_BLOCK.get()));
 
         this.machineFrame(SoulBlocks.SIMPLE_MACHINE_FRAME, true);
         this.machineFrame(SoulBlocks.NORMAL_MACHINE_FRAME, false);
@@ -49,48 +50,51 @@ public class SoulBlockStates extends BlockStateProvider
         this.sidedFurnaceModel(SoulBlocks.SOULIUM_ALLOY_SMELTER, true);
     }
 
-    private void machineFrame(RegistryObject<MachineFrameBlock> machineFrameBlock, boolean hasEndTexure)
+    private void machineFrame(RegistryObject<MachineFrameBlock> block, boolean hasEndTexure)
     {
-        BlockModelBuilder builder = this.models().withExistingParent(machineFrameBlock.getId().getPath(), SoulMod.getLocation("block/machine_frame_template"));
+        BlockModelBuilder builder = this.models().withExistingParent(block.getId().getPath(), SoulMod.getLocation("block/machine_frame_template"));
         if (hasEndTexure)
-            builder = builder.texture("end", SoulMod.getLocation("block/" + machineFrameBlock.getId().getPath() + "_end"))
-                    .texture("side", SoulMod.getLocation("block/" + machineFrameBlock.getId().getPath() + "_side"));
+            builder = builder.texture("end", SoulMod.getLocation("block/" + block.getId().getPath() + "_end"))
+                    .texture("side", SoulMod.getLocation("block/" + block.getId().getPath() + "_side"));
         else
-            builder = builder.texture("end", SoulMod.getLocation("block/" + machineFrameBlock.getId().getPath()))
-                    .texture("side", SoulMod.getLocation("block/" + machineFrameBlock.getId().getPath()));
+            builder = builder.texture("end", SoulMod.getLocation("block/" + block.getId().getPath()))
+                    .texture("side", SoulMod.getLocation("block/" + block.getId().getPath()));
 
-        this.axisBlock(machineFrameBlock.get(), builder, builder);
+        this.axisBlock(block.get(), builder, builder);
+        this.simpleBlockItem(block.get(), builder);
     }
 
-    private void soulBox(RegistryObject<SoulBoxBlock> soulBoxBlock)
+    private void soulBox(RegistryObject<SoulBoxBlock> block)
     {
-        ModelFile modelOff = this.models().withExistingParent(soulBoxBlock.getId().getPath(), SoulMod.getLocation("block/soul_box_template"))
-                .texture("side", SoulMod.getLocation("block/" + soulBoxBlock.getId().getPath() + "_side"))
-                .texture("top", SoulMod.getLocation("block/" + soulBoxBlock.getId().getPath() + "_top"));
+        ModelFile modelOff = this.models().withExistingParent(block.getId().getPath(), SoulMod.getLocation("block/soul_box_template"))
+                .texture("side", SoulMod.getLocation("block/" + block.getId().getPath() + "_side"))
+                .texture("top", SoulMod.getLocation("block/" + block.getId().getPath() + "_top"));
         modelOff.assertExistence();
 
-        ModelFile modelOn = this.models().withExistingParent(soulBoxBlock.getId().getPath() + "_on", SoulMod.getLocation("block/soul_box_template"))
-                .texture("side", SoulMod.getLocation("block/" + soulBoxBlock.getId().getPath() + "_side_on"))
-                .texture("top", SoulMod.getLocation("block/" + soulBoxBlock.getId().getPath() + "_top"));
+        ModelFile modelOn = this.models().withExistingParent(block.getId().getPath() + "_on", SoulMod.getLocation("block/soul_box_template"))
+                .texture("side", SoulMod.getLocation("block/" + block.getId().getPath() + "_side_on"))
+                .texture("top", SoulMod.getLocation("block/" + block.getId().getPath() + "_top"));
         modelOn.assertExistence();
 
-        addModels(this.getVariantBuilder(soulBoxBlock.get()), modelOn, modelOff);
+        addModels(this.getVariantBuilder(block.get()), modelOn, modelOff);
+        this.simpleBlockItem(block.get(), modelOff);
     }
 
-    private <T extends AbstractMachineBlock> void sidedFurnaceModel(RegistryObject<T> machineBlock, boolean hasTopTexture)
+    private <T extends AbstractMachineBlock> void sidedFurnaceModel(RegistryObject<T> block, boolean hasTopTexture)
     {
-        ResourceLocation side = SoulMod.getLocation("block/" + machineBlock.getId().getPath() + "_side");
-        ResourceLocation top = hasTopTexture ? SoulMod.getLocation("block/" + machineBlock.getId().getPath() + "_top") : side;
-        ResourceLocation front = SoulMod.getLocation("block/" + machineBlock.getId().getPath() + "_front");
-        ResourceLocation front_on = SoulMod.getLocation("block/" + machineBlock.getId().getPath() + "_front_on");
+        ResourceLocation side = SoulMod.getLocation("block/" + block.getId().getPath() + "_side");
+        ResourceLocation top = hasTopTexture ? SoulMod.getLocation("block/" + block.getId().getPath() + "_top") : side;
+        ResourceLocation front = SoulMod.getLocation("block/" + block.getId().getPath() + "_front");
+        ResourceLocation front_on = SoulMod.getLocation("block/" + block.getId().getPath() + "_front_on");
 
-        ModelFile modelOff = this.models().cube(machineBlock.getId().getPath(), top, top, front, side, side, side).texture("particle", side);
-        ModelFile modelOn = this.models().cube(machineBlock.getId().getPath() + "_on", top, top, front_on, side, side, side).texture("particle", side);
+        ModelFile modelOff = this.models().cube(block.getId().getPath(), top, top, front, side, side, side).texture("particle", side);
+        ModelFile modelOn = this.models().cube(block.getId().getPath() + "_on", top, top, front_on, side, side, side).texture("particle", side);
 
         modelOff.assertExistence();
         modelOn.assertExistence();
 
-        addModels(this.getVariantBuilder(machineBlock.get()), modelOn, modelOff);
+        addModels(this.getVariantBuilder(block.get()), modelOn, modelOff);
+        this.simpleBlockItem(block.get(), modelOff);
     }
 
     private void addModels(VariantBlockStateBuilder builder, ModelFile modelOn, ModelFile modelOff)
