@@ -26,3 +26,4 @@ forge*changelog.txt
 src/generated/resources/.cache/cache
 *.ase
 *.bbmodel
+unused
